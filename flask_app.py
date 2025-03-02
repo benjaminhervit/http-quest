@@ -6,19 +6,20 @@ from enum import Enum
 app = Flask(__name__)
 
 error_msgs = {
-    'no_team' : 'We do not recognize your team. Are you trying to jump ahead or do have troubles spelling your own name?'
+    'no_team' : 'We do not recognize your team. Are you trying to jump ahead or do have troubles spelling your own name?',
+    'level_error':'You cannot complete this level. Have you alrady completed it or did you end here by mistake?'
 }
 
 routes = {
     'the_test' : '/the_test',
     'the_answer' : '/the_answer/<int:answer>',
-    'accept_quest': '/accept_the_quest',
+    'accept_quest': '/accept_the_quest', #FORM
     'git_monster' :'/stun_the_git_monster/<string:group_name>/<string:spell>',
     'the_gate_arrive':'/the_gate',
     'the_gate_open':'/open/the_gate/<string:group_name>/<string:secret_word>',
     'the_gate_git_away' : '/open/the_gate/git_away_fast',
     'the_throne' : '/the_throne_room',
-    'jason' :'/speak_to_jason',
+    'jason' :'/speak_to_jason', #JSON
     'crown' : '/the_crown'
 }
 
@@ -71,37 +72,41 @@ def accept_the_quest() ->str:
     if not(has_group and has_universe_answer and has_quest_answer):
         return f"You are here but you do not want to tell me who you are or what the_answer is? {clues['accept_quest']}"
         
-    group = request.form['group_name']
-    answer = request.form['answer']
     quest_accepted = request.form['accept_the_quest'].lower()
     if quest_accepted != answers['accept_quest']:
         return f"You are here but do not wish to acccept the quest? {clues['accept_quest']}"
     
     try:
+        answer = request.form['answer']
         answer = int(answer)
         if answer == answers['the_answer']:
+            group = request.form['group_name']
             get_db().store_team(group)
             return f"Thank you, brave {group}! Your dangerous quest begins immediately as a git monster is approaching. You know by the growing stench of merge conflict. {clues['git_monster']} "
         return f"Come back with the right answer {group}. {clues['the_test']}"
     except ValueError:
         return f"You answer in a format that I do not understand, {group}. INTeresting..."
-    
-    
-    
 
 #4. Where the group PUTs the git monster down
 @app.route(routes['git_monster'], methods=['GET', 'DELETE', 'POST','PUT'])
 def the_git_monster(group_name:str,spell:str) -> str:
-    if request.method == 'PUT':
-        if not get_db().get_team(group_name):
-            return abort(400, error_msgs['no_team'] + clues['git_monster'])
-        if spell == answers['git_monster']:
-            get_db().update_score(group_name, 2)
-            return f"""The git monster falls into a deep paralysis as you yell "git add . git commit -m "work!" git pull git push" -
-                but you suspect it is only for a while, so you hurry on before it wakes up again. {clues["get_to_the_gate"]}"""
-        errMessage = f'Whatever you tried - it is not working. {clues['git_monster']}'
+    errMessage = f'Whatever you tried - it is not working. {clues['git_monster']}'
+    if request.method != 'PUT':
+        return abort(405, errMessage)
+    
+    if not get_db().get_team(group_name):
+        return abort(400, error_msgs['no_team'] + clues['git_monster'])
+    
+    if spell != answers['git_monster']:
         return abort(400, errMessage)
-    return abort(405, errMessage)
+    
+    if not get_db().update_level('git_monster'):
+        return abort(400, f'{error_msgs['level_error']}. {clues["git_monster"]}' )
+        
+    get_db().update_score(group_name, 2)
+    return f"""The git monster falls into a deep paralysis as you yell "git add . git commit -m "work!" git pull git push" -
+        but you suspect it is only for a while, so you hurry on before it wakes up again. {clues["get_to_the_gate"]}"""
+        
         
 #5 - 6. where the group DELETEs the gate and GET away
 @app.route(routes['the_gate_arrive'], methods=['GET'])
@@ -110,19 +115,20 @@ def the_gate():
 
 @app.route(routes['the_gate_open'], methods=['GET', 'DELETE', 'POST'])
 def the_gate_open(group_name,secret_word:str)->str:
-    if request.method == 'DELETE':
-        if not get_db().get_team(group_name):
-            return abort(400, error_msgs['no_team'] + clues['the_gate_open'])
-        if secret_word == answers['gate_word']:
-            return f'As the gate deletes itself, you hear the git monster awakening again. {clues['git_away_fast']}'
-        return f'That is not the secret word. {clues["the_gate_open"]}'
-    if request.method == 'GET':
-        if secret_word == answers['git_away_fast']:
+    if request.method == 'DELETE' and secret_word == answers['gate_word']:
+        if get_db().update_level('the_gate_open'):
+            get_db().update_score(group_name, 1)
+            return f'As the gate deletes itself, you hear the git monster awakening again. {clues['git_away_fast']}'            
+        return abort(400, f'{error_msgs["level_error"]} {clues['the_gate_open']}')
+        
+    if request.method == 'GET' and secret_word == answers['git_away_fast']:
+        if get_db().update_level('git_away'):
+            get_db().update_score(group_name, 1)
             return f"""You GET inside the gate just before the walls falls down and blocks the path behind you.
                     On the other side you hear the raging chaos of merge conflicts, branches, invalid paths, and wrong passwords banging against the solid rocks.
                     Luckily, you do not have to deal with that today. {clues['the_throne']}"""
         return f'You are too slow and are now stuck in merge conflicts. {clues["git_away_fast"]}'
-    return f"""A gate cannot GET you anything and it does not want you to POST anything on it... {clues['the_gate_open']}"""
+    return abort(400, f"I don't know where you are getting at but maybe you should start deleting first or maybe there is something else wrong? {clues['git_away_fast']}")
 
 #7 - 10. Where the group GET to the throne and PUT on the crown
 @app.route(routes['the_throne'])
@@ -170,52 +176,6 @@ def index() -> str:
     """
     get_db().store_team('test')
     return render_template("index.html", groups = get_db().all_teams(), tier2=4, tier3=6)
-
-@app.route('/test_page')
-def test():
-    return render_template('test.html')
-
-@app.route("/greetings/<int:rowid>", methods=["GET", "DELETE"])
-def greeting(rowid: int) -> str:
-    """Generates or deletes a specific greeting
-
-    Args:
-        rowid (int): the id of the desired greeting in the DB
-
-    Returns:
-        str: the generated page
-    """
-    if request.method == "DELETE":
-        if get_db().delete_greeting(rowid):
-            return redirect(url_for('test_page'))
-            #return f"Greeting {rowid} deleted successfully"
-        abort(404)
-    a_greeting = get_db().get_greeting(rowid)
-    if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
-        return jsonify(a_greeting)
-    return render_template('test.html')
-    return render_template("greetings.html", list=[a_greeting])
-
-
-@app.route("/greetings", methods=["GET", "POST"])
-def greetings() -> str:
-    """If invoked with POST, stores the supplied greeting in the DB, and redirect to the greetings.
-    If invoked with GET, generates the greetings
-
-    Returns:
-        str: the generated page
-    """
-    if request.method == "POST":
-        if "recipient" in request.form and "message" in request.form:
-            get_db().store_greeting(
-                request.form["recipient"],
-                request.form["message"])
-        redirect(url_for("greetings"))
-    all_greetings = get_db().all_greetings()
-    if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
-        return jsonify(all_greetings)
-    return render_template("greetings.html", list=all_greetings)
-
 
 def get_db() -> QuestDB:
     """

@@ -11,7 +11,8 @@ class QuestDB:
         score INTEGER DEFAULT 1,
         the_answer INTEGER DEFAULT 0,
         git_monster INTEGER DEFAULT 0,
-        the_gate INTEGER DEFAULT 0,
+        the_gate_open INTEGER DEFAULT 0,
+        git_away INTEGER DEFAULT 0,
         the_crown INTEGER DEFAULT 0,
         date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
     """
@@ -58,9 +59,10 @@ class QuestDB:
                 "score": team_data[1],
                 "the_answer": team_data[2],
                 "git_monster": team_data[3],
-                "the_gate": team_data[4],
-                "the_crown": team_data[5],
-                "date": team_data[6]
+                "the_gate_open": team_data[4],
+                "git_away":team_data[5],
+                "the_crown": team_data[6],
+                "date": team_data[7]
             }
             return json.dumps(team_dict)
         return json.dumps({})
@@ -76,7 +78,7 @@ class QuestDB:
         return cur.fetchone()
     
     def update_level(self, team:str, level:str):
-        levels = ['the_answer', 'git_monster', 'the_gate', 'the_crown']
+        levels = ['the_answer', 'git_monster', 'the_gate_open', 'git_away', 'the_crown']
         if level not in levels:
             print("invalid level")
             return (False, 'invalid level')
