@@ -1,11 +1,15 @@
 stages:
   - scan
 
+variables:
+  GITLAB_ACCESS_TOKEN: $GITLAB_ACCESS_TOKEN
+
 scan_todos:
   stage: scan
+  image: python:3.9  # Use a Docker image with Python and pip
   script:
     - pip install requests
-    - python scan_todos.py > todos.txt
-    - python create_gitlab_issues.py
+    - python CD/scan_todos.py > todos.txt
+    - python CD/create_gitlab_issues.py
   only:
     - main
