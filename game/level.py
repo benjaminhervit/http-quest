@@ -1,7 +1,7 @@
 
 from enum import Enum
 #inspired by https://www.w3.org/Protocols/HTTP/HTRESP.html
-class LevelE(Enum):
+class LevelEnum(Enum):
     HOME = 0
     REGISTER = 1
     THE_TEST = 2
@@ -45,18 +45,6 @@ class Level:
         
     def set_victory_message_template(self, message):
         self.victory_message_template = message
-
-    def response_get(self, request):
-        return self.description + self.hint if self.description and self.hint else ""
-    
-    def response_post(self, request):
-        return "response_post not implemented"
-    
-    def response_put(self, request):
-        return "response_put not implemented"
-    
-    def response_delete(self, request):
-        return "response_delete not implemented"
     
     def answer_is_correct(self, answer):
         return False

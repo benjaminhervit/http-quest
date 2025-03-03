@@ -1,21 +1,19 @@
-"""Response builder validates different parts of the requests 
+"""
+Response builder validates different parts of the requests 
 
 Returns:
     _type_: _description_
 """
 
-from level import Level
-from status_code import StatusCode
+from game.level import Level
+from game.status_code import StatusCode
 from quest_db import QuestDB
 
-def create_data_response(token_found, token, db:QuestDB):
-    response = {'success':False,'token':False, 'is_registered':False, 'party':None, 'status_code':StatusCode.BAD_REQUEST.value}
-    response.update({'token': token_found})
-    if response['token']:
-        response.update({'party':token})
-        response.update({'is_registered': db.get_team(token) is not None})
-    else:
-        response.update({'message':'Two options: You are spellingly challenged or you have not registered yet.'})
+def create_data_response(token_found, token, is_registered):
+    response = {'success':False, 'status_code':StatusCode.BAD_REQUEST.value,
+                'token_found':token_found, 'is_registered':is_registered, 'party':token, 
+                'message':'Two options: You are spellingly challenged, have not registered yet, or still struggling with how/where to put the data... okay.. three options maybe'
+                }
     if response['token'] and response['is_registered']:
         response.update({'success':True})
         response.update({'status_code': StatusCode.ACCEPTED.value})
@@ -29,11 +27,16 @@ def create_method_response(method, target_method):
             'status_code' : StatusCode.ACCEPTED.value if method == target_method else StatusCode.BAD_REQUEST.value
             }
     
-def create_answer_response(level:Level, next_level:Level, answer, party):
-    response = {'success':False, 'user_answer':answer, 'message' : f'You got close but your answer is not correct. Quest: {level.riddle} Hint: {level.hint}', 'status_code':StatusCode.ACCEPTED.value}
+def create_answer_response(level:Level, next_level:Level, answer, party, party_status, method_status):
+    answer_status = level.answer_is_correct(answer)
+    
+    response = {'success':False, 'answer_status':answer_status,
+                'party_status': party_status, 'method_status' : method_status, 
+                'status_code':StatusCode.ACCEPTED.value, 'user_answer': answer, 
+                'message' : f'You got close but your answer is not correct. Take a look at your . Quest: {level.riddle} Hint: {level.hint}'}
     
     #update if answer is correct
-    if level.answer_is_correct(answer):
+    if answer_status and party_status and method_status:
         response.update({'success':True})
         response.update({'error':'No errors here!'})
         

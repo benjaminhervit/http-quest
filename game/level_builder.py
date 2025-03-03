@@ -1,5 +1,5 @@
-from level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel
-from routes import Route as R
+from game.level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel
+from game.routes import Route as R
 
 def createTheGitLevel():
     level = GitLevel()
