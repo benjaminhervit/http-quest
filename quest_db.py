@@ -2,6 +2,7 @@
 import sqlite3
 from typing import List, Tuple
 import json
+import datetime
 
 class QuestDB:
 
@@ -50,22 +51,27 @@ class QuestDB:
             return cursor.lastrowid
         except:
             return False
-        
-    def get_team_as_json(self, team: str) -> str:
-        team_data = self.get_team(team)
-        if team_data:
+    
+    def convert_team_to_json(self, team_data: str) -> str:
+        try:
             team_dict = {
                 "team": team_data[0],
                 "score": team_data[1],
                 "the_answer": team_data[2],
                 "git_monster": team_data[3],
                 "the_gate_open": team_data[4],
-                "git_away":team_data[5],
+                "git_away": team_data[5],
                 "the_crown": team_data[6],
-                "date": team_data[7]
+                "date": team_data[7].isoformat() if isinstance(team_data[7], (datetime.date, datetime.datetime)) else team_data[7]
             }
             return json.dumps(team_dict)
-        return json.dumps({})
+        except KeyError as e:
+            return json.dumps({'error':str(e)})
+    
+    def get_team_as_json(self, team: str) -> str:
+        team_data = self.get_team(team)
+        if team_data:
+            return self.convert_team_to_json(team_data)
         
     def get_team(self, team): #-> Tuple[int, str, str]:
         cur = self._conn.cursor()
@@ -125,7 +131,18 @@ class QuestDB:
                ORDER BY score DESC;"""
         )
         return cursor.fetchall()
-
+    
+    def all_teams_as_json(self):
+        cursor = self._conn.cursor()
+        cursor.execute(
+            """SELECT *
+               FROM teams
+               ORDER BY score DESC;"""
+        )
+        teams = cursor.fetchall()
+        teams_json = [self.convert_team_to_json(team) for team in teams]
+        return json.dumps(teams_json)
+    
     # def delete_greeting(self, rowid: int) -> int:
     #     """
     #     Deletes a greeting from the database.
