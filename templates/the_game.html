@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <script src="static/js/quest.js"></script>
+    <title>Hello world!</title>
+  </head>
+  <body>
+    <main class="container">
+      <article>
+        <header>
+          {% if new_party %}
+          {{game_data.name}} Completed!
+          {%else%}
+          Welcome to a CRUDe Game
+          {%endif%}
+        </header>
+        <body id="game_context">
+          {% if new_party %}
+          <div>
+            <p>{{ game_data.story }}</p>
+            <p><strong>Directions to the next level:</strong><br>
+              {{ game_data.directions_to_next_level }}</p>
+            <!-- SECRET HINT: 
+              Good job on being nosy!
+              Here is a small hint: Your browsers' search bar can GET you to the next level - but you will need something else to get further than that.
+              -->
+            <p><strong>Hint:</strong><br>
+              You got all the information you need - but if you have any comments, try reading between the lines.</p>
+          </div>
+          {% else %}
+          <form method="POST" action="/register" role="group" class="register-form" required>
+            <input type="text" id="party" name="party" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
+            <button type="submit">Begin</button>
+          </form>
+          {% endif %}
+        </body>
+        <footer id="game-feedback">
+          {% if new_party %}
+          <p><i>
+              Come back here to follow the leaderboard - but you must prepare to leave the safe space of pretty pixels.<br>
+              There a many ways to traverse a path - but only one path will get you to the crown.
+            </i></p>
+          {%else%}
+          <p></p>
+          {%endif%}
+        </footer>
+      </article>
+      <details>
+        <summary role="button" class="contrast">Game manual</summary>
+        <p>
+          This is a game where you will have to get your hands dirty with HTTP.<br>
+          When you register, you party name will appear on the leaderboard and you can begin your adventure.<br><br>
+          To complete the game you must learn the following:
+        </p>
+        <ul>
+          <li>How to make HTTP requests</li>
+          <li>How to request with different methods</li>
+          <li>How to send data through different formats</li>
+          <li>How to deal with bad puns, pop culture references, terrible documentation, and even worse guide instructions.</li>
+        </ul>
+        <p>Game rules:<br>
+          The most important rule is to remember to share your party_name with the Game at each step.<br>
+          Beyond that there are no rules. There is no single solution to completing the game.
+          <br>
+          The Game will tell you what it accepts and what it rejects. If you beat a level it does not matter how - but we hope you can tell us why it worked.</p>
+        <p><br>BEST OF LUCK!</p>
+      </details>
+      <!-- LEADER BOARD -->
+      <article>
+        <header>Leader board</header>
+        <body>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Team</th>
+                <th scope="col">Level</th>
+                <th scope="col"><img class="icons" width="50px" height="auto" alt="git icon" src="https://images.vexels.com/content/202527/preview/black-cat-avatar-line-icon-796782.png" style="filter: invert(100%);"></th>
+                <th scope="col"><img class="icons" width="100px" height="auto" alt="gate icon" src="https://static.vecteezy.com/system/resources/previews/052/294/921/non_2x/an-old-castle-gate-with-a-wooden-door-png.png"></th>
+                <th><img class="icons" width="50px" height="auto" alt="crown icon" src="static/images/crown.png"></th>
+              </tr>
+            </thead>
+            <tbody id="table_body"></tbody>
+            <!-- <tfoot>
+              <tr>
+                <th scope="row">Average</th>
+                <td>9,126</td>
+                <td>0.91</td>
+                <td>341</td>
+              </tr> -->
+            <!-- </tfoot> -->
+          </table>
+        </body>
+        <footer></footer>
+      </article>
+    </main>
+  </body>
+</html>

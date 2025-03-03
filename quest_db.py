@@ -42,6 +42,9 @@ class QuestDB:
 
     def store_team(self, team: str) -> int:
         cursor = self._conn.cursor()
+        exists = self.get_team(team)
+        if exists:
+            return None
         try:
             cursor.execute(
                 "INSERT INTO teams (team) VALUES (?);",
@@ -50,7 +53,7 @@ class QuestDB:
             self._conn.commit()
             return cursor.lastrowid
         except:
-            return False
+            return None
     
     def convert_team_to_json(self, team_data: str) -> str:
         try:

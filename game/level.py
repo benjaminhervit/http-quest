@@ -14,7 +14,7 @@ class Level:
     def __init__(self, name, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):
         self.name = name
         self.description = description
-        self.riddle = riddle
+        self.quest = riddle
         self.hint = hint
         self.correct_answer = correct_answer
         self.wrong_answer_response = wrong_answer_response
@@ -40,8 +40,8 @@ class Level:
     def set_experience(self, newExpValue):
         self.exp = newExpValue
         
-    def set_riddle(self, riddle):
-        self.riddle = riddle
+    def set_quest(self, riddle):
+        self.quest = riddle
         
     def set_victory_message_template(self, message):
         self.victory_message_template = message

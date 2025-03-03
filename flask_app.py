@@ -27,6 +27,8 @@ import game.response_builder as RB
 
 from quest_db import QuestDB
 from flask import Flask, render_template, redirect, url_for, request, g, abort, jsonify, Response
+import json
+from urllib.parse import unquote, quote
 
 app = Flask(__name__)
 
@@ -61,21 +63,21 @@ def execute_level(level:Level, next_level:Level,
     Returns:
         _type_: _description_
     """
-    method_response = RB.create_method_response(method, target_method)
+    method_response = RB.create_method_response(level, method, target_method)
     if not method_response['success']:
         return jsonify(method_response)
     
     party_registered = False
     if party_data_found:
-        party_registered = get_db().get_team(party) is not None
-    data_response = RB.create_data_response(party_data_found, party, party_registered)
+        party_registered = get_game_db().get_team(party) is not None
+    data_response = RB.create_data_response(level, party_data_found, party, party_registered)
     if not data_response['success']:
         return jsonify(data_response)
     
     if request_is_answer:
         answer_response = RB.create_answer_response(level, next_level, answer, party, data_response['success'], method_response['success'])
         if answer_response['success']:
-            get_db().update_score(party, 1)
+            get_game_db().update_score(party, 1)
         return jsonify(answer_response)
     return jsonify(RB.create_level_welcome_response(level))
 
@@ -189,57 +191,82 @@ def register():
     Returns:
         _type_: _description_
     """
-    party = ""
-    party_in_form = False
-    try:
-        party_in_form = 'party' in request.form
-        party = request.form['party'].strip().lower()
-    except:
-        print("no party in form")
+    level:Level = levels[L.REGISTER]
+    response = {'success':False, 'status_code':StatusCode.BAD_REQUEST.value,
+                'party_found':False, 'is_registered':False, 'valid_method' : False, 'party':"", 
+                'message':f'Something went wrong. Try again. {level.quest + " " + level.hint}'
+                }
+    #check method
+    if request.method != 'POST':
+        response.update({'message':f'You must work on your METHODology... {level.quest + " " + level.hint}'})
+        return response
+    response.update({'valid_method':True})
     
-    data_response = RB.create_data_response(party_in_form, party, get_db())
-    if data_response['success']:
-        data_response.update({'message':'Seems like this party is already registered?'})
-        return jsonify(data_response)
+    #check form
+    if 'party' not in request.form:
+        response.update({'message':f'Looks like your are out of shape! Or... as they say in Danish... {level.quest + " " + level.hint}'})
+        return response
     
-    method_response = RB.create_method_response(request.method, 'POST')
-    if not method_response['success']:
-        return jsonify(method_response)
+    #check party name
+    party = request.form['party'].strip().lower()
+    is_empty = len(party) == 0
+    if is_empty:
+        response.update({'message':f'Try with more characters than None and thin air. {level.quest + " " + level.hint}'})
+        return response
+    response.update({'party_found':True})
+    response.update({'party':party})
     
-    #SUCCESS
+    #check if party exists
+    in_db  = get_game_db().get_team(party)
+    if in_db:
+        response.update({'is_registered':True})
+        response.update({'message':f'It looks like your team is already registered? Try with another name or return to your quest. {level.quest + " " + level.hint}'})
+        return response
+    
+    #register team
+    get_game_db().store_team(party)
+    
+    #make success response
     level:Level = levels[L.REGISTER]
     next_level:Level = levels[L.THE_TEST]
-    success_response = RB.create_answer_response(level, next_level, True, data_response['party'])
-    
-    get_db().store_team(data_response['party']) #register party
+    response = RB.create_answer_response(level, next_level, 
+                                                True, party, 
+                                                True, 
+                                                True)
     
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         #send as json
-        return jsonify(success_response)
+        return jsonify(response)
     #redirect to leader board
-    return redirect(url_for('index', message=success_response['message'], new_party = True))
+    print(response)
+    return redirect(url_for('index', party_name=response['party'], new_party = True))
 
 #HOME AND LEADERBOARD
-@app.route(R.HOME.value)
-def index(message="", new_party=False):
-    message = request.args.get('message', "We are looking forward to follow your adventure.")
+@app.route(R.LEADERBOARD.value)
+def index(party_name="", new_party=False):
+    party_name = request.args.get('party_name', "")
     new_party = request.args.get('new_party', False)
-    return render_template('index.html', game_feedback=message, registration_complete = new_party)
+    data = None
+    
+    if new_party:
+        data = RB.create_next_level_dict(levels[L.REGISTER], levels[L.THE_TEST], party_name)
+    
+    return render_template('the_game.html', game_data=data, new_party = new_party)
 
 #DIRECT DB REQUESTS
 @app.route(R.GET_ALL_TEAMS.value)
 def get_all_teams():
-    teams = get_db().all_teams()
-    teams_dict = [get_db().convert_team_to_json(team) for team in teams]
+    teams = get_game_db().all_teams()
+    teams_dict = [get_game_db().convert_team_to_json(team) for team in teams]
     return jsonify(teams_dict)
 
-def get_db() -> QuestDB:
+def get_game_db() -> QuestDB:
     """
-    Retrieves the GreetingsDB instance from the global context (g) 
+    Retrieves the QuestDB instance from the global context (g) 
     or creates a new instance if it doesn't exist.
 
     Returns:
-        GreetingsDB: The GreetingsDB instance.
+        QuestDB: The QuestDB instance.
     """
     db_instance = getattr(g, '_database', None)
     if db_instance is None:
