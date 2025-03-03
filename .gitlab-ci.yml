@@ -1,0 +1,11 @@
+stages:
+  - scan
+
+scan_todos:
+  stage: scan
+  script:
+    - pip install requests
+    - python scan_todos.py > todos.txt
+    - python create_gitlab_issues.py
+  only:
+    - main
