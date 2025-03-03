@@ -1,3 +1,23 @@
+"""
+This is a HTTP/CRUD learning game, using Flask, SQLite and vanilla JS, HTML and Pico CSS.
+In the game, a party must go through a set of riddles/challenges
+to finally claim the CRUD crown and sit on the WoThrone™. 
+There is a shared leader board for all registered players/parties, to see who is in the leader.
+
+To play the game, the player must first register on through the index.html site. 
+From here, they will have to use the information from ridles, hints, directions and descriptions to 
+make the correct HTTP requests to go to the next level or answer a riddle/challenge.
+
+The game should give the player handson experience with making various HTTP requests passing values through 
+path params, forms, and JSON. All responses are returned as JSON.
+
+The Player can choose however they want to defeat the game. Using python, JavaScript, Postman or anything else
+doesn't really matter - as long as they create the correct requests to get familiar with the setup.
+
+Returns:
+    _type_: _description_
+"""
+
 from game.level import Level, LevelEnum as L
 import game.level_builder as level_builder
 from game.routes import Route as R
@@ -39,7 +59,7 @@ def execute_level(level:Level, next_level:Level,
         request_is_answer (_type_): _description_
 
     Returns:
-        _type_: a JSON response to the requester.
+        _type_: _description_
     """
     method_response = RB.create_method_response(method, target_method)
     if not method_response['success']:
@@ -199,12 +219,14 @@ def register():
     #redirect to leader board
     return redirect(url_for('index', message=success_response['message'], new_party = True))
 
+#HOME AND LEADERBOARD
 @app.route(R.HOME.value)
 def index(message="", new_party=False):
     message = request.args.get('message', "We are looking forward to follow your adventure.")
     new_party = request.args.get('new_party', False)
     return render_template('index.html', game_feedback=message, registration_complete = new_party)
 
+#DIRECT DB REQUESTS
 @app.route(R.GET_ALL_TEAMS.value)
 def get_all_teams():
     teams = get_db().all_teams()
@@ -224,6 +246,7 @@ def get_db() -> QuestDB:
         db_instance = g._database = QuestDB()
     return db_instance
 
+#RUN AND TEARDOWN
 @app.teardown_appcontext
 def close_connection(_exception):
     """Close the database, when Flask exits.
