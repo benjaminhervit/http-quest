@@ -1,5 +1,6 @@
 import requests
 import os
+from scan_todos import find_todos
 
 GITLAB_API_URL = 'https://gitlab.com/api/v4'
 GITLAB_PROJECT_ID = '19560'
@@ -21,7 +22,6 @@ def create_issue(title, description):
         print(f"Failed to create issue: {response.content}")
 
 if __name__ == '__main__':
-    from CD.scan_todos import find_todos
 
     todos = find_todos('.')
     for todo in todos:
