@@ -63,23 +63,26 @@ def execute_level(level:Level, next_level:Level,
     Returns:
         _type_: _description_
     """
-    method_response = RB.create_method_response(level, method, target_method)
+    
+    #TODO: Try to ake a response version, using the Flask.Response object >> then headers can also be a part of the puzzles? .. and maybe more correct way of doing it?
+    method_response = RB.create_method_response_body(level, method, target_method)
     if not method_response['success']:
         return jsonify(method_response)
     
     party_registered = False
     if party_data_found:
         party_registered = get_game_db().get_team(party) is not None
-    data_response = RB.create_data_response(level, party_data_found, party, party_registered)
+    data_response = RB.create_data_response_body(level, party_data_found, party, party_registered)
     if not data_response['success']:
         return jsonify(data_response)
     
     if request_is_answer:
-        answer_response = RB.create_answer_response(level, next_level, answer, party, data_response['success'], method_response['success'])
+        answer_response = RB.create_answer_response_body(level, next_level, answer, party, data_response['success'], method_response['success'])
         if answer_response['success']:
             get_game_db().update_score(party, 1)
         return jsonify(answer_response)
-    return jsonify(RB.create_level_welcome_response(level))
+    
+    return jsonify(RB.create_level_welcome_response_body(level))
 
 #LEVEL 6: THE CROWN
 @app.route(R.THE_THRONE.value, methods=all_methods)
@@ -181,6 +184,7 @@ def the_test(party:str):
                              'GET', request.method, 
                              party_not_empty, party, 
                              None, False)
+    
     return response
     
 #LEVEL 1: REGISTER
@@ -229,7 +233,7 @@ def register():
     #make success response
     level:Level = levels[L.REGISTER]
     next_level:Level = levels[L.THE_TEST]
-    response = RB.create_answer_response(level, next_level, 
+    response = RB.create_answer_response_body(level, next_level, 
                                                 True, party, 
                                                 True, 
                                                 True)

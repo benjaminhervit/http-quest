@@ -1,7 +1,7 @@
 from enum import Enum
 #inspired by https://www.w3.org/Protocols/HTTP/HTRESP.html
 class Route(Enum):
-    LEADERBOARD = "/leaderboard" #GET
+    LEADERBOARD = "/" #GET
     REGISTER = "/register" #POST FORM
     THE_TEST_BEGINS = "/the_test/<string:party>" #GET PATH
     THE_TEST_ANSWER = "/the_test/<string:party>/<int:answer>" #POST PATH

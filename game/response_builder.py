@@ -46,9 +46,8 @@ def create_level_dict(level:Level):
     }
     return level_as_dict
 
-def create_data_response(level:Level, token_found, token, is_registered):
+def create_data_response_body(level:Level, token_found, token, is_registered):
     level_dict = create_level_dict(level)
-    print(f"DATA LEVEL DICT TYPE: {type(level_dict)}")
     response = {'success':False, 'status_code':StatusCode.BAD_REQUEST.value,
                 'token_found':token_found, 'is_registered':is_registered, 'party':token, 
                 'message':'Two options: You are spellingly challenged, have not registered yet, or still struggling with how/where to put the data... okay.. three options maybe',
@@ -60,9 +59,8 @@ def create_data_response(level:Level, token_found, token, is_registered):
         response.update({'message':'This party is fine'})
     return response
 
-def create_method_response(level:Level, method, target_method):
+def create_method_response_body(level:Level, method, target_method):
     level_dict = create_level_dict(level)
-    print(f"METHOD LEVEL DICT TYPE: {type(level_dict)}")
     return {'success' : method == target_method,
             'message' :  "" if method == target_method else 'You need to work on the METHODology.',
             'method_used' : method,
@@ -70,7 +68,7 @@ def create_method_response(level:Level, method, target_method):
             'level_info': level_dict
             }
     
-def create_answer_response(level:Level, next_level:Level, answer, party, party_status, method_status):
+def create_answer_response_body(level:Level, next_level:Level, answer, party, party_status, method_status):
     answer_status = level.answer_is_correct(answer)
     level_dict = create_level_dict(level)
     print(f"ANSWER LEVEL DICT TYPE: {type(level_dict)}")
@@ -95,7 +93,7 @@ def create_answer_response(level:Level, next_level:Level, answer, party, party_s
         response.update({'status_code': StatusCode.OK.value})
     return response
 
-def create_level_welcome_response(level:Level):
-    msg = level.description
-    msg += " " + level.quest + " " + level.hint
-    return {'success':True, 'message' : msg, 'status_code':StatusCode.OK.value}
+def create_level_welcome_response_body(level:Level):
+    level_dict = create_level_dict(level)
+    return {'success':True, 'level_info' : level_dict, 'status_code':StatusCode.OK.value}
+
