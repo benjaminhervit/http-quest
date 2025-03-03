@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     levelEl.textContent = teamObj.score;
                     row.appendChild(levelEl);
 
+                    // TODO: MAKE SURE SCORE AND MAX VALUE MATCHES THE LEVELS
                     row.appendChild(createProgressBarGroupEl(teamObj.score, 0, 2));
                     //open the gate
                     row.appendChild(createProgressBarGroupEl(teamObj.score, 2, 5));
