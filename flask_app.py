@@ -99,7 +99,7 @@ def execute_level(level_name, default_level_response, target_method, method,
         response.update({'status_code':StatusCode.OK.value})
         response.update({'message': 'VICTORYYY! Your quest can continue!'})
         
-        if get_game_db().update_level(party_name, level_name, 1):
+        if get_game_db().update_level(party_name, level_name):
             get_game_db().update_score(party_name, 1)
         
     return jsonify(response)

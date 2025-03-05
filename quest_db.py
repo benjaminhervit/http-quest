@@ -100,7 +100,7 @@ class QuestDB:
             return cursor.fetchone()[0]
         return None
     
-    def update_level(self, team:str, level:str, new_level_status:int):
+    def update_level(self, team:str, level:str):
         if level not in [le.value for le in LE]:
             print(f"Invalid level name {level} sent to update_level in db")
             return None
@@ -112,12 +112,8 @@ class QuestDB:
         )
         
         level_status = cursor.fetchone()
-        if level_status == 1:
+        if level_status and level_status[0 ]== 1:
             print("level already updated")
-            return None
-        
-        if new_level_status < 0 or new_level_status > 1:
-            print(f"invalid level value {new_level_status} send to update_level in db")
             return None
         
         if not self.get_team(team):
@@ -126,7 +122,7 @@ class QuestDB:
         
         cursor = self._conn.cursor()
         cursor.execute(
-            f"UPDATE teams SET {level} = {new_level_status} WHERE team = ?;",
+            f"UPDATE teams SET {level} = 1 WHERE team = ?;",
             (team,)
         )
         self._conn.commit()
