@@ -10,6 +10,31 @@ from game.status_code import StatusCode
 from quest_db import QuestDB
 import random
 
+def build_request_report(method, target_method, method_success, party_name_found, party_name, party_is_registered, party_success, request_success):
+    report = {
+            'success':request_success,
+            'method': method, 'target_method':target_method, 'method_success':method_success,
+            'party_name':party_name, 'party_name_found':party_name_found,
+            'party_is_registered':party_is_registered, 'party_success':party_success
+        }
+    
+    #method check and logs
+    # report.update({'method':method})
+    # report.update({'target_method':method})
+    # method_success = method == target_method
+    # report.update({'method_success':method_success})
+    
+    #party name check and logs
+    # report.update({'party_name_found':party_name_found})
+    # report.update({'party_name':party_name})    
+    
+    # report.update({'party_is_registered':party_is_registered})
+    
+    # party_success = party_name_found and party_is_registered
+    # report.update({'party_success':party_success})
+    return report
+
+
 victory_lines = [
             "HTTP 200: OK! You've conquered this level!",
             "Request successful! You've leveled up!",
@@ -23,77 +48,76 @@ victory_lines = [
             "OPTIONS: Celebrate or Celebrate? Choose wisely!"
         ]
 
-def create_next_level_dict(level:Level, next_level:Level, party):
-    #combining next level and current level info
-    level_as_dict = {
-        "current_level":level.name,
-        "next_level":'You will now when you get there',
-        "story":level.victory_message_template.format(party=party),
-        "directions_to_next_level":next_level.directions,
-        "to_stay_here":level.directions
-    }
-    return level_as_dict
-
-def create_level_dict(level:Level):
-    #doing it here to avoid oversharing
-    level_as_dict = {
-        "name":level.name,
-        "story":level.description,
-        "quest":level.quest,
-        "hint":level.hint,
-        "to_stay_here":level.directions,
-        "directions_to_next_level":"First you must complete your quest."
-    }
-    return level_as_dict
-
-def create_data_response_body(level:Level, token_found, token, is_registered):
-    level_dict = create_level_dict(level)
-    response = {'success':False, 'status_code':StatusCode.BAD_REQUEST.value,
-                'token_found':token_found, 'is_registered':is_registered, 'party':token, 
-                'message':'Two options: You are spellingly challenged, have not registered yet, or still struggling with how/where to put the data... okay.. three options maybe',
-                'level_info': level_dict
-                }
-    if response['party'] and response['is_registered']:
-        response.update({'success':True})
-        response.update({'status_code': StatusCode.ACCEPTED.value})
-        response.update({'message':'This party is fine'})
-    return response
-
-def create_method_response_body(level:Level, method, target_method):
-    level_dict = create_level_dict(level)
-    return {'success' : method == target_method,
-            'message' :  "" if method == target_method else 'You need to work on the METHODology.',
-            'method_used' : method,
-            'status_code' : StatusCode.ACCEPTED.value if method == target_method else StatusCode.BAD_REQUEST.value,
-            'level_info': level_dict
+def create_standard_response_body(level:Level):
+    return {'success' : False, 'party_found':False, 'party':"", 'is_registered': False, 'party_success':False,
+            'message' :  "Standard response body - you should not receive this. Talk to a TA.",
+            'status_code' : StatusCode.BAD_REQUEST.value,
+            'level_info': level.directions, #will only include directions to the level until they pass method and party test
+            'method_found':"", 'method_target':"", 'method_success':False,
+            'answer_status':False, 'answer_from_user':""
             }
+
+def add_method_validation_to_response(method, target_method, response:dict):
+    #dummy message to find loop holes
+    response.update({'message':'Method validation update - if you see this you should tell a TA.'})
     
-def create_answer_response_body(level:Level, next_level:Level, answer, party, party_status, method_status):
+    #update fields
+    response.update({'method_used' : method })
+    response.update({'method_target' : target_method})
+    
+    #update with validation
+    # #is themethod used the same as the method that was intended?
+    method_accepted = method == target_method
+    response.update({'method_success' : method_accepted})
+    response.update({'message' : response['message'] if method_accepted else 'You need to work on the METHODology.'})
+    response.update({'status_code':StatusCode.ACCEPTED.value if method_accepted else response['status_code']})
+
+def update_response_with_party_validation( party_found, party, is_registered, response:dict):
+    #dummy message to find loop holes
+    response.update({'message':'Party validation update - if you see this you should tell a TA.'})
+    
+    #update fields
+    response.update({'party_found':party_found})
+    response.update({'party':party})
+    response.update({'is_registered' : is_registered})
+    
+    #update with party validation: 
+    # #did we found the party field in the request? 
+    # #did we found a valid value in the party field? 
+    # #is the party registered in the db?
+    party_accepted = party_found and party and is_registered
+    response.update({'party_success':party_accepted})
+    response.update({'message':'This party is fine.' if party_accepted else 'Either you miss spelled your party or it is already registered by someone else?'})
+    
+def update_response_with_answer_validation(level:Level, next_level:Level, answer, response:dict):
+    """
+    Assumes that the response has already gone through method and party validation.
+
+    Returns:
+        _type_: _description_
+    """
+    #dummy message to find loop holes
+    response.update({'message':'Answer validation update - if you see this you should tell a TA.'})
+    
+    #update fields
+    response.update({'answer_status':False})
+    response.update({'answer_from_party': answer})
+    response.update({'level_info':level.get_wrong_answer_info}) #assume failure
+    
+    #update with validation
     answer_status = level.answer_is_correct(answer)
-    level_dict = create_level_dict(level)
-    print(f"ANSWER LEVEL DICT TYPE: {type(level_dict)}")
-    response = {'success':False, 'answer_status':answer_status,
-                'party_status': party_status, 'party':party, 
-                'method_status' : method_status, 
-                'status_code':StatusCode.ACCEPTED.value, 'user_answer': answer,
-                'level_info': level_dict,
-                'message' : 'You got close but your answer is not correct. Read through the level information and try again. There is only one path and answer buy many ways travel.'}
+    quest_completed = answer_status and response['method_status'] and response['party_status']
     
     #update if answer is correct
-    if answer_status and party_status and method_status:
+    if quest_completed:
         response.update({'success':True})
-        response.update({'error':'No errors here!'})
-        level_dict = create_next_level_dict(level, next_level, party)
-        print(f"SUCCES LEVEL DICT TYPE: {type(level_dict)}")
-        response.update({'level_info':level_dict})
-
-        response.update({'victory_line': random.choice(victory_lines)})
+        level_info = level.get_victory_info(response['party'])
+        level_info.update({'directions_to_next_level': next_level.directions})
+        response.update({'level_info':level_info})
         response.update({'message':random.choice(victory_lines)})
-        
         response.update({'status_code': StatusCode.OK.value})
     return response
 
 def create_level_welcome_response_body(level:Level):
-    level_dict = create_level_dict(level)
-    return {'success':True, 'level_info' : level_dict, 'status_code':StatusCode.OK.value}
+    return {'success':True, 'level_info' : level.get_welcome_info, 'status_code':StatusCode.OK.value}
 

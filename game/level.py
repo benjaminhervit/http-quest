@@ -2,16 +2,19 @@
 from enum import Enum
 #inspired by https://www.w3.org/Protocols/HTTP/HTRESP.html
 class LevelEnum(Enum):
-    HOME = 0
-    REGISTER = 1
-    THE_TEST = 2
-    THE_GIT_MONSTER = 3
-    THE_GATE = 4
-    THE_THRONE_ROOM = 5
-    THE_CROWN = 6
+    LEADERBOARD = "Leaderboard"
+    REGISTRATION = "Registration"
+    THE_TEST = "The_Test"
+    THE_MONSTER = "The_Monster"
+    THE_GATE = "The_Gate"
+    THE_THRONE_ROOM = "The_Throne"
+    THE_CROWN = "The_Crown"
+    SPEAK_TO_JASON = "Jason"
+    GAME_OVER = "GAME_OVER"
 
 class Level:
-    def __init__(self, name, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):
+    def __init__(self, name, level_id, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):
+        self.id = level_id
         self.name = name
         self.description = description
         self.quest = riddle
@@ -21,6 +24,43 @@ class Level:
         self.exp = exp
         self.directions = directions
         self.victory_message_template = victory_message
+    
+    def get_failed_request_info(self):
+        return {
+            'success':False,
+            'directions':self.directions,
+        }
+    
+    def get_welcome_info(self):
+        return {
+            'success':True,
+            'name':self.name,
+            'description':self.description,
+            'quest':self.quest,
+            'hint':self.hint,
+        }
+    
+    def get_wrong_answer_info(self):
+        return {
+            'success':False,
+            'name':self.name,
+            'directions':self.directions,
+            'description':self.description,
+            'quest':self.quest,
+            'hint':self.hint,
+            'answer_response':self.wrong_answer_response
+        }
+        
+    def get_victory_info(self, party, next_level_directions):
+        return {
+            'success':True,
+            'name':self.name,
+            'description':self.description,
+            'quest':self.quest,
+            'hint':self.hint,
+            'answer_response':self.victory_message_template.format(party=party),
+            'next_level':next_level_directions
+        }
     
     def set_directions(self, directions):
         self.directions = directions
@@ -51,14 +91,14 @@ class Level:
     
 class RegisterLevel(Level):
     def __init__(self):
-        super().__init__('Register')
+        super().__init__('Register', LevelEnum.REGISTRATION)
         
     def answer_is_correct(self, answer):
         return answer
     
 class TestLevel(Level):
     def __init__(self):
-        super().__init__('The Test')
+        super().__init__('The Test', LevelEnum.THE_TEST)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -70,7 +110,7 @@ class TestLevel(Level):
     
 class GitLevel(Level):
     def __init__(self):
-        super().__init__('The Git Monster')
+        super().__init__('The Git Monster', LevelEnum.THE_MONSTER)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -82,7 +122,7 @@ class GitLevel(Level):
     
 class GateLevel(Level):
     def __init__(self):
-        super().__init__('The Gate')
+        super().__init__('The Gate', LevelEnum.THE_GATE)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -94,28 +134,43 @@ class GateLevel(Level):
     
 class ThroneLevel(Level):
     def __init__(self):
-        super().__init__('The Throne')
+        super().__init__('The Throne', LevelEnum.THE_THRONE_ROOM)
         
     def answer_is_correct(self, answer):
         if answer:
             try:
-                the_ultimate_answer = "Answer to the Ultimate Question of Life, The Universe, and Everything".lower() in answer
-                what_is_the_meaning = "what is the meaning with all of this".lower() in answer
-                return the_ultimate_answer or what_is_the_meaning
+                return answer == "jason where is the crown?"
             except TypeError:
                 return False
         return False
     
 class CrownLevel(Level):
     def __init__(self):
-        super().__init__('The Throne')
+        super().__init__('The Crown', LevelEnum.THE_CROWN)
         
     def answer_is_correct(self, answer):
         if answer:
             try:
-                the_ultimate_answer = "Answer to the Ultimate Question of Life, The Universe, and Everything".lower() in answer
-                what_is_the_meaning = "what is the meaning with all of this".lower() in answer
-                return the_ultimate_answer or what_is_the_meaning
+                return answer == "give me my new cool hat jason"
             except TypeError:
                 return False
+        return False
+    
+class JasonLevel(Level):
+    def __init__(self):
+        super().__init__('Jason', LevelEnum.SPEAK_TO_JASON)
+        
+    def answer_is_correct(self, answer):
+        if answer:
+            try:
+                answer == "jason where is the crown?"
+            except TypeError:
+                return False
+        return False
+    
+class GameOverLevel(Level):
+    def __init__(self):
+        super().__init__('GAME OVER', LevelEnum.GAME_OVER)
+        
+    def answer_is_correct(self, answer):
         return False

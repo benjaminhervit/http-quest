@@ -4,17 +4,20 @@ from typing import List, Tuple
 import json
 import datetime
 
+from game.level import LevelEnum as LE
+
 class QuestDB:
 
-    CREATE_SQL = """
+    CREATE_SQL = f"""
     CREATE TABLE IF NOT EXISTS teams
         (team TEXT NOT NULL UNIQUE,
-        score INTEGER DEFAULT 1,
-        the_answer INTEGER DEFAULT 0,
-        git_monster INTEGER DEFAULT 0,
-        the_gate_open INTEGER DEFAULT 0,
-        git_away INTEGER DEFAULT 0,
-        the_crown INTEGER DEFAULT 0,
+        exp INTEGER DEFAULT 1,
+        {LE.REGISTRATION.value} INTEGER DEFAULT 0,
+        {LE.THE_TEST.value} INTEGER DEFAULT 0,
+        {LE.THE_MONSTER.value} INTEGER DEFAULT 0,
+        {LE.THE_GATE.value} INTEGER DEFAULT 0,
+        {LE.THE_THRONE_ROOM.value} INTEGER DEFAULT 0,
+        {LE.THE_CROWN.value} INTEGER DEFAULT 0,
         date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
     """
 
@@ -59,13 +62,14 @@ class QuestDB:
         try:
             team_dict = {
                 "team": team_data[0],
-                "score": team_data[1],
-                "the_answer": team_data[2],
-                "git_monster": team_data[3],
-                "the_gate_open": team_data[4],
-                "git_away": team_data[5],
-                "the_crown": team_data[6],
-                "date": team_data[7].isoformat() if isinstance(team_data[7], (datetime.date, datetime.datetime)) else team_data[7]
+                "exp": team_data[1],
+                LE.REGISTRATION.value : team_data[2],
+                LE.THE_TEST.value : team_data[3],
+                LE.THE_MONSTER.value : team_data[4],
+                LE.THE_GATE.value : team_data[5],
+                LE.THE_THRONE_ROOM.value : team_data[6],
+                LE.THE_CROWN.value : team_data[7],
+                "date": team_data[8].isoformat() if isinstance(team_data[8], (datetime.date, datetime.datetime)) else team_data[7]
             }
             return json.dumps(team_dict)
         except KeyError as e:
@@ -86,52 +90,56 @@ class QuestDB:
         )
         return cur.fetchone()
     
-    def update_level(self, team:str, level:str):
-        levels = ['the_answer', 'git_monster', 'the_gate_open', 'git_away', 'the_crown']
-        if level not in levels:
-            print("invalid level")
-            return (False, 'invalid level')
-        
-        team_json = self.get_team_as_json(team)
-        if len(team_json) == 0:
-            print("Team not found")
-            return (False, 'Team not found')
-        
-        for i in range(levels.index(level)):
-            if team_json[levels[i]] == 0:
-                print(f"Previous level {levels[i]} not completed")
-                return (False, f"Previous level {levels[i]} not completed")
-            
-        if team_json[level] == 1:
-            print("Level already completed")
-            return (False, 'Level already completed')
-        
-        cursor = self._conn.cursor()
-        cursor.execute(
-            f"UPDATE teams SET {level} = 1 WHERE team = ?;",
-            (team,)
-        )
-        self._conn.commit()
-        
-        return True
-    
-    def update_score(self, team:str, deltaScore : int):
+    def get_level_status_from_team(self, team:str, level:str):
         if self.get_team(team):
             cursor = self._conn.cursor()
             cursor.execute(
-                "UPDATE teams SET score = score + ? WHERE team = ?;",
-                (deltaScore, team)
+                f"SELECT {level} FROM teams WHERE team = ?;",
+                (team,)
             )
-            self._conn.commit()
-            return True
-        return False
+            return cursor.fetchone()[0]
+        return None
+    
+    def update_level(self, team:str, level:str, new_level_status:int):
+        if level not in LE.__members__:
+            print(f"Invalid level name {level} send to update_level in db")
+            return None
+        
+        if new_level_status < 0 or new_level_status > 1:
+            print(f"invalid level value {new_level_status} send to update_level in db")
+            return None
+        
+        if not self.get_team(team):
+            print(f"Team {team} not found. update_level() stopped.")
+            return None
+        
+        cursor = self._conn.cursor()
+        cursor.execute(
+            f"UPDATE teams SET {level.value} = {new_level_status} WHERE team = ?;",
+            (team,)
+        )
+        self._conn.commit()
+        return cursor.fetchone()
+    
+    def update_score(self, team:str, deltaScore : int, level:str):
+        if level not in LE.__members__:
+            print(f"Invalid level name {level} send to update_level in db")
+            return None
+        
+        cursor = self._conn.cursor()
+        cursor.execute(
+            "UPDATE teams SET exp = exp + ? WHERE team = ?;",
+            (deltaScore, team)
+        )
+        self._conn.commit()
+        return cursor.fetchone()
     
     def all_teams(self) -> List[Tuple[int, str, int]]:
         cursor = self._conn.cursor()
         cursor.execute(
             """SELECT *
                FROM teams
-               ORDER BY score DESC;"""
+               ORDER BY exp DESC;"""
         )
         return cursor.fetchall()
     
@@ -140,7 +148,7 @@ class QuestDB:
         cursor.execute(
             """SELECT *
                FROM teams
-               ORDER BY score DESC;"""
+               ORDER BY exp DESC;"""
         )
         teams = cursor.fetchall()
         teams_json = [self.convert_team_to_json(team) for team in teams]

@@ -21,12 +21,12 @@
         <body id="game_context">
           {% if new_party %}
           <div>
-            <p>{{ game_data.story }}</p>
+            <p>{{ game_data.answer_response }}</p>
             <p><strong>Directions to the next level:</strong><br>
-              {{ game_data.directions_to_next_level }}</p>
+              {{ game_data.next_level }}</p>
             <!-- SECRET HINT: 
-              Good job on being nosy!
-              Here is a small hint: Your browsers' search bar can GET you to the next level - but you will need something else to get further than that.
+              Good job on being nosy! Though this is the only secret hint you will find in the game due to.... time.
+              A hint: Your browsers can only make GET requests, so it will get you to the next level but after that you will have to consider other ways to make HTTP requests.
               -->
             <p><strong>Hint:</strong><br>
               You got all the information you need - but if you have any comments, try reading between the lines.</p>
@@ -42,7 +42,7 @@
           {% if new_party %}
           <p><i>
               Come back here to follow the leaderboard - but you must prepare to leave the safe space of pretty pixels.<br>
-              There a many ways to traverse a path - but only one path will get you to the crown.
+              There a many ways to travel...
             </i></p>
           {%else%}
           <p></p>

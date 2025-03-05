@@ -1,7 +1,13 @@
 'use strict'
 document.addEventListener('DOMContentLoaded', function() {
+    updateLeaderBoard();
     setInterval(function() {
-        fetch('/all_teams')
+        updateLeaderBoard();
+    }, 200000);
+});
+
+function updateLeaderBoard(){
+    fetch('/all_teams')
             .then(response => response.json())
             .then(data => {
                 console.log("Updating leaderboard")
@@ -21,29 +27,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     //level
                     const levelEl = document.createElement("th");
-                    levelEl.textContent = teamObj.score;
+                    levelEl.textContent = teamObj.exp;
                     row.appendChild(levelEl);
 
                     // TODO: MAKE SURE SCORE AND MAX VALUE MATCHES THE LEVELS
-                    row.appendChild(createProgressBarGroupEl(teamObj.score, 0, 2));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 0, 3));
                     //open the gate
-                    row.appendChild(createProgressBarGroupEl(teamObj.score, 2, 5));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 3, 7));
                     //claim the crown
-                    row.appendChild(createProgressBarGroupEl(teamObj.score, 5, 7));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 5, 7));
 
                 });
 
             })
             .catch(error => console.error('Error fetching teams:', error));
-    }, 5000);
-});
+}
 
-function createProgressBarGroupEl(score, treshold, max){
+function createProgressBarGroupEl(exp, treshold, max){
     const divEl = document.createElement('td');
     const progEl = document.createElement('progress');
-    if(score > treshold){
-        progEl.value = score;
-        progEl.max = max;
+    progEl.max = max;
+    if (exp <= treshold){
+        progEl.value = 0;
+    }
+    else {
+        progEl.value = exp;
     }
     divEl.appendChild(progEl);
     return divEl;
