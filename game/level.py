@@ -55,9 +55,9 @@ class Level:
         return {
             'success':True,
             'name':self.name,
-            'description':self.description,
-            'quest':self.quest,
-            'hint':self.hint,
+            #'description':self.description,
+            #'quest':self.quest,
+            #'hint':self.hint,
             'answer_response':self.victory_message_template.format(party=party),
             'next_level':next_level_directions
         }
