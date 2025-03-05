@@ -115,7 +115,7 @@ class GitLevel(Level):
     def answer_is_correct(self, answer):
         if answer:
             try:
-                return answer.strip().lower() == "add commit pull push"
+                return answer.strip().lower() == "add_commit_pull_push"
             except TypeError:
                 return False
         return False
