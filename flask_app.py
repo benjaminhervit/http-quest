@@ -73,7 +73,7 @@ def build_answer_response(level:Level, next_level:Level, answer, party):
     game_body.update({'success':answer_success})
     return game_body
 
-def execute_level(default_level_response, target_method, method, 
+def execute_level(level_name, default_level_response, target_method, method, 
                   party_name_found, party_name, level_answer_response):
     """
     Builds appropriate response based on the request and level requirements
@@ -99,9 +99,9 @@ def execute_level(default_level_response, target_method, method,
         response.update({'status_code':StatusCode.OK.value})
         response.update({'message': 'VICTORYYY! Your quest can continue!'})
         
-        get_game_db().update_score(party_name, 1)
-        get_game_db().update_level(party_name)
-    
+        if get_game_db().update_level(party_name, level_name, 1):
+            get_game_db().update_score(party_name, 1)
+        
     return jsonify(response)
 
 #LEVEL 5: THE THRONE ROOM
@@ -126,7 +126,7 @@ def the_crown():
     level:Level = levels[L.THE_CROWN]
     next_level:Level = levels[L.GAME_OVER]
     level_response = build_answer_response(level, next_level, answer, party_name)
-    response:Response = execute_level(level.get_failed_request_info(), 'PUT', request.method, party_name_found, party_name,level_response)
+    response:Response = execute_level(level.name, level.get_failed_request_info(), 'PUT', request.method, party_name_found, party_name,level_response)
     
     response_data:dict = response.get_json()
     
@@ -135,8 +135,6 @@ def the_crown():
         level_info.update({'description':f'Well played {party_name}. We hope you had fun and learned something along the way :)'})
         del response_data['level_info']['quest']
         del response_data['level_info']['next_level']
-        
-        
     send_png = request.headers.get('Victory-content', "").strip().lower()
     if send_png == "image/png":
         response.headers['From the TAs']='Thank you for playing.'
@@ -163,7 +161,7 @@ def speak_to_jason():
     level:Level = levels[L.THE_THRONE_ROOM]
     next_level:Level = levels[L.THE_CROWN]
     level_response = build_answer_response(level, next_level, answer, party_name)
-    response:Response = execute_level(level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name,level_response)
+    response:Response = execute_level(level.name, level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name,level_response)
     
     response_data = response.get_json()
     
@@ -188,7 +186,7 @@ def the_throne_room():
     party_name_found = len(party_name) > 0
     
     level:Level = levels[L.THE_THRONE_ROOM]
-    response = execute_level(level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
+    response = execute_level(level.name,level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
     return response
 
 #LEVEL 4: THE GATE
@@ -205,7 +203,7 @@ def the_gate_open():
     level:Level = levels[L.THE_GATE]
     next_level:Level = levels[L.THE_THRONE_ROOM]
     level_response = build_answer_response(level, next_level, answer, party_name)
-    response = execute_level(level.get_failed_request_info(), 'DELETE', request.method, party_name_found, party_name,level_response)
+    response = execute_level(level.name,level.get_failed_request_info(), 'DELETE', request.method, party_name_found, party_name,level_response)
     return response
 
 @app.route(R.THE_GATE.value, methods=all_methods)
@@ -214,7 +212,7 @@ def the_gate_arrival(party_name:str):
     party_name_found = len(party_name) > 0
     
     level:Level = levels[L.THE_GATE]
-    response = execute_level(level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
+    response = execute_level(level.name,level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
     return response
 
 #LEVEL 3: THE GIT MONSTER
@@ -228,7 +226,7 @@ def stun_the_git_monster(party_name:str, answer:str):
     level:Level = levels[L.THE_MONSTER]
     next_level:Level = levels[L.THE_GATE]
     level_response = build_answer_response(level, next_level, answer, party_name)
-    response = execute_level(level.get_failed_request_info(), 'PUT', request.method, party_name_found, party_name,level_response)
+    response = execute_level(level.name,level.get_failed_request_info(), 'PUT', request.method, party_name_found, party_name,level_response)
     return response
 
 @app.route(R.MEET_THE_GIT_MONSTER.value, methods=all_methods) #'/the_git_monster/<string:team_name>'
@@ -237,7 +235,7 @@ def meet_the_git_monster(party_name:str):
     party_name_found = len(party_name) > 0
     
     level:Level = levels[L.THE_MONSTER]
-    response = execute_level(level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
+    response = execute_level(level.name,level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
     return response
 
 #LEVEL 2: THE TEST
@@ -249,7 +247,7 @@ def the_test_answer(party_name:str, answer:int):
     level:Level = levels[L.THE_TEST]
     next_level:Level = levels[L.THE_MONSTER]
     level_response = build_answer_response(level, next_level, answer, party_name)
-    response = execute_level(level.get_failed_request_info(), 'POST', request.method, party_name_found, party_name,level_response)
+    response = execute_level(level.name,level.get_failed_request_info(), 'POST', request.method, party_name_found, party_name,level_response)
     return response
 
 @app.route(R.THE_TEST_BEGINS.value, methods=all_methods) #'/the_test/<string:party_name>'
@@ -259,7 +257,7 @@ def the_test(party_name:str):
     
     level:Level = levels[L.THE_TEST]
     
-    response = execute_level(level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
+    response = execute_level(level.name,level.get_failed_request_info(), 'GET', request.method, party_name_found, party_name, level.get_welcome_info())
     return response
     
 #LEVEL 1: REGISTER
@@ -335,9 +333,7 @@ def index(party_name="", new_party=False):
         level:Level = levels[L.REGISTRATION]
         next_level:Level = levels[L.THE_TEST]
         data = level.get_victory_info(party_name, next_level.directions)
-        
-        # data = RB.create_next_level_dict(levels[L.REGISTRATION], levels[L.THE_TEST], party_name)
-    print(data)
+
     return render_template('the_game.html', game_data=data, new_party = new_party)
 
 #DIRECT DB REQUESTS

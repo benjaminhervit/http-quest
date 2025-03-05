@@ -2,15 +2,15 @@
 from enum import Enum
 #inspired by https://www.w3.org/Protocols/HTTP/HTRESP.html
 class LevelEnum(Enum):
-    LEADERBOARD = "Leaderboard"
-    REGISTRATION = "Registration"
-    THE_TEST = "The_Test"
-    THE_MONSTER = "The_Monster"
-    THE_GATE = "The_Gate"
-    THE_THRONE_ROOM = "The_Throne"
-    THE_CROWN = "The_Crown"
-    SPEAK_TO_JASON = "Jason"
-    GAME_OVER = "GAME_OVER"
+    LEADERBOARD = "leaderboard"
+    REGISTRATION = "registration"
+    THE_TEST = "the_test"
+    THE_MONSTER = "the_monster"
+    THE_GATE = "the_gate"
+    THE_THRONE_ROOM = "the_throne"
+    THE_CROWN = "the_crown"
+    SPEAK_TO_JASON = "hason"
+    GAME_OVER = "game_over"
 
 class Level:
     def __init__(self, name, level_id, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):
@@ -91,14 +91,14 @@ class Level:
     
 class RegisterLevel(Level):
     def __init__(self):
-        super().__init__('Register', LevelEnum.REGISTRATION)
+        super().__init__(LevelEnum.REGISTRATION.value, LevelEnum.REGISTRATION)
         
     def answer_is_correct(self, answer):
         return answer
     
 class TestLevel(Level):
     def __init__(self):
-        super().__init__('The Test', LevelEnum.THE_TEST)
+        super().__init__(LevelEnum.THE_TEST.value, LevelEnum.THE_TEST)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -110,7 +110,7 @@ class TestLevel(Level):
     
 class GitLevel(Level):
     def __init__(self):
-        super().__init__('The Git Monster', LevelEnum.THE_MONSTER)
+        super().__init__(LevelEnum.THE_MONSTER.value, LevelEnum.THE_MONSTER)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -122,7 +122,7 @@ class GitLevel(Level):
     
 class GateLevel(Level):
     def __init__(self):
-        super().__init__('The Gate', LevelEnum.THE_GATE)
+        super().__init__(LevelEnum.THE_GATE.value, LevelEnum.THE_GATE)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -134,7 +134,7 @@ class GateLevel(Level):
     
 class ThroneLevel(Level):
     def __init__(self):
-        super().__init__('The Throne', LevelEnum.THE_THRONE_ROOM)
+        super().__init__(LevelEnum.THE_THRONE_ROOM.value, LevelEnum.THE_THRONE_ROOM)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -146,7 +146,7 @@ class ThroneLevel(Level):
     
 class CrownLevel(Level):
     def __init__(self):
-        super().__init__('The Crown', LevelEnum.THE_CROWN)
+        super().__init__(LevelEnum.THE_CROWN.value, LevelEnum.THE_CROWN)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -158,7 +158,7 @@ class CrownLevel(Level):
     
 class JasonLevel(Level):
     def __init__(self):
-        super().__init__('Jason', LevelEnum.SPEAK_TO_JASON)
+        super().__init__(LevelEnum.SPEAK_TO_JASON.value, LevelEnum.SPEAK_TO_JASON)
         
     def answer_is_correct(self, answer):
         if answer:
@@ -170,7 +170,7 @@ class JasonLevel(Level):
     
 class GameOverLevel(Level):
     def __init__(self):
-        super().__init__('GAME OVER', LevelEnum.GAME_OVER)
+        super().__init__(LevelEnum.GAME_OVER.value, LevelEnum.GAME_OVER)
         
     def answer_is_correct(self, answer):
         return False

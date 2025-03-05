@@ -31,11 +31,11 @@ function updateLeaderBoard(){
                     row.appendChild(levelEl);
 
                     // TODO: MAKE SURE SCORE AND MAX VALUE MATCHES THE LEVELS
-                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 0, 3));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 0, 5));
                     //open the gate
-                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 3, 7));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 6, 8));
                     //claim the crown
-                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 5, 7));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 8, 10));
 
                 });
 
