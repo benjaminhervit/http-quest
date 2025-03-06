@@ -55,8 +55,8 @@ def createSpeakToJasonLevel():
     level = JasonLevel()
     level.set_directions(f'To GET inside {R.THE_THRONE.value} JaSON must speak your {{party_name:here}} and nothing else.')
     level.set_description(f"You did it! The last piece of the puzzle is hiding in his HEAD...er!")
-    level.set_quest(f'To GET {R.THE_CROWN.value} you must {R.READ_JASONS_MIND.value} with your just discovered-out-of-lazy-writing telepathic super powers. To do that, you must {{party_name:party_name}} to JaSON while in your HEAD...er you must {{\"think\" : \"jason where is the crown?\"}}. You do it right, you are certain that he will reply with the thoughts in his HEAD...er as well. ')
-    level.set_hint(f'Look inside the HEAD...er of JaSONs response. All that you need should be there')
+    level.set_quest(f'To GET {R.THE_CROWN.value} you must {R.READ_JASONS_MIND.value} with your just discovered-out-of-lazy-writing telepathic super powers. Look inside the HEAD...When you speak Jasons name while thinking where is the crown.')
+    level.set_hint('In your HEAD think: \"where is the crown\" while you emBODY speak: \"jason\"\ together with your party_name. If you do it right (if PythonAnywhere is not blocking custom headers), you will find the answer in Jasons HEAD...er.')
     level.set_wrong_answer_response("JaSON smiles and looks at you friendly. It is not working. Have you remembered to use you head?")
     level.set_victory_message_template('\"HOLY FUCK WHO IS DOING THAT?!\" JaSON exlaims when he realises that someone is using telecenetic powers on him.')
     return level
@@ -64,7 +64,7 @@ def createSpeakToJasonLevel():
 def createCrownLevel():
     level = CrownLevel()
     level.set_description = "You are at the end. All that is left is to claim the CRUDe Crown."
-    last_instructions = f'Request with method PUT to {R.THE_CROWN.value} and body as JSON: {{\"answer\":\"give me my new cool hat jason\",  \"party_name\":<party_name>, \"feedback\":<OPTIONAL feedback about the game and if you have learne anything.}}. If you leave your HEADER empty you will get a json message. OR in your HEADER you can CHOOSE to do either of the following: {{"Content-Type":"image/png"}} to get the crown as a png.'
+    last_instructions = f'Request with method PUT to {R.THE_CROWN.value} and body as JSON: {{\"answer\":\"give me my new cool hat jason\",  \"party_name\":<party_name>, \"feedback\":<OPTIONAL feedback about the game and if you have learne anything.}}.'
     level.set_directions(last_instructions)
     level.set_quest('In case JaSONs immature behaviour made you forget what is going on: Throne. Council. Put on the Crown.')
     level.set_hint(last_instructions)

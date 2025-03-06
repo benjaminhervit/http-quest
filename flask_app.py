@@ -173,7 +173,8 @@ def speak_to_jason():
             speak = data.get('speak', '').strip().lower()
             print(request.headers)
             #answer = request.headers.get('Authorization', '').strip().lower()
-            answer = request.headers.get('X-User', '').strip().lower()
+            answer = request.headers.get('User-Agent', '').strip().lower()
+            print(f"header: {answer}")
             answer = speak + " " + answer
     print(f"answer: {answer}")
     
