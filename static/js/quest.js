@@ -31,9 +31,9 @@ function updateLeaderBoard(){
                     row.appendChild(levelEl);
 
                     // TODO: MAKE SURE SCORE AND MAX VALUE MATCHES THE LEVELS
-                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 0, 5));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 0, 4));
                     //open the gate
-                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 6, 8));
+                    row.appendChild(createProgressBarGroupEl(teamObj.exp, 4, 8));
                     //claim the crown
                     row.appendChild(createProgressBarGroupEl(teamObj.exp, 8, 10));
 
