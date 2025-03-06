@@ -139,7 +139,7 @@ class ThroneLevel(Level):
     def answer_is_correct(self, answer):
         if answer:
             try:
-                return answer == "jason where is the crown"
+                return answer == "jason where is the crown?"
             except TypeError:
                 return False
         return False
