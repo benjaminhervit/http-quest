@@ -171,9 +171,11 @@ def speak_to_jason():
             party_name = data.get('party_name', '').strip().lower()
             party_name_found = len(party_name)>0
             speak = data.get('speak', '').strip().lower()
-            answer = request.headers.get('X-think', '').strip().lower()
+            print(request.headers)
+            answer = request.headers.get('X-Think', '').strip().lower()
             answer = speak + " " + answer
-                
+    print(f"answer: {answer}")
+    
     level:Level = levels[L.THE_THRONE_ROOM]
     next_level:Level = levels[L.THE_CROWN]
     level_response = build_answer_response(level, next_level, answer, party_name)
