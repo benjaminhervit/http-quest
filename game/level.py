@@ -163,7 +163,7 @@ class JasonLevel(Level):
     def answer_is_correct(self, answer):
         if answer:
             try:
-                answer == "jason where is the crown?"
+                answer == "jason where is the crown"
             except TypeError:
                 return False
         return False

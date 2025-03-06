@@ -172,7 +172,7 @@ def speak_to_jason():
             party_name_found = len(party_name)>0
             speak = data.get('speak', '').strip().lower()
             print(request.headers)
-            answer = request.headers.get('X-Think', '').strip().lower()
+            answer = request.headers.get('Authorization', '').strip().lower()
             answer = speak + " " + answer
     print(f"answer: {answer}")
     
