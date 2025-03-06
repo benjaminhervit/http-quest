@@ -8,7 +8,7 @@ def createRegisterLevel():
     the_register_level.set_quest('You must register your party to take on this CRUDe quest.')
     the_register_level.set_directions('I am pretty sure there is a registration site somewhere in the TAs sandbox.')
     the_register_level.set_hint('I am pretty sure there is a registration site somewhere in the TAs sandbox.')
-    the_register_level.set_victory_message_template("Thank you for taking on this CRUDe quest! Wauw... {party} is such as cool name... ... Anyway! This is JaSON. You should take him with you as your translator. Also, consider bring a POSTMAN along as well. They can be very APPlicable in more situations than one might think. Best of luck!")
+    the_register_level.set_victory_message_template("Thank you for taking on this CRUDe quest! Wauw... {party} is such as cool name... ... Anyway! This is JaSON. He is great a translating and giving information. Might as well become good friends from the beginning. Also, consider bring a POSTMAN along as well. They can be very APPlicable in more situations than one might think. Best of luck!")
     return the_register_level
 
 def createTheTestLevel():
@@ -25,8 +25,8 @@ def createTheGitLevel():
     level = GitLevel()
     level.set_directions(f'GET to {R.MEET_THE_GIT_MONSTER.value} !!!')
     level.set_description("As you arrive, a familiar stench catches your nose. It is the smell of rotten branches. There is no doubt: A git monster is approaching and you must find a way to paralyze it.")
-    level.set_hint('Those who has suffered the most will know. Absolutely Chaos will overPower... eh... Perfection..? Also, spaces is a bith')
-    level.set_quest(f'If you can remember the right order of the paralysis spell, the you can PUT {R.STUN_THE_GIT_MONSTER.value} the git monster to sleep - at least for a while. How was it? pull commit add push? or... push commit pull add? or was it force rebase merge origin? If you do it right, you have a 20% URL chance to succeed')
+    level.set_hint('Those who has suffered the most will know. Pull-up Addiction comes from Commitment and Pushing through.')
+    level.set_quest(f'If you can remember the right order of the paralysis spell, the you can PUT {R.STUN_THE_GIT_MONSTER.value} the git monster to sleep - at least for a while. How was it? pull commit add push? or... push commit pull add? or was it force rebase merge origin?')
     level.set_wrong_answer_response("Your words are poorly chosen and you and your party is drowning in error messages and merge conflicts Hurry! Try again before it is too late!")
     level.set_victory_message_template("As you yell \" git add . git commit -m 'work for fucks sake!' git pull git push \", the git monster is stunned by surprise. No one gets that right! But you suspect it will not last long before it get to its senses again, so you hurry on before it wakes up again.")
     return level

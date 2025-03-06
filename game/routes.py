@@ -6,7 +6,7 @@ class Route(Enum):
     THE_TEST_BEGINS = "/the_test/<string:party_name>" #GET PATH
     THE_TEST_ANSWER = "/the_test/<string:party_name>/<int:answer>" #POST PATH
     MEET_THE_GIT_MONSTER = '/the_monster/<string:party_name>' #GET PATH
-    STUN_THE_GIT_MONSTER = '/the_monster/<string:party_name>/<string:a_b_c_d>' #POST PATH
+    STUN_THE_GIT_MONSTER = '/the_monster/<string:party_name>/<string:answerA>/<string:answerB>/<string:answerC>/<string:answerD>' #POST PATH
     THE_GATE = '/the_gate/<string:party_name>' #GET PATH POST JSON
     THE_GATE_OPEN = '/the_gate' #POST JSON
     THE_GIT_AWAY = '/open/the_gate/git_away_fast' #POST JSON

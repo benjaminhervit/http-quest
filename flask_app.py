@@ -31,8 +31,24 @@ from game.status_code import StatusCode
 import game.response_builder as RB
 
 from quest_db import QuestDB
+import random
 
 app = Flask(__name__)
+
+victory_messages = [
+    "GET ready to move to the next level!",
+    "PUT your skills to the test in the next challenge!",
+    "DELETE all doubts, you've passed this level!",
+    "You've PATCHed up this level's challenges!",
+    "HEADs up, you're advancing!",
+    "You've navigated through this level successfully!",
+    "OPTIONS for the next level: ready or not, here you go!",
+    "TRACE your steps, you've completed this level!",
+    "CONNECT with the next challenge and keep going!"
+]
+
+def get_random_victory_message():
+    return random.choice(victory_messages)
 
 levels = {
     L.REGISTRATION: level_builder.createRegisterLevel(),
@@ -87,7 +103,7 @@ def execute_level(level_name, default_level_response, target_method, method,
             'level_info':default_level_response,
             'level_completed':False,
             'status_code': StatusCode.BAD_REQUEST.value,
-            'message': 'Seems like your answer or request was not on point. Go through the report and see if you can sport the issue? - maybe have a look at the level description again'
+            'message': 'Seems like your answer or request was not on point. Go through the report and see if you can sport the issue? - maybe have a look at the level_info as well?'
             }
     if not report_request['success']:   
         return jsonify(response)
@@ -97,7 +113,7 @@ def execute_level(level_name, default_level_response, target_method, method,
     if level_completed:
         response.update({'level_completed':True})
         response.update({'status_code':StatusCode.OK.value})
-        response.update({'message': 'VICTORYYY! Your quest can continue!'})
+        response.update({'message': get_random_victory_message()})
         
         if get_game_db().update_level(party_name, level_name):
             get_game_db().update_score(party_name, 1)
@@ -217,11 +233,13 @@ def the_gate_arrival(party_name:str):
 
 #LEVEL 3: THE GIT MONSTER
 @app.route(R.STUN_THE_GIT_MONSTER.value, methods=all_methods) #'/the_git_monster/<string:team_name>/<string:answer>'
-def stun_the_git_monster(party_name:str, answer:str):
+def stun_the_git_monster(party_name:str, answerA:str, answerB:str, answerC:str, answerD:str):
     party_name = party_name.strip().lower()
     party_name_found = len(party_name) > 0
-    answer = answer.strip().lower()
-    answer = answer.replace("20%", " ")
+    answer = answerA.strip().lower()
+    answer += answerB.strip().lower()
+    answer += answerC.strip().lower()
+    answer += answerD.strip().lower()
 
     level:Level = levels[L.THE_MONSTER]
     next_level:Level = levels[L.THE_GATE]

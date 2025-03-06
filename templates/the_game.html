@@ -52,21 +52,36 @@
       <details>
         <summary role="button" class="contrast">Game manual</summary>
         <p>
-          This is a game where you will have to get your hands dirty with HTTP.<br>
-          When you register, you party name will appear on the leaderboard and you can begin your adventure.<br><br>
-          To complete the game you must learn the following:
+          In this game, you must make different HTTP requests to complete each level. 
+          Each time you complete a section, your level will increase, which is shown on the leaderboard.<br>
+          
         </p>
+        <p><b>RULES</b><br></p>
         <ul>
-          <li>How to make HTTP requests</li>
-          <li>How to request with different methods</li>
-          <li>How to send data through different formats</li>
-          <li>How to deal with bad puns, pop culture references, terrible documentation, and even worse guide instructions.</li>
+          <li>All level routes begins from the base URL. e.g. URL/a_level.</li>
+          <li>A route only accepts one method type: GET, POST, PUT, or DELETE.</li>
+          <li>A route only accepts one data format: URL/path/&lt;parameters&gt;, &#123; JSON : data &#125;, Form data + a late surprise</li>
+          <li>Always include your registered <b><i>party_name</i></b> in your HTTP requests for the game to identify you.</li>
+          <li>A quest is solved by sending an <b><i>answer</i></b> in your request.</li>
         </ul>
-        <p>Game rules:<br>
-          The most important rule is to remember to share your party_name with the Game at each step.<br>
-          Beyond that there are no rules. There is no single solution to completing the game.
-          <br>
-          The Game will tell you what it accepts and what it rejects. If you beat a level it does not matter how - but we hope you can tell us why it worked.</p>
+        <p><b>COMPLETE A LEVEL</b><br>To complete a level you must make a request with the correct combination of:</p>
+        <ul>
+          <li>route </li>
+          <li>method </li> 
+          <li>data format</li>
+          <li>quest answer </li>
+          <li>your party_name</li>
+        </ul>
+        <p><b>HOW TO WIN</b><br></p>
+          <li>To win the game, you must complete all 10 sections.</li>
+        <p><b>HINTS</b><br></p>
+        <ul>
+          <li>You should always receive a JSON response from the game - unless something broke or you are outside the playingfield.</li>
+          <li>Read the <b><i>request_report</i></b> carefully. It should tell you if anything is wrong with your method or party_name.</li>
+          <li>Read the <b><i>level_info</i></b> carefully. There are many clues/hints/puns wrapped in story noise.</li>
+          <li>An <b><i>HTTP CLIENT</i></b> is a great tool for this game but it is also a good chance to practice some python and JavaScript.</li>
+        </ul>
+        
         <p><br>BEST OF LUCK!</p>
       </details>
       <!-- LEADER BOARD -->
