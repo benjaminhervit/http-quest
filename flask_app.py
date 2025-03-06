@@ -171,7 +171,7 @@ def speak_to_jason():
             party_name = data.get('party_name', '').strip().lower()
             party_name_found = len(party_name)>0
             speak = data.get('speak', '').strip().lower()
-            answer = request.headers.get('think', '').strip().lower()
+            answer = request.headers.get('X-think', '').strip().lower()
             answer = speak + " " + answer
                 
     level:Level = levels[L.THE_THRONE_ROOM]
