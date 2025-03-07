@@ -53,11 +53,8 @@ class Level:
         
     def get_victory_info(self, party, next_level_directions):
         return {
-            'success':True,
+            'answer_accepted':True,
             'name':self.name,
-            #'description':self.description,
-            #'quest':self.quest,
-            #'hint':self.hint,
             'answer_response':self.victory_message_template.format(party=party),
             'next_level':next_level_directions
         }
@@ -89,14 +86,8 @@ class Level:
     def answer_is_correct(self, answer):
         return False
     
-    def method_report(self, request, method_validator:callable):
-        return method_validator(request)
-    
-    def format_report(self, request, format_validator:callable):
-        return format_validator(request)
-    
-    def level_report(self, username, answer, method_status, username_status, next_level):
-        if not method_status or not username_status:
+    def level_report(self, username, answer, method_accepted, username_accepted, next_level):
+        if not method_accepted or not username_accepted:
             return self.get_failed_request_info()
         answer_success = self.answer_is_correct(answer)
         level_report = self.get_victory_info(username, next_level) if answer_success else self.get_wrong_answer_info()
