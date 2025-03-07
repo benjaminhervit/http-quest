@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <script src="static/js/quest.js"></script>
+    <title>Hello world!</title>
+  </head>
+  <body>
+    <main class="container">
+      <article>
+        <header>
+          {% if level %}
+          {{level.level_info.name | upper}} LEVEL
+          {%else%}
+          Hm... I didn't get any level data
+          {%endif%}
+        </header>
+        <body id="game_context">
+          <details aria-invalid="false" open>
+            <summary>The story</summary>
+            {{level.level_info.description}}<br><br>
+            QUEST<br>
+            {{level.level_info.quest}}<br><br>
+            HINT<br>
+            {{level.level_info.hint}}<br>
+          </details>
+          {% if level.request_report.request_accepted == true %}
+          <small id="valid-helper">Request looks good!</small>
+          <textarea name="valid" aria-invalid="false" aria-describedby="valid-helper">
+            {{level.request_report}}
+          </textarea>
+          {%else%}
+          <small id="valid-helper">Your request needs some working!</small>
+          <textarea name="valid" aria-invalid="true" aria-describedby="valid-helper">
+            {{level.request_report}}
+          </textarea>
+          {% endif %}
+        </body>
+        <footer id="game-feedback">
+          {% if level %}
+          <details open>
+            <summary>Raw response</summary>
+            {{level}}
+          </details>
+          {%endif%}
+        </footer>
+      </article>
+    </main>
+  </body>
+</html>

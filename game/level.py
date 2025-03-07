@@ -89,6 +89,21 @@ class Level:
     def answer_is_correct(self, answer):
         return False
     
+    def method_report(self, request, method_validator:callable):
+        return method_validator(request)
+    
+    def format_report(self, request, format_validator:callable):
+        return format_validator(request)
+    
+    def level_report(self, username, answer, method_status, username_status, next_level):
+        if not method_status or not username_status:
+            return self.get_failed_request_info()
+        answer_success = self.answer_is_correct(answer)
+        level_report = self.get_victory_info(username, next_level) if answer_success else self.get_wrong_answer_info()
+        level_report.update({'next_level':next_level.directions if answer_success else "One level at a time..."})
+        level_report.update({'success':answer_success})
+        return level_report
+    
 class RegisterLevel(Level):
     def __init__(self):
         super().__init__(LevelEnum.REGISTRATION.value, LevelEnum.REGISTRATION)
@@ -103,7 +118,7 @@ class TestLevel(Level):
     def answer_is_correct(self, answer):
         if answer:
             try:
-                return answer == 42
+                return int(answer) == 42
             except TypeError:
                 return False
         return False
@@ -115,7 +130,7 @@ class GitLevel(Level):
     def answer_is_correct(self, answer):
         if answer:
             try:
-                return answer.strip().lower() == "pulladdcommitpush"
+                return answer.strip().lower() == "pull/add/commit/push"
             except TypeError:
                 return False
         return False

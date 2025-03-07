@@ -5,3 +5,4 @@ class StatusCode(Enum):
     ACCEPTED = 202
     BAD_REQUEST = 400
     NOT_CREATED = 999
+    UNAUTHORIZED = 401

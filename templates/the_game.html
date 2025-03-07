@@ -33,7 +33,7 @@
           </div>
           {% else %}
           <form method="POST" action="/register" role="group" class="register-form" required>
-            <input type="text" id="party" name="party" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
+            <input type="text" id="username-input" name="username" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
             <button type="submit">Begin</button>
           </form>
           {% endif %}
@@ -45,7 +45,7 @@
               There a many ways to travel...
             </i></p>
           {%else%}
-          <p></p>
+          <p>{{reg_msg}}</p>
           {%endif%}
         </footer>
       </article>

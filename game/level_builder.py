@@ -15,8 +15,8 @@ def createTheTestLevel():
     the_test_level = TestLevel()
     the_test_level.set_directions(f'GET to {R.THE_TEST_BEGINS.value} and do not forget your towel!')
     the_test_level.set_description("You stand in front of an old wise sage who, without considering if you are actually listening, begins to speak: ")
-    the_test_level.set_quest('To know that you are worthy, you must answer: Answer to the Ultimate Question of Life, The Universe, and Everything?')
-    the_test_level.set_hint(f"Grab your towel and hitch a hike around the internet and you will find what you are seeking. When you have an answer, POST it to {R.THE_TEST_ANSWER.value}.")
+    the_test_level.set_quest(f'To know that you are worthy, you must answer: Answer to the Ultimate Question of Life, The Universe, and Everything? When you have an answer, POST it to {R.THE_TEST_ANSWER.value}.')
+    the_test_level.set_hint(f"Grab your towel and hitch a hike around the internet and you will find what you are seeking.")
     the_test_level.set_wrong_answer_response('Something is not right.')
     the_test_level.set_victory_message_template("That is correct, {party}! You are truly enlightened! Alas, if only we knew had known what the Ultimate Question of Life, the Universe, and Everything is - but there is not time! Something is approaching that only you can fix!")
     return the_test_level
