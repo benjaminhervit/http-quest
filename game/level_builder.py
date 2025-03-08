@@ -1,25 +1,29 @@
 from game.level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
 from game.routes import Route as R
+import game.request_handler as ReqHandler
 
 def createRegisterLevel():
-    the_register_level = RegisterLevel()
-    the_register_level.set_directions('It all begins at the beginning...')
-    the_register_level.set_description('Welcome to Ready Player WoT.')
-    the_register_level.set_quest('You must register your party to take on this CRUDe quest.')
-    the_register_level.set_directions('I am pretty sure there is a registration site somewhere in the TAs sandbox.')
-    the_register_level.set_hint('I am pretty sure there is a registration site somewhere in the TAs sandbox.')
-    the_register_level.set_victory_message_template("Thank you for taking on this CRUDe quest! Wauw... {party} is such as cool name... ... Anyway! This is JaSON. He is great a translating and giving information. Might as well become good friends from the beginning. Also, consider bring a POSTMAN along as well. They can be very APPlicable in more situations than one might think. Best of luck!")
-    return the_register_level
+    level = RegisterLevel()
+    level.set_directions('It all begins at the beginning...')
+    level.set_description('Welcome to Ready Player WoT.')
+    level.set_quest('You must register your party to take on this CRUDe quest.')
+    level.set_directions('I am pretty sure there is a registration site somewhere in the TAs sandbox.')
+    level.set_hint('I am pretty sure there is a registration site somewhere in the TAs sandbox.')
+    level.set_victory_message_template("Thank you for taking on this CRUDe quest! Wauw... {party} is such as cool name... ... Anyway! This is JaSON. He is great a translating and giving information. Might as well become good friends from the beginning. Also, consider bring a POSTMAN along as well. They can be very APPlicable in more situations than one might think. Best of luck!")    
+    return level
 
 def createTheTestLevel():
-    the_test_level = TestLevel()
-    the_test_level.set_directions(f'GET to {R.THE_TEST_BEGINS.value} and do not forget your towel!')
-    the_test_level.set_description("You stand in front of an old wise sage who, without considering if you are actually listening, begins to speak: ")
-    the_test_level.set_quest(f'To know that you are worthy, you must answer: Answer to the Ultimate Question of Life, The Universe, and Everything? When you have an answer, POST it to {R.THE_TEST_ANSWER.value}.')
-    the_test_level.set_hint(f"Grab your towel and hitch a hike around the internet and you will find what you are seeking.")
-    the_test_level.set_wrong_answer_response('Something is not right.')
-    the_test_level.set_victory_message_template("That is correct, {party}! You are truly enlightened! Alas, if only we knew had known what the Ultimate Question of Life, the Universe, and Everything is - but there is not time! Something is approaching that only you can fix!")
-    return the_test_level
+    level = TestLevel()
+    level.set_directions(f'GET to {R.THE_TEST_BEGINS.value} and do not forget your towel!')
+    level.set_description("You stand in front of an old wise sage who, without considering if you are actually listening, begins to speak: ")
+    level.set_quest(f'To know that you are worthy, you must answer: Answer to the Ultimate Question of Life, The Universe, and Everything? When you have an answer, POST it to {R.THE_TEST_ANSWER.value}.')
+    level.set_hint(f"Grab your towel and hitch a hike around the internet and you will find what you are seeking.")
+    level.set_wrong_answer_response('Something is not right.')
+    level.set_victory_message_template("That is correct, {party}! You are truly enlightened! Alas, if only we knew had known what the Ultimate Question of Life, the Universe, and Everything is - but there is not time! Something is approaching that only you can fix!")
+    
+    level.set_secret_key_parser(ReqHandler.get_secret_key_from_path)
+    level.set_req_data_parser(ReqHandler.get_params_from_path)
+    return level
 
 def createTheGitLevel():
     level = GitLevel()

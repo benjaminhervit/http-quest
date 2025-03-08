@@ -13,7 +13,7 @@ class LevelEnum(Enum):
     GAME_OVER = "game_over"
 
 class Level:
-    def __init__(self, name, level_id, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):
+    def __init__(self, name, level_id, secret_key_parser = None, req_data_parser=None, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):
         self.id = level_id
         self.name = name
         self.description = description
@@ -24,6 +24,14 @@ class Level:
         self.exp = exp
         self.directions = directions
         self.victory_message_template = victory_message
+        self.secret_key_parser :callable = secret_key_parser
+        self.req_data_parser : callable = req_data_parser
+    
+    def parse_request_data(self, req):
+        return self.req_data_parser(req)
+
+    def parse_secret_key(self, req):
+        return self.secret_key_parser(req)
     
     def get_failed_request_info(self):
         return {
@@ -31,7 +39,7 @@ class Level:
             'directions':self.directions,
         }
     
-    def get_welcome_info(self):
+    def get_welcome_info(self, **kwargs):
         return {
             'success':True,
             'name':self.name,
@@ -58,6 +66,12 @@ class Level:
             'answer_response':self.victory_message_template.format(party=party),
             'next_level':next_level_directions
         }
+        
+    def set_req_data_parser(self, parser):
+        self.req_data_parser = parser
+        
+    def set_secret_key_parser(self, parser):
+        self.secret_key_parser = parser
     
     def set_directions(self, directions):
         self.directions = directions
@@ -86,9 +100,12 @@ class Level:
     def answer_is_correct(self, answer):
         return False
     
-    def level_report(self, username, answer, method_accepted, username_accepted, next_level):
-        if not method_accepted or not username_accepted:
-            return self.get_failed_request_info()
+    def level_report(self, **kwargs):
+        print(kwargs)
+        username = kwargs.get('username','')
+        answer = kwargs.get('answer','')
+        next_level:Level = kwargs.get('next_level', None)
+        
         answer_success = self.answer_is_correct(answer)
         level_report = self.get_victory_info(username, next_level) if answer_success else self.get_wrong_answer_info()
         level_report.update({'next_level':next_level.directions if answer_success else "One level at a time..."})
@@ -107,12 +124,12 @@ class TestLevel(Level):
         super().__init__(LevelEnum.THE_TEST.value, LevelEnum.THE_TEST)
         
     def answer_is_correct(self, answer):
-        if answer:
-            try:
-                return int(answer) == 42
-            except TypeError:
-                return False
-        return False
+        try:
+            answer = int(answer)
+            success = answer == 42
+            return success
+        except TypeError:
+            return False
     
 class GitLevel(Level):
     def __init__(self):
@@ -180,3 +197,9 @@ class GameOverLevel(Level):
         
     def answer_is_correct(self, answer):
         return False
+
+def exec_level_entry(level:Level, *args):
+    return level.get_welcome_info
+
+def exec_level_conclusion(level:Level, next_level:Level, username, answer):
+    return level.get_welcome_info(level=level, next_level=next_level, username=username, answer=answer)
