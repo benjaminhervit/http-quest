@@ -45,6 +45,12 @@ r_funcs = {
                                         get_secret_key=RH.get_secret_key_from_path, get_data=RH.get_params_from_path),
         R.THE_GATE_OPEN.value : partial(RH.handle_request, target_method='DELETE', 
                                         level=the_gate_level, next_level=the_throne_level, level_response=exec_level_conclusion,
+                                        get_secret_key=RH.get_secret_key_from_path, get_data=RH.get_params_from_json_body),
+        R.THE_THRONE.value : partial(RH.handle_request, target_method='GET', 
+                                        level=the_gate_level, next_level=None, level_response=exec_level_entry,
+                                        get_secret_key=RH.get_secret_key_from_path, get_data=RH.get_params_from_json_body),
+        R.THE_CROWN.value : partial(RH.handle_request, target_method='GET', 
+                                        level=the_gate_level, next_level=the_crown_level, level_response=exec_level_conclusion,
                                         get_secret_key=RH.get_secret_key_from_path, get_data=RH.get_params_from_json_body)
     }
 
