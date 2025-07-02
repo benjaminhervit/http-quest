@@ -55,15 +55,15 @@ def createThroneLevel():
     level.set_victory_message_template('\"HOLY FUCK WHO IS DOING THAT?!\" JaSON exlaims when he realises that someone is using telecenetic powers on him.')
     return level
 
-def createSpeakToJasonLevel():
-    level = JasonLevel()
-    level.set_directions(f'To GET inside {R.THE_THRONE.value} JaSON must speak your {{party_name:here}} and nothing else.')
-    level.set_description(f"You did it! The last piece of the puzzle is hiding in his HEAD...er!")
-    level.set_quest(f'To GET {R.THE_CROWN.value} you must {R.READ_JASONS_MIND.value} with your just discovered-out-of-lazy-writing telepathic super powers. Look inside the HEAD...When you speak Jasons name while thinking where is the crown.')
-    level.set_hint('In your HEAD think: \"where is the crown\" while you emBODY speak: \"jason\"\ together with your party_name. If you do it right (if PythonAnywhere is not blocking custom headers), you will find the answer in Jasons HEAD...er.')
-    level.set_wrong_answer_response("JaSON smiles and looks at you friendly. It is not working. Have you remembered to use you head?")
-    level.set_victory_message_template('\"HOLY FUCK WHO IS DOING THAT?!\" JaSON exlaims when he realises that someone is using telecenetic powers on him.')
-    return level
+# def createSpeakToJasonLevel():
+#     level = JasonLevel()
+#     level.set_directions(f'To GET inside {R.THE_THRONE.value} JaSON must speak your {{party_name:here}} and nothing else.')
+#     level.set_description(f"You did it! The last piece of the puzzle is hiding in his HEAD...er!")
+#     level.set_quest(f'To GET {R.THE_CROWN.value} you must {R.READ_JASONS_MIND.value} with your just discovered-out-of-lazy-writing telepathic super powers. Look inside the HEAD...When you speak Jasons name while thinking where is the crown.')
+#     level.set_hint('In your HEAD think: \"where is the crown\" while you emBODY speak: \"jason\"\ together with your party_name. If you do it right (if PythonAnywhere is not blocking custom headers), you will find the answer in Jasons HEAD...er.')
+#     level.set_wrong_answer_response("JaSON smiles and looks at you friendly. It is not working. Have you remembered to use you head?")
+#     level.set_victory_message_template('\"HOLY FUCK WHO IS DOING THAT?!\" JaSON exlaims when he realises that someone is using telecenetic powers on him.')
+#     return level
 
 def createCrownLevel():
     level = CrownLevel()
