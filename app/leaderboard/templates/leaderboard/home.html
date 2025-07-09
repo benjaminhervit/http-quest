@@ -21,6 +21,7 @@
         <body id="game_context">
           {% if new_party %}
           <div>
+            <!--  -->
             <p>{{ game_data.answer_response }}</p>
             <p><strong>Directions to the next level:</strong><br>
               {{ game_data.next_level }}</p>
@@ -32,7 +33,8 @@
               You got all the information you need - but if you have any comments, try reading between the lines.</p>
           </div>
           {% else %}
-          <form method="POST" action="/register" role="group" class="register-form" required>
+          <!-- REGISTER -->
+          <form method="POST" action="{{url_for('auth.register')}}" role="group" class="register-form" required>
             <input type="text" id="username-input" name="username" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
             <button type="submit">Begin</button>
           </form>
@@ -98,15 +100,23 @@
                 <th><img class="icons" width="50px" height="auto" alt="crown icon" src="static/images/crown.png"></th>
               </tr>
             </thead>
-            <tbody id="table_body"></tbody>
-            <!-- <tfoot>
-              <tr>
-                <th scope="row">Average</th>
-                <td>9,126</td>
-                <td>0.91</td>
-                <td>341</td>
-              </tr> -->
-            <!-- </tfoot> -->
+            <tbody id="table_body">
+              {%if teams%}
+                  {% for team in teams%}
+                  <tr>
+                    <td>{{team.username}}</td>
+                    <td>{{team.id}}</td>
+                    <td><!-- Level progress indicators --></td>
+                    <td><!-- Level progress indicators --></td>
+                    <td><!-- Level progress indicators --></td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="5">No players yet!</td>
+                </tr>
+              {% endif %}
+            </tbody>
           </table>
         </body>
         <footer></footer>

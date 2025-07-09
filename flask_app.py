@@ -1,8 +1,14 @@
 """
 This module contains a simple Flask application with route handling.
 """
-from flask import Flask, request, jsonify, g, redirect, url_for, render_template
+from flask import Flask, request, jsonify, g, redirect, url_for, render_template, current_app
+from app.user_db.user_db import UserDatabase
+
 from functools import partial
+from app import create_app
+
+
+
 
 #import game
 # from game.quest_db import QuestDB
@@ -13,7 +19,7 @@ from functools import partial
 
 from game.routes import Route as R
 
-app = Flask(__name__)
+app = create_app()
 
 # def get_game_db() -> QuestDB:
 #     db_instance = getattr(g, '_database', None)
@@ -99,20 +105,20 @@ app = Flask(__name__)
 #     return redirect(url_for('index', registration_message="Did not call with POST method"))
 
 #HOME AND LEADERBOARD
-@app.route(R.LEADERBOARD.value)
-def index(username="", new_party=False, registration_message=""):
-    username = request.args.get('username', "")
-    registration_message = request.args.get('registration_message', "")
-    new_party = request.args.get('new_party', False)
+# @app.route(R.LEADERBOARD.value)
+# def index(username="", new_party=False, registration_message=""):
+#     username = request.args.get('username', "")
+#     registration_message = request.args.get('registration_message', "")
+#     new_party = request.args.get('new_party', False)
     
-    data = None
+#     data = None
     
-    if new_party:
-        level:Level = LB.createRegisterLevel()
-        next_level:Level = LB.createTheTestLevel()
-        data = level.get_victory_info(username, next_level.directions)
+#     if new_party:
+#         level:Level = LB.createRegisterLevel()
+#         next_level:Level = LB.createTheTestLevel()
+#         data = level.get_victory_info(username, next_level.directions)
 
-    return render_template('the_game.html', game_data=data, new_party = new_party, reg_msg = registration_message)
+#     return render_template('the_game.html', game_data=data, new_party = new_party, reg_msg = registration_message)
 
 # #DIRECT DB REQUESTS
 # @app.route(R.GET_ALL_TEAMS.value)
@@ -122,16 +128,23 @@ def index(username="", new_party=False, registration_message=""):
 #     return jsonify(teams_dict)
 
 #RUN AND TEARDOWN
-@app.teardown_appcontext
-def close_connection(_exception):
-    """Close the database, when Flask exits.
+# @app.teardown_appcontext
+# def close_connection(_exception):
+#     """Close the database, when Flask exits.
 
-    Args:
-        _exception (_type_): not used
-    """
-    db_instance = getattr(g, '_database', None)
-    if db_instance is not None:
-        db_instance.close()
+#     Args:
+#         _exception (_type_): not used
+#     """
+#     db_instance = getattr(g, '_database', None)
+#     if db_instance is not None:
+#         db_instance.close()
+
+# def get_db():
+#     """Get database instance from Flask's application context"""
+#     if 'db' not in g:
+#         # Initialize your database here - this example assumes UserDatabase
+#         g.db = UserDatabase(current_app)
+#     return g.db
 
 if __name__ == "__main__":
     app.run(debug=True)
