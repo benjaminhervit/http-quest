@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for
 
-from ..auth.auth import RegisterForm
+from ..auth.routes import RegisterForm
 from ..user_db.user_db import UserDatabase
 from ..database import get_db
 
