@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, redirect
 
-from app.questions import bp
+from app.blueprints.questions import bp
 from app.models.question import Question
 from app.extensions import db
 

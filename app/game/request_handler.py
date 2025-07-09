@@ -1,7 +1,7 @@
 
 from flask import jsonify
 
-from level import Level
+from app.game.level_manager.level import Level
 from status_code import StatusCode
 from quest_db import QuestDB
 

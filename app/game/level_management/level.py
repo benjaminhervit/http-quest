@@ -1,16 +1,18 @@
+from app.game.level_management.level_enum import LevelEnum
 
-from enum import Enum
-#inspired by https://www.w3.org/Protocols/HTTP/HTRESP.html
-class LevelEnum(Enum):
-    LEADERBOARD = "leaderboard"
-    REGISTRATION = "registration"
-    THE_TEST = "the_test"
-    THE_MONSTER = "the_monster"
-    THE_GATE = "the_gate"
-    THE_THRONE_ROOM = "the_throne"
-    THE_CROWN = "the_crown"
-    SPEAK_TO_JASON = "hason"
-    GAME_OVER = "game_over"
+class Level:
+    def __init__(self, name, intro, description, puzzle, hint, correct_answer=None, victory_message=None, exp=1, directions=None, next_level=None, password=None):
+        self.name = name
+        self.intro = intro
+        self.description = description
+        self.puzzle = puzzle
+        self.hint = hint
+        self.correct_answer = correct_answer
+        self.victory_message = victory_message
+        self.exp = exp
+        self.directions = directions
+        self.next_level = next_level
+        self.password = password
 
 class Level:
     def __init__(self, name, level_id, secret_key_parser = None, req_data_parser=None, description=None, riddle=None, hint=None, correct_answer=None, wrong_answer_response=None, victory_message=None, exp=1, directions=None):

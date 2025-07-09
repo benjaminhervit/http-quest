@@ -1,6 +1,6 @@
 from flask import request, url_for, redirect
 
-from app.auth import bp
+from app.blueprints.auth import bp
 
 from app.extensions import db
 from app.models.user import User
@@ -19,6 +19,6 @@ def register():
                 new_user = User(username=username)
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(url_for('main.index', new_user=True))
+                return redirect(url_for('level.welcome'))
     
     return redirect(url_for('main.index'))

@@ -1,4 +1,4 @@
-from game.level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
+from app.game.level_manager.level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
 from game.routes import Route as R
 import game.request_handler as ReqHandler
 

@@ -4,7 +4,7 @@ from typing import List, Tuple
 import json
 import datetime
 
-from game.level import LevelEnum as LE
+from app.game.level_management.level_enum import LevelEnum as LE
 
 class QuestDB:
 
