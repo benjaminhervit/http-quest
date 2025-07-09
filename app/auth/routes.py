@@ -11,10 +11,14 @@ def register():
     print(request.form.values)
     if request.method == 'POST':
         username = request.form['username']
-        print(username)
         if username:
-            new_user = User(username=username)
-            db.session.add(new_user)
-            db.session.commit()
+            #check for existing user
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user is None:
+                print("CREATING!")
+                #add new user
+                new_user = User(username=username)
+                db.session.add(new_user)
+                db.session.commit()
     
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
