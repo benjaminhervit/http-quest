@@ -25,7 +25,7 @@
           </div>
           {% else %}
           <!-- REGISTER -->
-          <form method="POST" action="" role="group" class="register-form" required>
+          <form method="POST" action="{{url_for('auth.register')}}" role="group" class="register-form" required>
             <input type="text" id="username-input" name="username" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
             <button type="submit">Begin</button>
           </form>
@@ -58,11 +58,11 @@
               </tr>
             </thead>
             <tbody id="table_body">
-              {%if teams%}
-                  {% for team in teams%}
+              {%if users%}
+                  {% for user in users%}
                   <tr>
-                    <td>{{team.username}}</td>
-                    <td>{{team.id}}</td>
+                    <td>{{user.id}}</td>
+                    <td>{{user.username}}</td>
                     <td><!-- Level progress indicators --></td>
                     <td><!-- Level progress indicators --></td>
                     <td><!-- Level progress indicators --></td>

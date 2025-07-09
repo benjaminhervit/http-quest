@@ -22,6 +22,7 @@ As an instructor, my job was to go through exercises with them that would enable
 This project was an experiment to see how they responded to such exercises and if it should be developed further in the future.
 
 ## Framework
+
 ### Techstack
 The framework is build using Python Flask, SQLite, and vanilla HTML, CSS and JavaScript.
 The techstack was chosen based on what the students were learning to keep the code familiar to them (if they shoulld be curious) and to improve my own knowledge and experience for better support.
@@ -56,3 +57,6 @@ The techstack was chosen based on what the students were learning to keep the co
 - [ ] Use database to store levels
 - [ ] 
 - [ ] Frontend for creating a 
+
+## Credits
+Thank you to Abdelhadi Dyouri and Caitlin Postal for this tutorial: https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy#step-5-adding-flask-sqlalchemy-models-to-your-flask-application

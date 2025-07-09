@@ -11,7 +11,8 @@ from app.extensions import db
 from app.main import bp as main_bp
 from app.posts import bp as posts_bp
 from app.questions import bp as question_bp
-blueprints = [main_bp, posts_bp, question_bp]
+from app.auth import bp as auth_bp
+blueprints = [main_bp, posts_bp, question_bp, auth_bp]
 
 def create_app(config_class=Config):
     app = Flask(__name__)
