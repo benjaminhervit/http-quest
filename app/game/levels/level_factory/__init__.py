@@ -1,8 +1,9 @@
-from app.game.level_manager.level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
-from game.routes import Route as R
-import game.request_handler as ReqHandler
+from app.game.levels.level import Level, RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
+from app.game.routes import Route as R
+import app.game.request_handler as ReqHandler
 
-def createRegisterLevel():
+def create_register_level():
+    level = Level()
     level = RegisterLevel()
     level.set_directions('It all begins at the beginning...')
     level.set_description('Welcome to Ready Player WoT.')

@@ -1,9 +1,9 @@
 
 from flask import jsonify
 
-from app.game.level_manager.level import Level
+from app.game.levels import Level
 from status_code import StatusCode
-from quest_db import QuestDB
+from app.game.old_db.quest_db import QuestDB
 
 def handle_request(target_method, level:Level, next_level:Level,
                     get_secret_key:callable, get_data:callable, 

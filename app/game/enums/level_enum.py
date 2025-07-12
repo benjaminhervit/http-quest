@@ -10,10 +10,3 @@ class LevelEnum(Enum):
     THE_CROWN = "the_crown"
     SPEAK_TO_JASON = "hason"
     GAME_OVER = "game_over"
-    
-class LevelState(Enum):
-    INACTIVE = "Inactive"
-    WELCOME = "Welcome"
-    ACTIVE = "Active"
-    COMPLETED = "Completed"
-    
