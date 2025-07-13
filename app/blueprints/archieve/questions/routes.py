@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, redirect
 
 from app.blueprints.questions import bp
-from app.models.question import Question
+from app.models.archieve.question import Question
 from app.extensions import db
 
 @bp.route('/', methods=('GET', 'POST'))

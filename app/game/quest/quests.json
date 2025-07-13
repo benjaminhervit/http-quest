@@ -1,0 +1,14 @@
+[
+    {
+        "title" : "Welcome",
+        "welcome_text" : "Welcome to a CRUDe game!",
+        "description" : "You must register your party to take on this CRUDe quest.",
+        "quest" : "Write your name in the PATH to glory",
+        "answer": "Test",
+        "answer_path" : "",
+        "response_wrong" : "Absolutely not correct - not even one bit. I mean... holy..!",
+        "response_correct" : "What a genius you are! This is out standing! The world will soon be safe again!",
+        "response_completed" : "why are you still here???",
+        "next_quest_directions" : "there should be some/path/descriptions/here"
+    }
+]

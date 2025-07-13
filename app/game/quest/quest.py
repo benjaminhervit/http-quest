@@ -1,29 +1,23 @@
 from app.game.enums.game_state import GameState
-from app.models.quest import Quest as QM
-
 class Quest:
-    quest_model = QM
-    def __init__(self, title:str, description:str, quest:str, correct_answer:str, completed_message:str, fail_message:str, status:GameState=GameState.LOCKED):
-        self.title = title
-        self.description = description
-        self.quest = quest
-        self.correct_answer = correct_answer
-        self.completed_message = completed_message
-        self.fail_message = fail_message
-        self.status = status
+    def __init__(self):
+        #QUEST SPECIFIC
+        self.title = "Welcome"
+        self.directions = "Get here by going to game/level/welcome"
         
-        self.json = {
-            "title": self.title,
-            "description": self.description,
-            "quest": self.quest,
-            "correct_answer": self.correct_answer,
-            "completed_message": self.completed_message,
-            "fail_message": self.fail_message,
-            "status": self.status.name if hasattr(self.status, "name") else str(self.status)
-        }
+        #
+        self.welcome_text = "Welcome to a CRUDe game!"
+        self.description = "You stand in front of an epic quest with nothing but your hard earned knowledge from a lecture you never attended."
+        self.quest = "Write your name in the PATH to glory"
+        self.answer = "Test"
+        
+        #responses
+        self.response_wrong = "Absolutely not correct - not even one bit. I mean... holy..!"
+        self.response_correct = "What a genius you are! This is out standing! The world will soon be safe again!"
+        self.response_completed = "why are you still here???"
+        
+        #next level/quest
+        self.next_quest_directions = "there should be some/path/descriptions/here"
     
-    def set_status(self, new_status:GameState) -> GameState:
-        if self.status != GameState.LOCKED and new_status == GameState.LOCKED:
-            return GameState.QUEST_NOT_RELOCKABLE
-        self.status = new_status
-        return GameState.OK
+    def __repr__(self):
+        return f'<Post "{self.title}">'

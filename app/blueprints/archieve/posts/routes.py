@@ -3,7 +3,7 @@ from flask import render_template
 from app.blueprints.posts import bp
 
 from app.extensions import db
-from app.models.post import Post
+from app.models.archieve.post import Post
 
 @bp.route('/')
 def index():
