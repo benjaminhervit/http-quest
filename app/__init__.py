@@ -9,11 +9,9 @@ from app.extensions import db
 
 #blueprints
 from app.blueprints.main import bp as main_bp
-from app.blueprints.posts import bp as posts_bp
-from app.blueprints.questions import bp as question_bp
 from app.blueprints.auth import bp as auth_bp
-from app.blueprints.quest import bp as level_bp
-blueprints = [main_bp, posts_bp, question_bp, auth_bp, level_bp]
+from app.blueprints.quest import bp as quest_bp
+blueprints = [main_bp, auth_bp, quest_bp]
 
 def create_app(config_class=Config):
     app = Flask(__name__)

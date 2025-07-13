@@ -2,25 +2,26 @@
 from flask import jsonify, Request
 
 from app.models.user import User
-from app.request_handler.enums import RequestParams as RP
+from app.request_handler.enums import RequestEnums as RE
 
 from app.errors import MethodNotAllowed, SettingNotFound, MissingData, Unauthorized
 
 class RequestHandler: 
     #INIT
-    def __init__(self, settings:dict, request:Request, path:str=None):
+    def __init__(self, settings:dict, request:Request, path:str):
         self.settings:dict = settings.get(request.method) #this will automatically validate the method used
         self.req:Request = request
         self.path:str = path
-        self.data:dict = None
+        self.body:dict = None
         self.validated:bool = False
         
-        self.get_data_actions:dict = {
-                RP.PATH : self.get_path_data
+        self.get_body_actions:dict = {
+                RE.PATH : self.get_path_data
             }
         
         self.get_username_actions:dict = {
-                RP.PATH : self.get_username_in_path
+                RE.PATH : self.get_username_in_path,
+                RE.NONE : self.no_username_needed
             }
     
     def validate(self):
@@ -30,18 +31,18 @@ class RequestHandler:
                 raise MethodNotAllowed(f'{self.req.method} is not a valid method.')
             
             #validate and get data
-            data_type:RP = self.settings.get(RP.DATA_LOCATION)
-            if data_type is None:
-                raise SettingNotFound(RP.DATA_LOCATION.value)
+            body_type:RE = self.settings.get(RE.BODY_TYPE)
+            if body_type is None:
+                raise SettingNotFound(RE.BODY_TYPE.value)
             
-            self.data = self.get_data_actions.get(data_type)
-            if self.data is None:
+            self.body = self.get_body_actions.get(body_type)
+            if self.body is None:
                 raise MissingData('content data')
             
             #get user
-            username_location:RP = self.settings.get(RP.USERNAME_LOCATION)
+            username_location:RE = self.settings.get(RE.USERNAME_LOCATION)
             if username_location is None:
-                raise SettingNotFound(RP.USERNAME_LOCATION.value)
+                raise SettingNotFound(RE.USERNAME_LOCATION.value)
             
             username = self.get_username_actions.get(username_location)()
             if username is None:
@@ -55,19 +56,25 @@ class RequestHandler:
             #accept request
             self.validated = True
             
-            return jsonify({'status': RP.STATUS_OK.value, 'message':'Request has been validated successfully'}), RP.STATUS_OK.value
+            return jsonify(
+                {
+                    'status': RE.STATUS_OK.value, 
+                    'message':'Request has been validated successfully',
+                    'body': self.body,
+                    'username' : username
+                }), RE.STATUS_OK.value
             
         except MethodNotAllowed as e:
-            return jsonify({'error' : f'MethodNotAllowed: {str(e)}'}), RP.STATUS_BAD_REQUEST.value
+            return jsonify({'error' : f'MethodNotAllowed: {str(e)}'}), RE.STATUS_BAD_REQUEST.value
         
         except SettingNotFound as e:
-            return jsonify({'error':f'SettingNotFound: {str(e)} is missing from settings. Find the developer and punish him.'}), RP.STATUS_BAD_REQUEST.value
+            return jsonify({'error':f'SettingNotFound: {str(e)} is missing from settings. Find the developer and punish him.'}), RE.STATUS_BAD_REQUEST.value
         
         except MissingData as e:
-            return jsonify({'error' : f'MissingData: could not find {str(e)}. Did you put it the right place?'}),  RP.STATUS_BAD_REQUEST.value
+            return jsonify({'error' : f'MissingData: could not find {str(e)}. Did you put it the right place?'}),  RE.STATUS_BAD_REQUEST.value
         
         except Unauthorized as e:
-            return jsonify({'error' : f'username {str(e)} could not be authorized'}), RP.STATUS_UNAUTHORIZED.value
+            return jsonify({'error' : f'username {str(e)} could not be authorized'}), RE.STATUS_UNAUTHORIZED.value
         
      #HANDLE CONTENT
     def get_path_data(self): 
@@ -87,5 +94,9 @@ class RequestHandler:
     
     #GET USERNAME
     def get_username_in_path(self):
-        data:list[str] = self.get_data_actions.get(RP.PATH)()
+        """username should always be the first param is this method is used"""
+        data:list[str] = self.get_body_actions.get(RE.PATH)()
         return data[0] if len(data) > 0 else None
+    
+    def no_username_needed(self):
+        return RE.UNREGISTERED_USER.value

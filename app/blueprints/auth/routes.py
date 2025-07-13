@@ -7,8 +7,7 @@ from app.models.user import User
 
 @bp.route('/register', methods=['POST'])
 def register():
-    print("REGISTER NEW USER!")
-    print(request.form.values)
+    #TODO: make try/except instead to use error handling
     if request.method == 'POST':
         username = request.form['username']
         if username:
@@ -19,6 +18,8 @@ def register():
                 new_user = User(username=username)
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(url_for('level.welcome', username = new_user.username))
+                
+                #
+                return redirect(url_for('game.quest', quest_id = 'welcome', path=new_user.username))
     
     return redirect(url_for('main.index'))

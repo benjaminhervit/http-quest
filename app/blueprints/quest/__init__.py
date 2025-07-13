@@ -2,6 +2,6 @@ from flask import Blueprint
 
 
 
-bp = Blueprint('level', __name__, url_prefix='/level')
+bp = Blueprint('game', __name__, url_prefix='/game')
 
 from app.blueprints.quest import routes

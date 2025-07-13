@@ -1,6 +1,6 @@
 from enum import Enum
 
-class RequestParams(Enum):
+class RequestEnums(Enum):
     #request methods
     GET = "GET"
     POST = "POST"
@@ -8,7 +8,7 @@ class RequestParams(Enum):
     DELETE = "DELETE"
     
     #content types
-    DATA_LOCATION = "DATA_LOCATION"
+    BODY_TYPE = "DATA_LOCATION"
     FORM = "FORM"
     JSON = "JSON"
     QUERY = "QUERY"
@@ -29,22 +29,10 @@ class RequestParams(Enum):
     AUTH_BY_BEARER_TOKEN = "AUTH_BY_TOKEN"
     NO_AUTH = "NO_AUTH"
     SECRET_KEY = "X-Secret-Key"
+    
+    #username
     USERNAME_LOCATION = "USERNAME_LOCATION"
+    UNREGISTERED_USER = "Mysterious Unknown Player"
     
     #generic
     NONE = "NONE"
-    
-
-class RequestMethod(Enum):
-    GET = "GET"
-    POST = "POST"
-    PUT = "PUT"
-    DELETE = "DELETE"
-    
-class RequestType(Enum):
-    NONE = "NONE"
-    FORM = "FORM"
-    JSON = "JSON"
-    QUERY = "QUERY"
-    RAW = "RAW"
-    
