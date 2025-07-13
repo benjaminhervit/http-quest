@@ -35,7 +35,7 @@ class RequestHandler:
             if body_type is None:
                 raise SettingNotFound(RE.BODY_TYPE.value)
             
-            self.body = self.get_body_actions.get(body_type)
+            self.body = self.get_body_actions.get(body_type)()
             if self.body is None:
                 raise MissingData('content data')
             
@@ -56,13 +56,14 @@ class RequestHandler:
             #accept request
             self.validated = True
             
-            return jsonify(
-                {
+            payload = {
                     'status': RE.STATUS_OK.value, 
                     'message':'Request has been validated successfully',
-                    'body': self.body,
+                    'body': self.body if self.body else '',
                     'username' : username
-                }), RE.STATUS_OK.value
+                }
+            
+            return jsonify(payload), RE.STATUS_OK.value
             
         except MethodNotAllowed as e:
             return jsonify({'error' : f'MethodNotAllowed: {str(e)}'}), RE.STATUS_BAD_REQUEST.value

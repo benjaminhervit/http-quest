@@ -24,12 +24,15 @@ class Quest:
 
     next_quest_directions: str
 
-    request_settings: Dict[RE, Dict[RE, RE]]
+    request_settings: Dict[str, Dict[RE, RE]]
 
     def __post_init__(self):
         self.directions = f"GET here by going to game/quest/{self.title}"
         
     def to_dict(self):
+        """
+        Make sure all enums gets converted to str or int values
+        """
         def convert(obj):
             if isinstance(obj, Enum):
                 return obj.value

@@ -1,5 +1,5 @@
 from app.game.levels.level import Level, RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
-from app.game.routes import Route as R
+from app.game.levels.archieve.routes import Route as R
 import app.game.request_handler as ReqHandler
 
 def create_register_level():

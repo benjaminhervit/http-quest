@@ -12,7 +12,7 @@ welcome_q = Quest(
     response_completed="What are you even doing here?? Get goin!",
     next_quest_directions="... yearh.... i should really tell yout something here right?",
     request_settings={
-        RE.GET: {
+        'GET': {
             RE.BODY_TYPE: RE.PATH,
             RE.AUTH_TYPE: RE.AUTH_BY_USERNAME,
             RE.USERNAME_LOCATION: RE.PATH,

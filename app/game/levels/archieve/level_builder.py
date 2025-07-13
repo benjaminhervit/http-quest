@@ -1,5 +1,5 @@
 from app.game.level_management.level import RegisterLevel, TestLevel, GitLevel, GateLevel, ThroneLevel, CrownLevel, JasonLevel, GameOverLevel
-from app.game.routes import Route as R
+from app.game.levels.archieve.routes import Route as R
 import app.game.request_handler as ReqHandler
 
 class LevelFactory:
