@@ -20,7 +20,8 @@ class RequestHandler:
         self.validated:bool = False
 
         self.get_body_actions:dict = {
-                RE.PATH : self.get_path_data
+                RE.PATH : self.get_path_data,
+                RE.QUERY : self.get_query
             }
 
         self.get_username_actions:dict = {
@@ -70,27 +71,26 @@ class RequestHandler:
         except Unauthorized as e:
             return jsonify({'error' : f'username {str(e)} could not be authorized'}), RE.STATUS_UNAUTHORIZED.value
 
-     #HANDLE CONTENT
+    #HANDLE CONTENT
     def get_path_data(self): 
         data:list[str] = self.path.split('/') if self.path else []
         return [x for x in data if x is not None and str(x).strip() != '']
-
-    # @staticmethod
-    # def get_json(req:Request): return req.get_json() if req.is_json else None
-    # @staticmethod
-    # def get_form(req:Request): return req.form.to_dict() if req.form else None
-    # @staticmethod
-    # def get_query(req:Request): return req.args.to_dict() if req.args else None
-    # @staticmethod
-    # def get_raw(req:Request): return req.data if req.data else None
-    # @staticmethod
-    # def get_none(req:Request): return {'data':'no data expected'}
+    
+    def get_json(self): return self.req.get_json() if self.req.is_json else None
+    
+    def get_form(self): return self.req.form.to_dict() if self.req.form else None
+    
+    def get_query(self): return self.req.args.to_dict() if self.req.args else None
+    
+    def get_raw(self): return self.req.data if self.req.data else None
+    
+    def get_none(self): return {'data':'no data expected'}
 
     def set_body(self):
         body_type:RE = self.settings.get(RE.BODY_TYPE)
         if body_type is None:
             raise SettingNotFound(RE.BODY_TYPE.value)
-
+        
         body = self.get_body_actions.get(body_type)()
         if body is None:
             raise MissingData('content data')
@@ -131,3 +131,6 @@ class RequestHandler:
             raise MissingData('Authentication type not defined in quest settings. Woooops!')
         auth = self.authentication_actions.get(auth_type)()
         return auth
+    
+    def get_response_type(self):
+        return self.settings.get(RE.REQUEST_TYPE)

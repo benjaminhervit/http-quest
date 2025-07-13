@@ -17,13 +17,14 @@ welcome_q = Quest(
             RE.REQUEST_TYPE : RE.REQUEST_IS_GET_QUEST,
             RE.BODY_TYPE : RE.PATH,
             RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
-            RE.USERNAME_LOCATION : RE.PATH   
+            RE.USERNAME_LOCATION : RE.PATH
         },
         'POST': {
             RE.REQUEST_TYPE : RE.REQUEST_IS_ANSWER,
             RE.BODY_TYPE : RE.QUERY,
             RE.USERNAME_LOCATION : RE.PATH,
             RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
+            RE.EXPECTED_FIELDS_IN_BODY : [RE.ANSWER_FIELD]
         }
     },
     

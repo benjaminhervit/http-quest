@@ -25,8 +25,8 @@ class Quest:
 
     next_quest_directions: str
 
-    request_settings: Dict[str, Dict[RE, RE]]
-    answer_settings: Dict[str, Dict[RE, RE]]
+    request_settings: Dict[str, Dict[RE, Any]]
+    answer_settings: Dict[str, Dict[RE, Any]]
 
     def __post_init__(self):
         self.route = self.title.strip().lower().replace(' ', '_')
