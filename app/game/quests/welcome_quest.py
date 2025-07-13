@@ -1,11 +1,6 @@
 from app.game.quests.quest import Quest
 from app.request_handler.enums import RequestEnums as RE
 
-if __name__ == "__main__":
-    import sys
-    import os
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
-
 welcome_q = Quest(
     title="Welcome",
     welcome_text="Welcome to a CRUDe game!",

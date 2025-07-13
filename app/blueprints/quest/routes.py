@@ -2,47 +2,49 @@ from flask import request, jsonify
 import json
 
 from app.blueprints.quest import bp
-from app.request_handler.request_handler import RequestHandler
-from app.request_handler.enums import RequestEnums as RE
 
+from app.request_handler.handler import RequestHandler
+from app.request_handler.enums import RequestEnums as RE
 from app.errors import MissingData
 
-class Quest:
-    def __init__(self):
-        #REQUEST PARAMS
-        self.request_settings = {
-            'GET':{
-                RE.BODY_TYPE : RE.PATH,
-                RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
-                RE.USERNAME_LOCATION : RE.PATH,
-                }
-        }
+from app.game.quests import quests
+
+# class Quest:
+#     def __init__(self):
+#         #REQUEST PARAMS
+#         self.request_settings = {
+#             'GET':{
+#                 RE.BODY_TYPE : RE.PATH,
+#                 RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
+#                 RE.USERNAME_LOCATION : RE.PATH,
+#                 }
+#         }
         
-        self.POST_SETTINGS = {}
+#         self.POST_SETTINGS = {}
 
-        #QUEST SPECIFIC
-        self.title = "Welcome"
-        self.directions = f"GET here by going to game/quest/{self.title}"
+#         #QUEST SPECIFIC
+#         self.title = "Welcome"
+#         self.directions = f"GET here by going to game/quest/{self.title}"
 
-        #
-        self.welcome_text = "Welcome to a CRUDe game!"
-        self.description = "You stand in front of an epic quest with nothing but your hard earned knowledge from a lecture you never attended."
-        self.quest = "Write your name in the PATH to glory"
-        self.answer = "TestAnswer"
+#         #
+#         self.welcome_text = "Welcome to a CRUDe game!"
+#         self.description = "You stand in front of an epic quest with nothing but your hard earned knowledge from a lecture you never attended."
+#         self.quest = "Write your name in the PATH to glory"
+#         self.answer = "TestAnswer"
 
-        #responses
-        self.response_wrong = "Absolutely not correct - not even one bit. I mean... holy..!"
-        self.response_correct = "What a genius you are! This is out standing! The world will soon be safe again!"
-        self.response_completed = "why are you still here???"
+#         #responses
+#         self.response_wrong = "Absolutely not correct - not even one bit. I mean... holy..!"
+#         self.response_correct = "What a genius you are! This is out standing! The world will soon be safe again!"
+#         self.response_completed = "why are you still here???"
 
-        #next level/quest
-        self.next_quest_directions = "there should be some/path/descriptions/here"
+#         #next level/quest
+#         self.next_quest_directions = "there should be some/path/descriptions/here"
 
-    def __repr__(self):
-        return f'<Post "{self.title}">'
+#     def __repr__(self):
+#         return f'<Post "{self.title}">'
 
-q1 = Quest()
-quests = {q1.title.strip().lower() : q1}
+# q1 = Quest()
+# quests = {q1.title.strip().lower() : q1}
 
 @bp.route('<quest_id>', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @bp.route('<quest_id>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
