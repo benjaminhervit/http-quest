@@ -11,6 +11,7 @@ class Quest:
     A data class making it more type safe to create level settings with enums and convert to json
     """
     title: str
+    route: str = field(init=False)
     directions: str = field(init=False)
     
     welcome_text: str
@@ -27,7 +28,9 @@ class Quest:
     request_settings: Dict[str, Dict[RE, RE]]
 
     def __post_init__(self):
-        self.directions = f"GET here by going to game/quest/{self.title}"
+        self.path = self.title.strip().lower().replace(' ', '_')
+        self.directions = f"GET to game/quest/{self.path}."
+        
         
     def to_dict(self):
         """
