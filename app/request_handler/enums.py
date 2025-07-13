@@ -2,6 +2,7 @@ from enum import Enum
 
 class RequestEnums(Enum):
     #request methods
+    METHOD_TYPE = "METHOD_TYPE"
     GET = "GET"
     POST = "POST"
     PUT = "PUT"
@@ -33,6 +34,11 @@ class RequestEnums(Enum):
     #username
     USERNAME_LOCATION = "USERNAME_LOCATION"
     UNREGISTERED_USER = "Mysterious Unknown Player"
+    
+    #request type
+    REQUEST_TYPE = "REQUEST_TYPE"
+    REQUEST_IS_ANSWER = "REQUEST_IS_ANSWER"
+    REQUEST_IS_GET_QUEST = "REQUEST_IS_GET_QUEST"
     
     #generic
     NONE = "NONE"

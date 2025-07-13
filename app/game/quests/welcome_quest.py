@@ -11,11 +11,22 @@ welcome_q = Quest(
     response_correct="BEHOLD! OUR SAVIOR IS HERE!",
     response_completed="What are you even doing here?? Get goin!",
     next_quest_directions="... yearh.... i should really tell yout something here right?",
-    request_settings={
+    
+    request_settings = {
         'GET': {
-            RE.BODY_TYPE: RE.PATH,
-            RE.AUTH_TYPE: RE.AUTH_BY_USERNAME,
-            RE.USERNAME_LOCATION: RE.PATH,
+            RE.REQUEST_TYPE : RE.REQUEST_IS_GET_QUEST,
+            RE.BODY_TYPE : RE.PATH,
+            RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
+            RE.USERNAME_LOCATION : RE.PATH   
+        },
+        'POST': {
+            RE.REQUEST_TYPE : RE.REQUEST_IS_ANSWER,
+            RE.BODY_TYPE : RE.QUERY,
+            RE.USERNAME_LOCATION : RE.PATH,
+            RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
         }
+    },
+    
+    answer_settings= {
     }
 )

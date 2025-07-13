@@ -1,6 +1,6 @@
 from enum import Enum
 
-class GameState(Enum):
+class GameEnum(Enum):
     LOCKED = "LOCKED"
     UNLOCKED = "UNLOCKED"
     ACTIVE = "ACTIVE"

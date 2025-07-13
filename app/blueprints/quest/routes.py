@@ -1,4 +1,5 @@
 from flask import request, jsonify
+import json
 
 from app.blueprints.quest import bp
 
@@ -8,6 +9,7 @@ from app.errors import MissingData
 
 from app.game.quests import quests
 from app.game.quests.quest import Quest
+from app.game.quests.session import QuestSession
 
 @bp.route('<quest_id>', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @bp.route('<quest_id>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
@@ -25,6 +27,9 @@ def quest(quest_id, path):
             return response, status
         
         #run game
+        session = QuestSession(quest_obj, rh)
+        
+        return session.run()
         #session = PlayerQuestSession.query.filter_by(username=username).first()
         #if not session:
         #    raise MissingData(f'Session for player {response.get('username')} and quest {quest_obj.title} not found. This is a server side problem.')

@@ -26,10 +26,11 @@ class Quest:
     next_quest_directions: str
 
     request_settings: Dict[str, Dict[RE, RE]]
+    answer_settings: Dict[str, Dict[RE, RE]]
 
     def __post_init__(self):
-        self.path = self.title.strip().lower().replace(' ', '_')
-        self.directions = f"GET to game/quest/{self.path}."
+        self.route = self.title.strip().lower().replace(' ', '_')
+        self.directions = f"{self.answer_settings.get(RE.METHOD_TYPE)} to game/quest/{self.route}."
         
         
     def to_dict(self):

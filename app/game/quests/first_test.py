@@ -22,5 +22,7 @@ first_q = Quest(
             RE.AUTH_TYPE: RE.AUTH_BY_USERNAME,
             RE.USERNAME_LOCATION: RE.PATH
         }
+    },
+        answer_settings= {
     }
 )
