@@ -1,9 +1,7 @@
 from dataclasses import dataclass, field, asdict
-from typing import Dict, Any
+from typing import Dict
 from enum import Enum
 import json
-
-from app.request_handler.enums import RequestEnums as RE
 
 @dataclass
 class Quest:
@@ -12,12 +10,12 @@ class Quest:
     """
     title: str
     route: str = field(init=False)
-    directions: str = field(init=False)
+    directions: str
     
     welcome_text: str
     description: str
     quest: str
-    answer: str
+    correct_answer: str
 
     response_wrong: str
     response_correct: str
@@ -25,14 +23,12 @@ class Quest:
 
     next_quest_directions: str
 
-    request_settings: Dict[str, Dict[RE, Any]]
-    answer_settings: Dict[str, Dict[RE, Any]]
+    request_settings: Dict[str, Dict[str, str]]
+    answer_settings: Dict[str, Dict[str, str]]
 
     def __post_init__(self):
         self.route = self.title.strip().lower().replace(' ', '_')
-        self.directions = f"{self.answer_settings.get(RE.METHOD_TYPE)} to game/quest/{self.route}."
-        
-        
+
     def to_dict(self):
         """
         Make sure all enums gets converted to str or int values

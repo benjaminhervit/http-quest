@@ -1,12 +1,13 @@
 from app.game.quests.quest import Quest
-from app.request_handler.enums import RequestEnums as RE
+from app.enums import InputLocation, QuestAction, AuthType
 
 welcome_q = Quest(
     title="Welcome",
     welcome_text="Welcome to a CRUDe game!",
+    directions = "JUST GET HERE ALREADY!",
     description="I should probally say something inspiring here",
     quest="POST your name in the PATH you are treading and I will let you pass.",
-    answer="test_answer",
+    correct_answer="test_answer",
     response_wrong="Absolutely wrong - I mean.. not even close! HOLY!",
     response_correct="BEHOLD! OUR SAVIOR IS HERE!",
     response_completed="What are you even doing here?? Get goin!",
@@ -14,17 +15,19 @@ welcome_q = Quest(
     
     request_settings = {
         'GET': {
-            RE.REQUEST_TYPE : RE.REQUEST_IS_GET_QUEST,
-            RE.BODY_TYPE : RE.PATH,
-            RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
-            RE.USERNAME_LOCATION : RE.PATH
+            "REQ_TYPE" : "GET_QUEST",
+            "AUTH_TYPE" : "USERNAME",
+            "USERNAME" : "PATH",
+            "CORRECT_ANSWER" : "",
+            "EXPECTED_FIELDS" : ["USERNAME"]
         },
         'POST': {
-            RE.REQUEST_TYPE : RE.REQUEST_IS_ANSWER,
-            RE.BODY_TYPE : RE.QUERY,
-            RE.USERNAME_LOCATION : RE.PATH,
-            RE.AUTH_TYPE : RE.AUTH_BY_USERNAME,
-            RE.EXPECTED_FIELDS_IN_BODY : [RE.ANSWER_FIELD]
+            "REQ_TYPE" : "ANSWER",
+            "ANSWER" : "QUERY",
+            "USERNAME" : "PATH",
+            "AUTH_TYPE" : "USERNAME",
+            "CORRECT_ANSWER" : "TEST",
+            "EXPECTED_FIELDS" : ["USERNAME","ANSWER"]
         }
     },
     

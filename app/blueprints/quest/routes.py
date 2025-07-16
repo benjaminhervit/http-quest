@@ -1,40 +1,41 @@
 from flask import request, jsonify
-import json
 
 from app.blueprints.quest import bp
 
-from app.request_handler.handler import RequestHandler
-from app.request_handler.enums import RequestEnums as RE
-from app.errors import MissingData
+from app.request_management.parsed_request import ParsedRequest
+import app.request_management.parser as Parser
+import app.request_management.auth_service as Authenticator
+from app.errors import ParsingError, ValidationError, AuthenticationError, GameError, QuestError
+from app.enums import StatusCode
 
 from app.game.quests import quests
 from app.game.quests.quest import Quest
-from app.game.quests.session import QuestSession
+import app.game.game_manager as GameManager
+
+@bp.route('/', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
+def welcome(path):
+    return "This is just a game. if you welcome with a name you can come further."
 
 @bp.route('<quest_id>', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @bp.route('<quest_id>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def quest(quest_id, path):
     try:
-        #get quest
         quest_obj: Quest= quests.get(quest_id)
         if not quest_obj:
-            raise MissingData('That quest does not exist here. Maybe double check it?')
+            raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)
         
-        #validate request format
-        rh = RequestHandler(quest_obj.request_settings, request, path)
-        response, status = rh.validate()
-        if status is not RE.STATUS_OK.value:
-            return response, status
+        parsed:ParsedRequest = Parser.parse(request, quest_obj.request_settings, path)
+        Authenticator.auth(parsed)
+        response = GameManager.execute_quest(quest_obj, parsed)
+        return jsonify(response, StatusCode.OK)
         
-        #run game
-        session = QuestSession(quest_obj, rh)
-        
-        return session.run()
-        #session = PlayerQuestSession.query.filter_by(username=username).first()
-        #if not session:
-        #    raise MissingData(f'Session for player {response.get('username')} and quest {quest_obj.title} not found. This is a server side problem.')
-        
-        
-        return jsonify({'message':'FUCK YES'}), RE.STATUS_OK.value
-    except MissingData as e:
-        return jsonify({'error': str(e)}), RE.STATUS_BAD_REQUEST.value
+    except QuestError as e:
+        return jsonify({'error':f'Quest error: {str(e)}'},e.code)
+    except ParsingError as e:
+        return jsonify({'error':f'Parsing error: {str(e)}'},e.code)
+    except ValidationError as e:
+        return jsonify({'error':f'Validation error: {str(e)}'},e.code)
+    except AuthenticationError as e:
+        return jsonify({'error':f'Authentication error: {str(e)}'},e.code)
+    except GameError as e:
+        return jsonify({'error':f'Game error error: {str(e)}'},e.code)
