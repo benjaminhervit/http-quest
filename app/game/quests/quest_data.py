@@ -4,24 +4,24 @@ from enum import Enum
 import json
 
 @dataclass
-class Quest:
+class QuestData:
     """
     A data class making it more type safe to create level settings with enums and convert to json
     """
     title: str
     route: str = field(init=False)
-    directions: str
+    directions_txt: str
     
-    welcome_text: str
-    description: str
-    quest: str
+    welcome_txt: str
+    description_txt: str
+    quest_txt: str
     correct_answer: str
 
-    response_wrong: str
-    response_correct: str
-    response_completed: str
+    response_wrong_txt: str
+    response_correct_txt: str
+    response_completed_txt: str
 
-    next_quest_directions: str
+    next_quest: 'QuestData'
 
     request_settings: Dict[str, Dict[str, str]]
     answer_settings: Dict[str, Dict[str, str]]

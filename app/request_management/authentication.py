@@ -4,7 +4,6 @@ from app.request_management.parsed_request import ParsedRequest
 from app.errors import AuthenticationError
 
 def auth(parsed:ParsedRequest):
-    print(parsed)
     auth_type = parsed.get(ParsingKey.AUTH_TYPE.value)
     if auth_type is None:
         raise AuthenticationError('No authentication type given. Talk with developer.', code=StatusCode.SERVER_ERROR)

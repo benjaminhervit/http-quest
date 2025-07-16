@@ -1,6 +1,6 @@
 from enum import Enum
 
-class QuestAction(str, Enum):
+class PlayerAction(str, Enum):
     ANSWER = "ANSWER"
     GET_QUEST = "GET_QUEST"
 
@@ -46,6 +46,13 @@ class QuestState(Enum):
     LOCKED = "LOCKED"
     UNLOCKED = "UNLOCKED"
     COMPLETED = "COMPLETED"
+    
+class ResponseType(Enum):
+    QUEST_IS_LOCKED = "QUEST_IS_LOCKED"
+    WRONG_ANSWER = "WRONG_ANSWER"
+    CORRECT_ANSWER = "CORRECT_ANSWER"
+    QUEST_ALREADY_COMPLETED = "QUEST_ALREADY_COMPLETED"
+    GET_QUEST = "GET_QUEST"
 
 # class RequestEnums(Enum):
 #     #request methods

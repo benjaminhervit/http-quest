@@ -9,4 +9,4 @@ class ParsedRequest(TypedDict):
     username: str
     answer: str | None = None
     auth_type: str
-    req_type: str
+    req_action: str

@@ -1,6 +1,6 @@
 from flask import Request
 from app.errors import ParsingError, ValidationError
-from app.enums import InputLocation, ParsingKey, StatusCode, AuthType, ReqMethodType, QuestAction
+from app.enums import InputLocation, ParsingKey, StatusCode, AuthType, ReqMethodType, PlayerAction
 from app.request_management.parsed_request import ParsedRequest
 
 def parse(req:Request, quest_settings:dict, path:str)->ParsedRequest:
@@ -18,7 +18,7 @@ def parse(req:Request, quest_settings:dict, path:str)->ParsedRequest:
     settings:dict = _get_req_settings(method, quest_settings)
     parsed[ParsingKey.AUTH_TYPE.value] = _get_auth_type(settings)
     parsed[ParsingKey.ACTION_TYPE.value] = _get_req_type(settings)
-    if parsed[ParsingKey.ACTION_TYPE.value] == QuestAction.ANSWER:
+    if parsed[ParsingKey.ACTION_TYPE.value] == PlayerAction.ANSWER:
         parsed[ParsingKey.CORRECT_ANSWER.value] = _get_correct_answer(settings)
 
     #PARSE EXPECTED FIELDS
@@ -54,7 +54,7 @@ def _get_req_type(settings:dict) -> str:
     req_type:str = settings.get(ParsingKey.ACTION_TYPE.value)
     if req_type is None:
         raise ParsingError('Could not find request type in settings. Talk with developer', code=StatusCode.SERVER_ERROR)
-    if req_type not in QuestAction:
+    if req_type not in PlayerAction:
         raise ParsingError(f'Quest is trying to use invalid req type: {req_type}. Ask the quest developer to get their things straight.', code=StatusCode.SERVER_ERROR)
     return req_type
 

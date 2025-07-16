@@ -4,12 +4,12 @@ from app.blueprints.quest import bp
 
 from app.request_management.parsed_request import ParsedRequest
 import app.request_management.parser as Parser
-import app.request_management.auth_service as Authenticator
+import app.request_management.authentication as Authenticator
 from app.errors import ParsingError, ValidationError, AuthenticationError, GameError, QuestError
 from app.enums import StatusCode
 
 from app.game.quests import quests
-from app.game.quests.quest import Quest
+from app.game.quests.quest_data import QuestData
 import app.game.game_manager as GameManager
 
 @bp.route('/', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
@@ -20,7 +20,7 @@ def welcome(path):
 @bp.route('<quest_id>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def quest(quest_id, path):
     try:
-        quest_obj: Quest= quests.get(quest_id)
+        quest_obj: QuestData= quests.get(quest_id)
         if not quest_obj:
             raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)
         
