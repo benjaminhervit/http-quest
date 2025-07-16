@@ -38,8 +38,11 @@ def _get_correct_answer(settings:dict):
 
 def _get_location(key:str, settings:dict):
     location:str = settings.get(key)
-    if location is None or location not in InputLocation:
-        raise ValidationError(f'Location {location} for field {key} is not valid. Check your request or talk with the developer?', code=StatusCode.BAD_REQUEST)
+    is_none = location is None
+    is_enum_instance = isinstance(location, InputLocation)
+    is_not_in_enum_values = location not in [e.value for e in InputLocation]
+    if is_none or is_enum_instance or is_not_in_enum_values:
+        raise ValidationError(f'Could not find valid lcoation. k,v: {key},{location}. Check your request or talk with the developer?', code=StatusCode.BAD_REQUEST)
     return location
 
 def _get_auth_type(settings:dict) -> str:
