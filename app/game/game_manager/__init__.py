@@ -50,7 +50,6 @@ def _answer(**kwargs):
     user_answer = player.get(ParsingKey.ANSWER.value)
     if user_answer is None:
         raise GameError('Found no answer for quest answer. This is some dev stuff. ', code=StatusCode.SERVER_ERROR)
-    print(f'user:{user_answer} vs quest: {correct_answer}')
     if user_answer == correct_answer:
         return {'message':'Quest completed! Confetty time!'}
     

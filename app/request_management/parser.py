@@ -101,7 +101,6 @@ def _get_field(key:ParsingKey, location:InputLocation, req:Request, path:str):
 def _get_field_from_query(key:ParsingKey, req:Request):
     try:
         fields = req.args.to_dict()
-        print(fields)
         return fields.get(key.value.lower())
     except ParsingError as exc:
         raise ParsingError(f'Could not find {key.value} in query') from exc
