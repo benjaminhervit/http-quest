@@ -3,7 +3,7 @@ from flask import request, jsonify
 from app.blueprints.quest import bp
 
 from app.errors import ParsingError, ValidationError, AuthenticationError, GameError, QuestError
-from app.enums import StatusCode, QuestDataKey
+from app.enums import StatusCode, QuestDataKey, ParserKey
 
 from app.game.quests import quests
 from app.game.quests.quest_data import QuestData
@@ -17,6 +17,8 @@ from app.request_management.validator.validator import Validator
 
 from app.request_management.authenticator.factory import create_authenticator
 from app.request_management.authenticator.authenticator import Authenticator
+
+from app.game.game_manager.game_manager import GameManager
 
 @bp.route('/', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 def welcome(path):
@@ -46,10 +48,14 @@ def quest(quest_id, path):
         #AUTHENTICATE
         auth_type = quest_obj.request_settings.get(QuestDataKey.AUTH_TYPE.value)
         authenticator:Authenticator = create_authenticator(auth_type)
-        authenticator.authenticate(parsed)
+        authenticator.authenticate(parsed=parsed)
         
         #RUN QUEST
-        response = GameManager.execute_quest(quest_obj, parsed)
+        user_inputs = parsed.get(ParserKey.CONTENT.value)
+        username = parsed.get(ParserKey.USERNAME.value)
+        
+        GM = GameManager(quest_data=quest_obj, user_inputs=user_inputs, username=username)
+        response = GM.run_quest()
         return jsonify(response, StatusCode.OK)
         
     except QuestError as e:

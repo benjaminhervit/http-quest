@@ -27,10 +27,10 @@ class Validator:
         return method == expected_method
         
     def _validate_content(self, *args, **kwargs):
-        return self.content_fn(*args, **kwargs)
+        return self.content_fn(args, kwargs)
     
     def _validate_username(self, *args, **kwargs):
-        return self._validate_username(*args, **kwargs)
+        return self.username_fn(args, kwargs)
     
     def _validate_token(self, *args, **kwargs):
         return self.token_fn(args, kwargs)

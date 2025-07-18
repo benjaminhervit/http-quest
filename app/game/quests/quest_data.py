@@ -8,23 +8,27 @@ class QuestData:
     """
     A data class making it more type safe to create level settings with enums and convert to json
     """
-    title: str
-    route: str = field(init=False)
-    directions_txt: str
+    #ROUTE
     
+    #TXT
+    title: str
+    directions_txt: str
     welcome_txt: str
     description_txt: str
     quest_txt: str
-    correct_answer: str
-
     response_wrong_txt: str
     response_correct_txt: str
     response_completed_txt: str
+    
+    #LOGIC SETTINGS
+    correct_answer: str
+    quest_validator_type:str
 
     next_quest: 'QuestData'
-
+    
+    #REQUEST SETTINGS
+    route: str = field(init=False)
     request_settings: Dict[str, Dict[str, str]]
-    answer_settings: Dict[str, Dict[str, str]]
 
     def __post_init__(self):
         self.route = self.title.strip().lower().replace(' ', '_')

@@ -26,7 +26,7 @@ def get_field_from_path(*args, **kwargs):
     
     #parse
     fields = path.strip().split('/')
-    if len(fields - 1) > index:
+    if len(fields) - 1 > index:
         raise ParsingError(f'Missing index {index} in path.', code=StatusCode.BAD_REQUEST)
     
     return fields[index]

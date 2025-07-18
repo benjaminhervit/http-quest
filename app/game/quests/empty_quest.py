@@ -1,3 +1,3 @@
 from app.game.quests.quest_data import QuestData
 
-empty_quest = QuestData("", "", "", "", "", "", "","","",None, {}, {})
+empty_quest = QuestData("", "", "", "", "", "", "","","","NONE",None, {})

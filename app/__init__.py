@@ -21,6 +21,10 @@ def create_app(config_class=Config):
     #init db
     db.init_app(app)
     
+    with app.app_context():
+        db.drop_all()     # ❗ DANGER: drops all tables
+        db.create_all()   # recreates them fresh
+    
     # Register blueprint
     for bp in blueprints:
         app.register_blueprint(bp)

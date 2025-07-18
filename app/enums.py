@@ -25,7 +25,7 @@ class QuestDataKey(str, Enum):
     CONTENT_LOCATION = "CONTENT_LOCATION"
     USERNAME_LOCATION = "USERNAME_LOCATION"
     TOKEN_LOCATION = "TOKEN_LOCATION"
-    SOLVER_TYPE = "SOLVER_TYPE"
+    QUEST_VALIDATOR_TYPE = "QUEST_VALIDATOR_TYPE"
     EXPECTED_FIELDS = "EXPECTED_FIELDS"
     METHOD = "METHOD"
     ACTION_TYPE = "REQ_TYPE"
@@ -37,7 +37,7 @@ class ParserKey(str, Enum):
     CONTENT = "content"
     TOKEN = "token"
     
-class ValidatorKeys(str, Enum):
+class ValidatorKey(str, Enum):
     NONE = "NONE"
     NOT_NONE = "NOT_NONE"
     EXPECTED_FIELDS = "EXPECTED_FIELDS"
@@ -61,6 +61,8 @@ class QuestState(Enum):
     LOCKED = "LOCKED"
     UNLOCKED = "UNLOCKED"
     COMPLETED = "COMPLETED"
+    FAILED_ATTEMPT = "FAILED_ATTEMPT"
+    SUCCESSFUL_ATTEMPT = "SUCCESSFUL_ATTEMPT"
     
 class ResponseType(Enum):
     QUEST_IS_LOCKED = "QUEST_IS_LOCKED"
