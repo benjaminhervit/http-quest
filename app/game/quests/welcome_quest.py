@@ -14,21 +14,12 @@ welcome_q = QuestData(
     next_quest = empty_quest,
     
     request_settings = {
-        'GET': {
-            "REQ_TYPE" : "GET_QUEST",
-            "AUTH_TYPE" : "USERNAME",
-            "USERNAME" : "PATH",
-            "CORRECT_ANSWER" : "",
-            "EXPECTED_FIELDS" : ["USERNAME"]
-        },
-        'POST': {
-            "REQ_TYPE" : "ANSWER",
-            "ANSWER" : "QUERY",
-            "USERNAME" : "PATH",
-            "AUTH_TYPE" : "USERNAME",
-            "CORRECT_ANSWER" : "TEST",
-            "EXPECTED_FIELDS" : ["USERNAME","ANSWER"]
-        }
+        "METHOD_TYPE":"GET",
+        "AUTH_TYPE" : "USERNAME",
+        "USERNAME_LOCATION" : "PATH",
+        "TOKEN_LOCATION" : "NONE",
+        "CONTENT_LOCATION" : "NONE",
+        "EXPECTED_FIELDS" : ["USERNAME", "AUTHTYPE"]
     },
     
     answer_settings= {

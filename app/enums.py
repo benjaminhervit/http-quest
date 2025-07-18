@@ -17,16 +17,31 @@ class InputLocation(str, Enum):
     RAW = "RAW"
     PATH = "PATH"
     HEADER = "HEADER"
+    NONE = "NONE"
 
 #keys for look up in Quest data class
-class ParsingKey(str, Enum): 
+class QuestDataKey(str, Enum):
     AUTH_TYPE = "AUTH_TYPE"
-    EXPECTED_FIELDS = "EXPECTED_FIELDS" 
-    USERNAME = "USERNAME"
-    ANSWER = "ANSWER"
+    CONTENT_LOCATION = "CONTENT_LOCATION"
+    USERNAME_LOCATION = "USERNAME_LOCATION"
+    TOKEN_LOCATION = "TOKEN_LOCATION"
+    SOLVER_TYPE = "SOLVER_TYPE"
+    EXPECTED_FIELDS = "EXPECTED_FIELDS"
     METHOD = "METHOD"
     ACTION_TYPE = "REQ_TYPE"
     CORRECT_ANSWER = "CORRECT_ANSWER"
+    
+class ParserKey(str, Enum):
+    USERNAME = "username"
+    METHOD = "method"
+    CONTENT = "content"
+    TOKEN = "token"
+    
+class ValidatorKeys(str, Enum):
+    NONE = "NONE"
+    NOT_NONE = "NOT_NONE"
+    EXPECTED_FIELDS = "EXPECTED_FIELDS"
+    EMPTY = "EMPTY"
     
 class StatusCode(int, Enum):
     OK = 200

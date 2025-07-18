@@ -1,7 +1,7 @@
 from flask import Request
 from app.errors import ParsingError, ValidationError
-from app.enums import InputLocation, ParsingKey, StatusCode, AuthType, ReqMethodType, PlayerAction
-from app.request_management.parsed_request import ParsedRequest
+from app.enums import InputLocation, QuestDataKey, StatusCode, AuthType, ReqMethodType, PlayerAction
+from app.request_management.parser.parsed_request import ParsedRequest
 
 def parse(req:Request, quest_settings:dict, path:str)->ParsedRequest:
     if quest_settings is None or req is None:
@@ -12,26 +12,26 @@ def parse(req:Request, quest_settings:dict, path:str)->ParsedRequest:
     #PARSE METHOD
     method = _get_method(req)
     _method_is_valid(method, quest_settings.keys())
-    parsed[ParsingKey.METHOD.value] = method
+    parsed[QuestDataKey.METHOD.value] = method
     
     #GET EXPECTED SETTINGS
     settings:dict = _get_req_settings(method, quest_settings)
-    parsed[ParsingKey.AUTH_TYPE.value] = _get_auth_type(settings)
-    parsed[ParsingKey.ACTION_TYPE.value] = _get_req_type(settings)
-    if parsed[ParsingKey.ACTION_TYPE.value] == PlayerAction.ANSWER:
-        parsed[ParsingKey.CORRECT_ANSWER.value] = _get_correct_answer(settings)
+    parsed[QuestDataKey.AUTH_TYPE.value] = _get_auth_type(settings)
+    parsed[QuestDataKey.ACTION_TYPE.value] = _get_req_type(settings)
+    if parsed[QuestDataKey.ACTION_TYPE.value] == PlayerAction.ANSWER:
+        parsed[QuestDataKey.CORRECT_ANSWER.value] = _get_correct_answer(settings)
 
     #PARSE EXPECTED FIELDS
     expected_fields = _get_expected_fields(settings)
     for key in expected_fields:
         location:str = _get_location(key, settings)
-        parsed[key] = _get_field(ParsingKey(key), InputLocation(location), req, path) #should be able to cast to enum now without worries
+        parsed[key] = _get_field(QuestDataKey(key), InputLocation(location), req, path) #should be able to cast to enum now without worries
 
     return parsed
 
 #SETTINGS FUNCTIONS
 def _get_correct_answer(settings:dict):
-    correct_answer = settings.get(ParsingKey.CORRECT_ANSWER.value)
+    correct_answer = settings.get(QuestDataKey.CORRECT_ANSWER.value)
     if correct_answer is None:
         raise ParsingError('Could not find correct answer to quest. Dev issue', code=StatusCode.SERVER_ERROR)
     return correct_answer
@@ -46,7 +46,7 @@ def _get_location(key:str, settings:dict):
     return location
 
 def _get_auth_type(settings:dict) -> str:
-    auth_type = settings.get(ParsingKey.AUTH_TYPE.value)
+    auth_type = settings.get(QuestDataKey.AUTH_TYPE.value)
     if auth_type is None:
         raise ParsingError('Could not find authentication type in settings. Talk with developer', code=StatusCode.SERVER_ERROR)
     if auth_type not in AuthType:
@@ -54,7 +54,7 @@ def _get_auth_type(settings:dict) -> str:
     return auth_type
 
 def _get_req_type(settings:dict) -> str:
-    req_type:str = settings.get(ParsingKey.ACTION_TYPE.value)
+    req_type:str = settings.get(QuestDataKey.ACTION_TYPE.value)
     if req_type is None:
         raise ParsingError('Could not find request type in settings. Talk with developer', code=StatusCode.SERVER_ERROR)
     if req_type not in PlayerAction:
@@ -84,13 +84,13 @@ def _method_is_valid(method:str, allowed:list[str]):
 
 #EXPECTED FIELDS FUNCTIONS
 def _get_expected_fields(settings:dict):
-    expected_fields:list[str] = settings.get(ParsingKey.EXPECTED_FIELDS.value)
-    valid_fields = [e.value for e in ParsingKey]
+    expected_fields:list[str] = settings.get(QuestDataKey.EXPECTED_FIELDS.value)
+    valid_fields = [e.value for e in QuestDataKey]
     if not set(expected_fields).issubset(set(valid_fields)):
         raise ParsingError(f'Quest is expecting invalid field(s): {expected_fields}. Valid fields: {valid_fields}. Reach out to dev/instructor', code=StatusCode.SERVER_ERROR)
     return expected_fields
 
-def _get_field(key:ParsingKey, location:InputLocation, req:Request, path:str):
+def _get_field(key:QuestDataKey, location:InputLocation, req:Request, path:str):
     field = None
     if location == InputLocation.PATH:
         field = _get_field_from_path(key, path)
@@ -101,17 +101,17 @@ def _get_field(key:ParsingKey, location:InputLocation, req:Request, path:str):
         raise ValidationError(f'key {key.value} in {location} was empty.', code=StatusCode.BAD_REQUEST)
     return field
 
-def _get_field_from_query(key:ParsingKey, req:Request):
+def _get_field_from_query(key:QuestDataKey, req:Request):
     try:
         fields = req.args.to_dict()
         return fields.get(key.value.lower())
     except ParsingError as exc:
         raise ParsingError(f'Could not find {key.value} in query') from exc
 
-def _get_field_from_path(key:ParsingKey, path:str):
+def _get_field_from_path(key:QuestDataKey, path:str):
     try:
         fields = path.strip().split('/')
-        if key == ParsingKey.USERNAME:
+        if key == QuestDataKey.USERNAME:
             return fields[0]
     except IndexError as exc:
         raise ParsingError(f'Missing {key.value} in path.', StatusCode.BAD_REQUEST) from exc

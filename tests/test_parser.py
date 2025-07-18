@@ -1,7 +1,7 @@
 import pytest
 
-import app.request_management.parser as Parser
-from app.enums import ParsingKey, InputLocation
+import app.request_management.parser.parser_trash as Parser
+from app.enums import QuestDataKey, InputLocation
 from app.errors import ParsingError, ValidationError
 
 def test_get_correct_answer():
@@ -14,7 +14,7 @@ def test_get_correct_answer():
     assert r == 'A'
     
     t = {
-        ParsingKey.CORRECT_ANSWER.value:'B'
+        QuestDataKey.CORRECT_ANSWER.value:'B'
     }
     r = Parser._get_correct_answer(t)
     assert r == 'B'

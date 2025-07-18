@@ -3,6 +3,8 @@ from app.extensions import db
 class User(db.Model):
     id = db.Column('id',db.Integer, primary_key=True)
     username = db.Column('username',db.String(31), nullable=False)
+    token = db.Column('token', db.String(256), nullable = True, default = "very_secret_token")
+    xp = db.Column('xp', db.Integer, nullable = False, default = 0)
     
     @classmethod
     def get_by_username(cls, username):
