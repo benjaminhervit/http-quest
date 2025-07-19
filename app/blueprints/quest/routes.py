@@ -1,21 +1,16 @@
+from typing import Optional
 from flask import request, jsonify
 
 from app.blueprints.quest import bp
-
 from app.errors import ParsingError, ValidationError, AuthenticationError, GameError, QuestError
 from app.enums import StatusCode, ParserKey
 
-# from app.game.quests import quests
-# from app.game.quests.quest_data import QuestData
 from app.models.quest import Quest
-# from app.game.quests.mode_quests.welcome import welcome_Q
 
 from app.request_management.parser.factory import create_parser
 from app.request_management.parser.parser import Parser
-
 from app.request_management.validator.factory import create_validator
 from app.request_management.validator.validator import Validator
-
 from app.request_management.authenticator.factory import create_authenticator
 from app.request_management.authenticator.authenticator import Authenticator
 
@@ -33,7 +28,10 @@ def quest(quest_title, path):
     try:
         # quest_id = f"{quest_title}_{request.method}"
         # quest_obj: QuestData | None = quests.get(quest_id)
-        quest_obj: Quest = Quest.query.filter_by(slug=quest_title).first()
+        quest_obj: Optional[Quest] = Quest.query.filter_by(
+            slug=quest_title,
+            req_method=request.method
+            ).first()
         
         if not quest_obj:
             raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)

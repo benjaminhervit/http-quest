@@ -10,7 +10,7 @@ from app.game.quest_validator.factory import create_solution_validator
 class GameManager:
     def __init__(self, quest_data: Quest, user_answer: str, username: str):
         self.quest_data: Quest = quest_data
-        self.quest_state: QuestState = QuestState.LOCKED
+        self.quest_state: QuestState = QuestState.UNLOCKED
         self.check_user_answer: Optional[Callable] = create_solution_validator(
             self.quest_data.solution_fn
             )
@@ -34,7 +34,7 @@ class GameManager:
             return self.quest_data.failed_response
         if self.quest_state == QuestState.SUCCESSFUL_ATTEMPT:
             next_direction = (
-                self.quest_data.next_quest.direction
+                self.quest_data.next_quest.directions
                 if self.quest_data.next_quest else '')
             return (
                 f"{self.quest_data.success_response}\n "
