@@ -1,6 +1,6 @@
 from app.models.quest import Quest
 
-welcome_Q = Quest(
+null_Q = Quest(
     title="",
     story="",
     directions="There is nothing from here. This is an empty path.",

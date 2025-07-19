@@ -1,4 +1,5 @@
 from app.models.quest import Quest
+from app.game.quests.mode_quests.null_q import null_Q
 
 accept_Q = Quest(
     title="Welcome",
@@ -20,3 +21,5 @@ accept_Q = Quest(
     answer_key="answer",
     auth_type="USERNAME",
     )
+
+accept_Q.next_quest = null_Q
