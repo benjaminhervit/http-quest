@@ -2,6 +2,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Dict
 from enum import Enum
 import json
+from app.request_management.request_settings import RequestSettings
 
 @dataclass
 class QuestData:
@@ -11,10 +12,10 @@ class QuestData:
     #ROUTE
     
     #TXT
+    q_id:str = field(init=False)
     title: str
     directions_txt: str
-    welcome_txt: str
-    description_txt: str
+    story_txt: str
     quest_txt: str
     response_wrong_txt: str
     response_correct_txt: str
@@ -24,14 +25,16 @@ class QuestData:
     correct_answer: str
     quest_validator_type:str
 
-    next_quest: 'QuestData'
+    next_quest_directions: str
     
     #REQUEST SETTINGS
     route: str = field(init=False)
-    request_settings: Dict[str, Dict[str, str]]
-
+    request_settings : RequestSettings
+    
+    
     def __post_init__(self):
         self.route = self.title.strip().lower().replace(' ', '_')
+        self.q_id = f"{self.route}_{self.request_settings.req_method}"
 
     def to_dict(self):
         """
@@ -44,6 +47,8 @@ class QuestData:
                 return {convert(k): convert(v) for k, v in obj.items()}
             elif isinstance(obj, list):
                 return [convert(i) for i in obj]
+            elif isinstance(obj, RequestSettings):
+                return {convert(k): convert(v) for k, v in obj.to_dict()}
             return obj
 
         return convert(asdict(self))

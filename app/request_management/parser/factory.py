@@ -5,7 +5,7 @@ from app.errors import ParsingError
 
 content_functions = {
     InputLocation.NONE : strategies.no_content,
-    InputLocation.QUERY : strategies.get_content_from_query
+    InputLocation.QUERY : strategies.get_answer_from_query
 }
 
 username_functions = {
@@ -14,7 +14,7 @@ username_functions = {
 }
 
 token_functions = {
-    InputLocation.NONE : strategies.no_token
+    InputLocation.NONE : strategies.no_token,
 }
 
 def create_parser(content_location:str, username_location:str, token_location:str)->Parser:
@@ -28,5 +28,5 @@ def create_parser(content_location:str, username_location:str, token_location:st
     content_fn = content_functions.get(InputLocation(content_location))
     username_fn = username_functions.get(InputLocation(username_location))
     token_fn = token_functions.get(InputLocation(token_location))
-    return Parser(content_fn=content_fn, username_fn=username_fn, token_fn=token_fn)
+    return Parser(answer_fn=content_fn, username_fn=username_fn, token_fn=token_fn)
     

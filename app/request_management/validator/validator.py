@@ -12,7 +12,7 @@ class Validator:
         expected_method = parsed.get(ParserKey.METHOD.value)
         method_is_valid = self._validate_method(method, expected_method)
         
-        content = parsed.get(ParserKey.CONTENT.value)
+        content = parsed.get(ParserKey.ANSWER.value)
         content_is_valid = self._validate_content(content=content, settings=settings)
         
         username = parsed.get(ParserKey.USERNAME.value)

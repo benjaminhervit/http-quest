@@ -1,30 +1,30 @@
 from app.game.quests.quest_data import QuestData
-from app.game.quests.empty_quest import empty_quest
+from app.request_management.request_settings import RequestSettings
+from app.game.quests.accept_quest import accept_q
 
 welcome_q = QuestData(
     #TXT
     title="Welcome",
-    welcome_txt="Welcome to a CRUDe game!",
-    directions_txt = "JUST GET HERE ALREADY!",
-    description_txt="I should probally say something inspiring here",
-    quest_txt="POST your name in the PATH you are treading and I will let you pass.",
-    response_wrong_txt="Absolutely wrong - I mean.. not even close! HOLY!",
-    response_correct_txt="BEHOLD! OUR SAVIOR IS HERE!",
+    story_txt="Welcome to a CRUDe game! The (re)quest to claim the CRUDe crown!",
+    directions_txt = "you should get here when registering?",
+    quest_txt="To get started, simply follow the directions.",
+    response_wrong_txt="... You should not even be able to fail this... How???",
+    response_correct_txt="We have lucky to have you here.",
     response_completed_txt="What are you even doing here?? Get goin!",
     
     #functions
-    correct_answer="test_answer",
+    correct_answer="",
     quest_validator_type="NONE",
     
     #next
-    next_quest = empty_quest,
+    next_quest_directions = accept_q.directions_txt,
     
-    request_settings = {
-        "METHOD_TYPE":"GET",
-        "AUTH_TYPE" : "USERNAME",
-        "USERNAME_LOCATION" : "PATH",
-        "TOKEN_LOCATION" : "NONE",
-        "CONTENT_LOCATION" : "NONE",
-        "EXPECTED_FIELDS" : ["USERNAME", "AUTHTYPE"]
-    }
+    request_settings = RequestSettings(
+        req_method='GET',
+        answer_location='NONE',
+        answer_key='ANSWER',
+        auth_type='USERNAME',
+        token_location='NONE',
+        username_location='PATH'
+    )
 )

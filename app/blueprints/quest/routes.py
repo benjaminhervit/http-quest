@@ -24,38 +24,46 @@ from app.game.game_manager.game_manager import GameManager
 def welcome(path):
     return "This is just a game. if you welcome with a name you can come further."
 
-@bp.route('<quest_id>', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
-@bp.route('<quest_id>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def quest(quest_id, path):
+@bp.route('<quest_title>', defaults={'path':''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
+@bp.route('<quest_title>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def quest(quest_title, path):
     try:
+        quest_id = f"{quest_title}_{request.method}"
         quest_obj:QuestData = quests.get(quest_id)
         if not quest_obj:
             raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)
-        
-        #GET QUEST REQUEST SETTINGS
-        content_location:str = quest_obj.request_settings.get(QuestDataKey.CONTENT_LOCATION.value)
-        username_locattion:str = quest_obj.request_settings.get(QuestDataKey.USERNAME_LOCATION.value)
-        token_location:str = quest_obj.request_settings.get(QuestDataKey.TOKEN_LOCATION.value)
-        
         #PARSE
-        parser:Parser = create_parser(content_location, username_locattion, token_location)
-        parsed:dict = parser.parse(req=request, path=path)
+        parser:Parser = create_parser(quest_obj.request_settings.answer_location, 
+                                      quest_obj.request_settings.username_location,
+                                      quest_obj.request_settings.token_location)
+        parsed:dict = parser.parse(req=request, path=path, answer_key=quest_obj.request_settings.answer_key)
         
         #VALIDATE
-        validator:Validator = create_validator(content_location, username_locattion, token_location)
+        validator:Validator = create_validator(quest_obj.request_settings.answer_location, 
+                                                quest_obj.request_settings.username_location,
+                                                quest_obj.request_settings.token_location)
+        
         validator.validate(parsed=parsed, settings=quest_obj.request_settings)
         
         #AUTHENTICATE
-        auth_type = quest_obj.request_settings.get(QuestDataKey.AUTH_TYPE.value)
-        authenticator:Authenticator = create_authenticator(auth_type)
+        authenticator:Authenticator = create_authenticator(quest_obj.request_settings.auth_type)
         authenticator.authenticate(parsed=parsed)
         
         #RUN QUEST
-        user_inputs = parsed.get(ParserKey.CONTENT.value)
+        user_inputs = parsed.get(ParserKey.ANSWER.value)
         username = parsed.get(ParserKey.USERNAME.value)
         
-        GM = GameManager(quest_data=quest_obj, user_inputs=user_inputs, username=username)
-        response = GM.run_quest()
+        GM = GameManager(quest_data=quest_obj, user_answer=user_inputs, username=username)
+        GM.run_quest()
+        
+        #UPDATE USER:QUEST SESSION DATA
+        state = GM.get_state()
+        #TODO: implement db model/table for user:quest state
+        
+        response = GM.get_response()
+        if response is None:
+            raise GameError('Game manager did not create any response', code=StatusCode.SERVER_ERROR)
+        
         return jsonify(response, StatusCode.OK)
         
     except QuestError as e:

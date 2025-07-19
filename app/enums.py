@@ -1,9 +1,5 @@
 from enum import Enum
 
-class PlayerAction(str, Enum):
-    ANSWER = "ANSWER"
-    GET_QUEST = "GET_QUEST"
-
 class ReqMethodType(str, Enum):
     GET = "GET"
     POST = "POST"
@@ -34,7 +30,7 @@ class QuestDataKey(str, Enum):
 class ParserKey(str, Enum):
     USERNAME = "username"
     METHOD = "method"
-    CONTENT = "content"
+    ANSWER = "answer"
     TOKEN = "token"
     
 class ValidatorKey(str, Enum):
@@ -42,6 +38,7 @@ class ValidatorKey(str, Enum):
     NOT_NONE = "NOT_NONE"
     EXPECTED_FIELDS = "EXPECTED_FIELDS"
     EMPTY = "EMPTY"
+    SINGLE_INPUT = "SINGLE_INPUT"
     
 class StatusCode(int, Enum):
     OK = 200
@@ -63,10 +60,3 @@ class QuestState(Enum):
     COMPLETED = "COMPLETED"
     FAILED_ATTEMPT = "FAILED_ATTEMPT"
     SUCCESSFUL_ATTEMPT = "SUCCESSFUL_ATTEMPT"
-    
-class ResponseType(Enum):
-    QUEST_IS_LOCKED = "QUEST_IS_LOCKED"
-    WRONG_ANSWER = "WRONG_ANSWER"
-    CORRECT_ANSWER = "CORRECT_ANSWER"
-    QUEST_ALREADY_COMPLETED = "QUEST_ALREADY_COMPLETED"
-    GET_QUEST = "GET_QUEST"
