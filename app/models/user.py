@@ -1,6 +1,7 @@
 from app.extensions import db
+from app.models.base import Base
 
-class User(db.Model):
+class User(db.Model, Base):
     id = db.Column('id',db.Integer, primary_key=True)
     username = db.Column('username',db.String(31), nullable=False)
     token = db.Column('token', db.String(256), nullable = True, default = "very_secret_token")
@@ -16,4 +17,3 @@ class User(db.Model):
     
     def __repr__(self):
         return f'<User {self.id}, {self.username}>'
-    

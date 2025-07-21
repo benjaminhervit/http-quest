@@ -18,6 +18,6 @@ def register():
                 new_user = User(username=username)
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(url_for('game.quest', quest_title = 'welcome', path=new_user.username))
+                return redirect(url_for('game.quest', quest_slug='welcome', path=new_user.username))
     
     return redirect(url_for('main.index'))

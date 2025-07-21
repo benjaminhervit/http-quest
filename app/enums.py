@@ -5,15 +5,6 @@ class ReqMethodType(str, Enum):
     POST = "POST"
     PUT = "PUT"
     DELETE = "DELETE"
-    
-class InputLocation(str, Enum):
-    FORM = "FORM"
-    JSON = "JSON"
-    QUERY = "QUERY"
-    RAW = "RAW"
-    PATH = "PATH"
-    HEADER = "HEADER"
-    NONE = "NONE"
 
 #keys for look up in Quest data class
 class QuestDataKey(str, Enum):
@@ -29,16 +20,38 @@ class QuestDataKey(str, Enum):
     
 class ParserKey(str, Enum):
     USERNAME = "username"
+    USERNAME_LOC = "USERNAME_LOC"
+   
     METHOD = "method"
-    ANSWER = "answer"
-    TOKEN = "token"
+    METHOD_DATA = "METHOD_DATA"
     
-class ValidatorKey(str, Enum):
+    ANSWER = "answer"
+    ANSWER_KEY = "ANSWER_KEY"
+    
+    TOKEN = "token"
+    TOKEN_LOC = "TOKEN_LOC"
+    
+    ALLOWED_REQ_METHODS = "ALLOWED_REQ_METHODS"
+    
+    FORM_KEYS = "FORM_KEYS"
+    FORM_DATA = "FORM_DATA"
+    
+    JSON_KEYS = "JSON_KEYS"
+    JSON_DATA = "JSON_DATA"
+    
+    HEADERS_KEYS = "HEADERS_KEYS"
+    HEADERS_DATA = "HEADERS_DATA"
+    
+    AUTH_TYPE = "AUTH_TYPE"
+    
+    INPUT_LOC = "INPUT_LOC"
+    
+    QUERY_KEYS = "QUERY_KEYS"
+    QUERY_DATA = "QUERY_DATA"
+    
+    PATH_DATA = "PATH_DATA"
+    
     NONE = "NONE"
-    NOT_NONE = "NOT_NONE"
-    EXPECTED_FIELDS = "EXPECTED_FIELDS"
-    EMPTY = "EMPTY"
-    SINGLE_INPUT = "SINGLE_INPUT"
     
 class StatusCode(int, Enum):
     OK = 200
@@ -53,10 +66,21 @@ class AuthType(str, Enum):
     BEARER_TOKEN = "BEARER_TOKEN"
     NO_AUTH = "NO_AUTH"
     SECRET_KEY = "X-Secret-Key"
+    NONE = "NONE"
     
 class QuestState(Enum):
     LOCKED = "LOCKED"
     UNLOCKED = "UNLOCKED"
+    CLOSED = "CLOSED"
+    FAILED = "FAILED"
     COMPLETED = "COMPLETED"
-    FAILED_ATTEMPT = "FAILED_ATTEMPT"
-    SUCCESSFUL_ATTEMPT = "SUCCESSFUL_ATTEMPT"
+    
+#  Helper enum to validate values in different contexts
+class InputLocation(str, Enum):
+    METHOD = ParserKey.METHOD.value
+    FORM_DATA = ParserKey.FORM_DATA.value
+    JSON_DATA = ParserKey.JSON_DATA.value
+    QUERY_DATA = ParserKey.QUERY_DATA.value
+    PATH_DATA = ParserKey.PATH_DATA.value
+    HEADERS_DATA = ParserKey.HEADERS_DATA.value
+    NONE = ParserKey.NONE.value

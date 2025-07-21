@@ -6,6 +6,7 @@ from app.errors import ParsingError, ValidationError, AuthenticationError, GameE
 from app.enums import StatusCode, ParserKey
 
 from app.models.quest import Quest
+from app.models.user_quest_state import UserQuestState as UQState
 
 from app.request_management.parser.factory import create_parser
 from app.request_management.parser.parser import Parser
@@ -14,7 +15,7 @@ from app.request_management.validator.validator import Validator
 from app.request_management.authenticator.factory import create_authenticator
 from app.request_management.authenticator.authenticator import Authenticator
 
-from app.game.game_manager.game_manager import GameManager
+from app.game.game_manager import GameManager
 
 
 @bp.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
@@ -22,65 +23,72 @@ def welcome(path):
     return "This is just a game. if you welcome with a name you can come further."
 
 
-@bp.route('<quest_title>', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
-@bp.route('<quest_title>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def quest(quest_title, path):
+@bp.route('<quest_slug>', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
+@bp.route('<quest_slug>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def quest(quest_slug, path):
     try:
-        # quest_id = f"{quest_title}_{request.method}"
-        # quest_obj: QuestData | None = quests.get(quest_id)
-        quest_obj: Optional[Quest] = Quest.query.filter_by(
-            slug=quest_title,
-            req_method=request.method
-            ).first()
-        
-        if not quest_obj:
+        quest_data = Quest.get_by_slug(quest_slug)
+        if not isinstance(quest_data, Quest):
             raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)
         
-        print(quest_obj.as_dict())
-        
-        #PARSE
+        # PARSE
         parser: Parser = create_parser(
-            quest_obj.answer_loc, 
-            quest_obj.username_loc,
-            quest_obj.token_loc)
-        parsed: dict = parser.parse(
+            quest_data.input_loc,
+            quest_data.username_loc,
+            quest_data.token_loc)
+        
+        parsed: dict = parser.parse_request(
             req=request, path=path,
-            answer_key=quest_obj.answer_key)
+            answer_key=quest_data.answer_key)
         
-        #VALIDATE
-        validator: Validator = create_validator(
-            quest_obj.answer_loc,
-            quest_obj.username_loc,
-            quest_obj.token_loc)
+        validator = Validator(['GET', 'POST'], [], 'NONE', 'NONE', 'NONE')
         
-        validator.validate(parsed=parsed)
+        print(f"parsed:\n {parsed}")
+        return "testing"
         
-        #AUTHENTICATE
-        authenticator: Authenticator = create_authenticator(
-            quest_obj.auth_type
-            )
-        authenticator.authenticate(parsed=parsed)
+        # #VALIDATE
+        # validator: Validator = create_validator(
+        #     quest_data.answer_loc,
+        #     quest_data.username_loc,
+        #     quest_data.token_loc)
         
-        #RUN QUEST
-        user_inputs = parsed.get(ParserKey.ANSWER.value)
-        username = parsed.get(ParserKey.USERNAME.value)
+        # parsed = validator.validate(parsed=parsed)
         
-        GM = GameManager(quest_data=quest_obj, 
-                         user_answer=user_inputs, 
-                         username=username)
-        GM.run_quest()
+        # #AUTHENTICATE
+        # authenticator: Authenticator = create_authenticator(
+        #     quest_data.auth_type
+        #     )
+        # authenticator.authenticate(parsed=parsed)
         
-        #UPDATE USER:QUEST SESSION DATA
-        state = GM.get_state()
-        #TODO: implement db model/table for user:quest state
+        # #RUN QUEST
+        # user_inputs: str = parsed.get(ParserKey.ANSWER.value, "")
+        # username: str = parsed.get(ParserKey.USERNAME.value, "")
+        # quest_state = UQState.get_uqs(
+        #     username=username, 
+        #     slug=quest_data.slug
+        #     )
         
-        response = GM.get_response()
-        if response is None:
-            raise GameError('Game manager did not create any response', 
-                            code=StatusCode.SERVER_ERROR)
+        # if quest_state is None:
+        #     raise GameError(f'Could not retreive quest state with usernae: '
+        #                     f'{username}, slug:{quest_data.slug}')
         
-        return jsonify(response, StatusCode.OK)
-        return "woho"
+        # GM = GameManager(quest_data=quest_data,
+        #                  user_answer=user_inputs,
+        #                  username=username,
+        #                  state=quest_state.state)
+        # GM.run_quest()
+        
+        # #UPDATE USER:QUEST SESSION DATA
+        # state: str = GM.get_end_state()
+        # UQState.update_state(state, quest_state)
+        # UQState.unlock_next_quests(quest_data, quest_state, username)
+
+        # response = GM.get_response()
+        # if response is None:
+        #     raise GameError('Game manager did not create any response', 
+        #                     code=StatusCode.SERVER_ERROR)
+        
+        # return jsonify(response, StatusCode.OK)
         
     except QuestError as e:
         return jsonify({'error': f'Quest error: {str(e)}'}, e.code)

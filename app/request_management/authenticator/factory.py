@@ -4,7 +4,7 @@ from app.errors import AuthenticationError
 import app.request_management.authenticator.strategies as strategies
 
 functions = {
-    AuthType.NO_AUTH : strategies.no_auth,
+    AuthType.NONE : strategies.no_auth,
     AuthType.USERNAME : strategies.by_username
 }
 
