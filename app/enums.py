@@ -5,33 +5,20 @@ class ReqMethodType(str, Enum):
     POST = "POST"
     PUT = "PUT"
     DELETE = "DELETE"
-
-#keys for look up in Quest data class
-class QuestDataKey(str, Enum):
-    AUTH_TYPE = "AUTH_TYPE"
-    CONTENT_LOCATION = "CONTENT_LOCATION"
-    USERNAME_LOCATION = "USERNAME_LOCATION"
-    TOKEN_LOCATION = "TOKEN_LOCATION"
-    QUEST_VALIDATOR_TYPE = "QUEST_VALIDATOR_TYPE"
-    EXPECTED_FIELDS = "EXPECTED_FIELDS"
-    METHOD = "METHOD"
-    ACTION_TYPE = "REQ_TYPE"
-    CORRECT_ANSWER = "CORRECT_ANSWER"
     
 class ParserKey(str, Enum):
     USERNAME = "username"
     USERNAME_LOC = "USERNAME_LOC"
    
     METHOD = "method"
-    # METHOD_DATA = "METHOD_DATA"
+    METHOD_DATA = "METHOD_DATA"
     
     ANSWER = "answer"
     ANSWER_KEY = "ANSWER_KEY"
+    SOLUTION_FN_KEY = "SOLUTION_FN"
     
     TOKEN = "token"
     TOKEN_LOC = "TOKEN_LOC"
-    
-    METHOD_DATA = "ALLOWED_REQ_METHODS"
     
     FORM_KEYS = "FORM_KEYS"
     FORM_DATA = "FORM_DATA"
@@ -84,3 +71,8 @@ class InputLocation(str, Enum):
     PATH_DATA = ParserKey.PATH_DATA.value
     HEADERS_DATA = ParserKey.HEADERS_DATA.value
     NONE = ParserKey.NONE.value
+    
+class SolutionFunc(str, Enum):
+    SOLUTION_FN_KEY = ParserKey.SOLUTION_FN_KEY.value
+    NONE = ParserKey.NONE.value
+    MUST_MATCH = "MUST_MATCH"

@@ -1,4 +1,4 @@
-from app.enums import QuestState, StatusCode
+from app.enums import QuestState, StatusCode, ParserKey
 from app.errors import GameError
 from typing import Callable, Optional
 
@@ -7,30 +7,24 @@ from app.game.quest_validator.factory import create_solution_validator
 
 
 class GameManager:
-    def __init__(self, quest_data: Quest, user_answer: str,
-                 username: str, state: str):
+    def __init__(self, quest_data: Quest, req_data: dict, state: QuestState):
         
         self.quest_data: Quest = quest_data
+        self.req_data: dict = req_data
         
-        if state not in [e.value for e in QuestState]:
-            raise GameError(f'quest state given to GM is not valid: {state}',
+        if state not in QuestState:
+            raise GameError(f'quest state is not valid: {state}',
                             code=StatusCode.SERVER_ERROR)
         self.state: QuestState = QuestState(state)
         
-        self.check_user_answer: Optional[Callable] = create_solution_validator(
+        self.run_strategy: Callable = create_solution_validator(
             self.quest_data.solution_fn)
 
-        self.user_answer: str = user_answer
-        self.username: str = username
+        self.user_answer: str = ''  #  TODO: not implemented yet.
+        self.username: str = '' #  TODO: not implemented yet.
 
     def run_quest(self):
-        if self.state == QuestState.UNLOCKED:
-            if self.check_user_answer and self.check_user_answer(
-                user_input=self.user_answer,
-                validation_data=self.quest_data.solution):
-                self.state = QuestState.COMPLETED
-            else:
-                self.state = QuestState.FAILED
+        self.run_strategy(GM=self)
 
     def get_response(self):
         if self.state == QuestState.LOCKED:
@@ -57,3 +51,5 @@ class GameManager:
             return QuestState.UNLOCKED.value
         return self.state.value
     
+    def set_state(self, new_state: QuestState):
+        self.state = new_state

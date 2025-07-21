@@ -24,9 +24,10 @@ class Quest(db.Model, Base):
     is_completed_response = db.Column(Text, nullable=False)
     
     #solution related
+    solver_method = db.Column(Text, nullable=False)
     quest = db.Column(Text, nullable=True)
     expected_solution = db.Column(Text, nullable=True)
-    solution_fn = db.Column(String(255), nullable=True)
+    solution_fn = db.Column(String(255), nullable=False)
     
     #relationships
     prev_quest_id = db.Column(

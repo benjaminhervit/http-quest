@@ -1,10 +1,13 @@
-from app.errors import ParsingError
-from app.enums import StatusCode
+from app.errors import ParsingError, GameError
+from app.enums import StatusCode, QuestState
+from app.game.game_manager import GameManager
 
-def none_quest(*args, **kwargs):
-    return True
+def none_quest(GM: GameManager):
+    # None quest will autocomplete or do nothing
+    if GM.state == QuestState.UNLOCKED:
+        GM.set_state(QuestState.COMPLETED)
 
-def single_input_validator(*args, **kwargs):
+def much_match(*args, **kwargs):
     user_input = kwargs.get('user_input')
     expected = kwargs.get('validation_data')
     if user_input is None or expected is None:
