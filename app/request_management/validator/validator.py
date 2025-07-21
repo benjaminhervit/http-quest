@@ -1,57 +1,82 @@
-from app.enums import ParserKey
+from flask import Request
+
+from app.enums import ParserKey, StatusCode, ReqMethodType
+from app.errors import ValidationError
+from app.models.quest import Quest
 
 class Validator:
     
-    def validate(self, parsed: dict, allowed_methods: list[str],
-                 username_loc=None,
-                 input_loc=None,
-                 token_loc=None,
-                 auth_type=None,
-                 query_keys=None,
-                 form_keys=None,
-                 json_keys=None,
-                 headers_keys=None):
+    @staticmethod
+    def validate_request(parsed: dict, settings: dict):
+        print(f"Parsed:\n {parsed}\n\n")
         
-        if parsed.get(ParserKey.METHOD) not in allowed_methods:
-            return False
+        print(f"settings:\n {settings}")
+        Validator.validate_method_data(parsed.get(ParserKey.METHOD_DATA), settings.get(ParserKey.METHOD_DATA))
         
-        if username_loc and parsed.get(username_loc) is None:
-            return False
+        #query
+        Validator.validate_query_data(settings.get(ParserKey.QUERY_KEYS), parsed.get(ParserKey.QUERY_DATA))
         
-        if token_loc and parsed.get(token_loc) is None: 
-            return False
+        #form
+        # data = req.form.to_dict() if req.form else {}
+        # Validator.check_for_key_data_match(settings.get(ParserKey.FORM_DATA),
+        #                                    data, 'Form')
         
-        if input_loc and parsed.get(input_loc) is None: 
-            return False
+        # #json
+        # data = req.get_json(force=True, silent=True)
+        # Validator.check_for_key_data_match(settings.get(ParserKey.JSON_DATA),
+        #                                    data, 'Json')
         
-        if query_keys and self.keys_found_in_loc(parsed, query_keys,
-                                                 ParserKey.QUERY_DATA):
-            return False
+        return True
+    
+    @staticmethod
+    def validate_method_data(method: str | None, allowed: list[str] | None):
         
-        if form_keys and self.keys_found_in_loc(parsed, form_keys,
-                                                ParserKey.FORM_DATA):
-            return False
+        if not isinstance(allowed, list):
+            raise ValueError('Allowed methods should be list.')
         
-        if json_keys and self.keys_found_in_loc(parsed, json_keys,
-                                                ParserKey.JSON_DATA):
-            return False
+        if method not in ReqMethodType:
+            raise ValidationError(f'Could not recognize request method {method}',
+                                  code=StatusCode.BAD_REQUEST)
         
-        if headers_keys and self.keys_found_in_loc(
-            parsed, headers_keys,
-            ParserKey.HEADERS_DATA):
+        if method not in allowed:
+            raise ValidationError(f'Use request method {method} is not valid.',
+                                  code=StatusCode.BAD_REQUEST)
+        
+        print(f"VALIDATE METHOD: {method}, {allowed}")
+        
+        return True
+    
+    @staticmethod
+    def validate_json_data(keys: list[str] | None, data: dict):
+        return Validator.check_for_key_data_match(keys, data, 'JSON')
+    
+    @staticmethod
+    def validate_query_data(keys: list[str] | None, data: dict):
+        return Validator.check_for_key_data_match(keys, data, 'Query')
+        
+    @staticmethod
+    def check_for_key_data_match(keys: list[str] | None,
+                                 data: dict | None, loc: str):
+        
+        if not isinstance(keys, list):
+            raise TypeError(f'Expected keys to be list[str] in {loc}.')
             
-            return False
+        if not isinstance(data, dict):
+            raise TypeError(f'Expected data to be dict in {loc}.')
         
-        # TODO: AUTH TYPE AND INPUT VALIDATION
+        if not keys and data:
+            raise ValidationError(f'No keys but fount data in {loc}: {data}.')
         
-            
-    def keys_found_in_loc(self, parsed: dict, keys: list[str], loc: ParserKey):
-        data: dict | None = parsed.get(loc)
-        if data is None or data == {}:
-            return False
+        if keys and not data:
+            raise ValidationError(f'Found keys: {keys} but not data in {loc}.')
         
-        for key in keys:
-            if data.get(key) is None:
-                return False
+        if len(keys) > len(data.keys()) or len(keys) < len(data.keys()):
+            raise ValidationError(f'Expected {len(keys)} keys: {keys} in'
+                                  f' {loc} but got '
+                                  f'{len(data.keys())} keys: {data.keys()}')
         
+        if not set(keys).issubset(data.keys()):
+            raise ValidationError(f'Could not find key {keys} in {loc}:'
+                                  f' {data} - {list(data.keys())}')
+
         return True

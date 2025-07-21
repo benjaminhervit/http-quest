@@ -23,7 +23,7 @@ class ParserKey(str, Enum):
     USERNAME_LOC = "USERNAME_LOC"
    
     METHOD = "method"
-    METHOD_DATA = "METHOD_DATA"
+    # METHOD_DATA = "METHOD_DATA"
     
     ANSWER = "answer"
     ANSWER_KEY = "ANSWER_KEY"
@@ -31,7 +31,7 @@ class ParserKey(str, Enum):
     TOKEN = "token"
     TOKEN_LOC = "TOKEN_LOC"
     
-    ALLOWED_REQ_METHODS = "ALLOWED_REQ_METHODS"
+    METHOD_DATA = "ALLOWED_REQ_METHODS"
     
     FORM_KEYS = "FORM_KEYS"
     FORM_DATA = "FORM_DATA"

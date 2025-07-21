@@ -33,9 +33,9 @@ def minimum_test_quest() -> Quest:
 
 def test_keys_with_values(minimum_test_quest):
     minimum_test_quest.form_keys = "form"
-    minimum_test_quest.query_keys = "query"
-    minimum_test_quest.json_keys = "json"
-    minimum_test_quest.headers_keys = "headers"
+    minimum_test_quest.query_keys = "query,b"
+    minimum_test_quest.json_keys = "json,c"
+    minimum_test_quest.headers_keys = "headers,d"
     
     minimum_test_quest.answer_key = "answer_key_value"
     minimum_test_quest.input_loc = "input_loc_value"
@@ -49,15 +49,15 @@ def test_keys_with_values(minimum_test_quest):
     #  check methods
     parsed: dict = Parser.parse_quest_settings(minimum_test_quest)
     assert isinstance(parsed, dict)
-    methods: list[str] | None = parsed.get(ParserKey.ALLOWED_REQ_METHODS)
+    methods: list[str] | None = parsed.get(ParserKey.METHOD_DATA)
     assert isinstance(methods, list)
     assert sorted(methods) == sorted(['GET', 'POST', 'PUT', 'DELETE'])
     
     #check keys
-    assert parsed.get(ParserKey.FORM_KEYS) == 'form'
-    assert parsed.get(ParserKey.QUERY_KEYS) == 'query'
-    assert parsed.get(ParserKey.JSON_KEYS) == 'json'
-    assert parsed.get(ParserKey.HEADERS_KEYS) == 'headers'
+    assert parsed.get(ParserKey.FORM_KEYS) == ['form']
+    assert parsed.get(ParserKey.QUERY_KEYS) == ['query', 'b']
+    assert parsed.get(ParserKey.JSON_KEYS) == ['json', 'c']
+    assert parsed.get(ParserKey.HEADERS_KEYS) == ['headers', 'd']
     
     #auth
     assert parsed.get(ParserKey.AUTH_TYPE) == 'auth_type_value'
@@ -85,16 +85,16 @@ def test_get_quest_methods(minimum_test_quest):
     # multi methods
     minimum_test_quest.allowed_req_methods = 'GET,POST'
     parsed = Parser.parse_quest_settings(minimum_test_quest)
-    assert parsed.get(ParserKey.ALLOWED_REQ_METHODS) == ['GET', 'POST']
+    assert parsed.get(ParserKey.METHOD_DATA) == ['GET', 'POST']
     
 def test_parse_quest_settings_with_minimum_quest_settings(minimum_test_quest):
     parsed = Parser.parse_quest_settings(minimum_test_quest)
-    assert parsed.get(ParserKey.ALLOWED_REQ_METHODS) == ['GET']
-    assert parsed.get(ParserKey.ALLOWED_REQ_METHODS) != ['get']
-    assert parsed.get(ParserKey.QUERY_KEYS) is None
-    assert parsed.get(ParserKey.JSON_KEYS) is None
-    assert parsed.get(ParserKey.FORM_KEYS) is None
-    assert parsed.get(ParserKey.HEADERS_KEYS) is None
+    assert parsed.get(ParserKey.METHOD_DATA) == ['GET']
+    assert parsed.get(ParserKey.METHOD_DATA) != ['get']
+    assert parsed.get(ParserKey.QUERY_KEYS) == []
+    assert parsed.get(ParserKey.JSON_KEYS) == []
+    assert parsed.get(ParserKey.FORM_KEYS) == []
+    assert parsed.get(ParserKey.HEADERS_KEYS) == []
     assert parsed.get(ParserKey.USERNAME_LOC) is None
     assert parsed.get(ParserKey.ANSWER_KEY) is None
     assert parsed.get(ParserKey.INPUT_LOC) is None

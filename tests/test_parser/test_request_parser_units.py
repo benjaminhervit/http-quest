@@ -6,10 +6,11 @@ some standard rules, e.g. no Form together with GET.
 """
 
 import pytest
-import app.request_management.parser.request_strategies as ParseStrat
 from flask import Flask, request
 
-from app.enums import ReqMethodType, ParserKey
+import app.request_management.parser.request_strategies as ParseStrat
+
+from app.enums import ReqMethodType
 from app.errors import ParsingError
 
 app = Flask(__name__)
