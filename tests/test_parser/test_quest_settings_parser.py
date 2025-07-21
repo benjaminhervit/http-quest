@@ -6,14 +6,10 @@ some standard rules, e.g. no Form together with GET.
 """
 
 import pytest
-from flask import Flask, request
 
-from app.enums import ParserKey, InputLocation
-from app.errors import ParsingError
+from app.enums import ParserKey
 from app.models.quest import Quest
-from app.request_management.parser.parser import Parser
-
-app = Flask(__name__)
+from app.request_management import Parser
 
 @pytest.fixture
 def minimum_test_quest() -> Quest:

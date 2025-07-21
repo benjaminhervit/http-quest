@@ -23,9 +23,8 @@ class Parser:
     
     @staticmethod
     def parse_path(req: Request):
-        path = req.path
-        return path.split('/') if path else []
-    
+        path: list[str] = req.path.split('/')
+        return [p.strip() for p in path if p]
     
     @staticmethod
     def parse_request(req: Request):

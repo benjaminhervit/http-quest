@@ -1,8 +1,5 @@
-from flask import Request
-
 from app.enums import ParserKey, StatusCode, ReqMethodType
 from app.errors import ValidationError
-from app.models.quest import Quest
 
 class Validator:
     
@@ -11,22 +8,15 @@ class Validator:
         print(f"Parsed:\n {parsed}\n\n")
         
         print(f"settings:\n {settings}")
-        Validator.validate_method_data(parsed.get(ParserKey.METHOD_DATA), settings.get(ParserKey.METHOD_DATA))
+        Validator.validate_method_data(parsed.get(ParserKey.METHOD_DATA),
+                                       settings.get(ParserKey.METHOD_DATA))
         
         #query
-        Validator.validate_query_data(settings.get(ParserKey.QUERY_KEYS), parsed.get(ParserKey.QUERY_DATA))
-        
-        #form
-        # data = req.form.to_dict() if req.form else {}
-        # Validator.check_for_key_data_match(settings.get(ParserKey.FORM_DATA),
-        #                                    data, 'Form')
-        
-        # #json
-        # data = req.get_json(force=True, silent=True)
-        # Validator.check_for_key_data_match(settings.get(ParserKey.JSON_DATA),
-        #                                    data, 'Json')
+        Validator.validate_query_data(settings.get(ParserKey.QUERY_KEYS),
+                                      parsed.get(ParserKey.QUERY_DATA) or {})
         
         return True
+    
     
     @staticmethod
     def validate_method_data(method: str | None, allowed: list[str] | None):
@@ -46,17 +36,20 @@ class Validator:
         
         return True
     
+    
     @staticmethod
     def validate_json_data(keys: list[str] | None, data: dict):
         return Validator.check_for_key_data_match(keys, data, 'JSON')
     
+    
     @staticmethod
     def validate_query_data(keys: list[str] | None, data: dict):
         return Validator.check_for_key_data_match(keys, data, 'Query')
+    
         
     @staticmethod
     def check_for_key_data_match(keys: list[str] | None,
-                                 data: dict | None, loc: str):
+                                 data: dict, loc: str):
         
         if not isinstance(keys, list):
             raise TypeError(f'Expected keys to be list[str] in {loc}.')

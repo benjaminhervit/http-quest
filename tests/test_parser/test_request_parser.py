@@ -1,8 +1,7 @@
 import pytest
 from flask import Flask, request
 
-from app.request_management.parser.parser import Parser
-
+from app.request_management import Parser
 from app.enums import ParserKey
 
 app = Flask(__name__)

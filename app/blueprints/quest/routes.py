@@ -3,15 +3,12 @@ from flask import request, jsonify
 
 from app.blueprints.quest import bp
 from app.errors import ParsingError, ValidationError, AuthenticationError, GameError, QuestError
-from app.enums import StatusCode, ParserKey
+from app.enums import StatusCode
 
 from app.models.quest import Quest
 from app.models.user_quest_state import UserQuestState as UQState
 
-from app.request_management.parser.factory import create_parser
-from app.request_management.parser.parser import Parser
-from app.request_management.validator.factory import create_validator
-from app.request_management.validator.validator import Validator
+from app.request_management import Parser, Validator
 from app.request_management.authenticator.factory import create_authenticator
 from app.request_management.authenticator.authenticator import Authenticator
 
@@ -32,19 +29,13 @@ def quest(quest_slug, path):
             raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)
         
         # PARSE
-        parser: Parser = create_parser(
-            quest_data.input_loc,
-            quest_data.username_loc,
-            quest_data.token_loc)
-        
-        parsed: dict = parser.parse_request(
-            req=request, path=path,
-            answer_key=quest_data.answer_key)
-        
-        validator = Validator(['GET', 'POST'], [], 'NONE', 'NONE', 'NONE')
-        
-        print(f"parsed:\n {parsed}")
-        return "testing"
+        settings: dict = Parser.parse_quest_settings(quest_data)
+        parsed: dict = Parser.parse_request(req=request)
+        if not Validator.validate_request(parsed, settings):
+            raise ValidationError(f'Could not successfully validate'
+                                  f'{quest_data.title} with parsed data: \n'
+                                  f'{parsed} settings: {settings}')
+        return "testing ended with validation successful"
         
         # #VALIDATE
         # validator: Validator = create_validator(

@@ -1,8 +1,7 @@
 import pytest
 
 from app.errors import ValidationError
-from app.enums import ParserKey, InputLocation
-from app.request_management.validator.validator import Validator
+from app.request_management import Validator
 
 @pytest.mark.parametrize("keys, parsed_data, raises_exception, expected_result",
                          [
