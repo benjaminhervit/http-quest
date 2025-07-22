@@ -3,6 +3,8 @@ from app.game.game_manager import GameManager
 from app.game.quests.welcome import welcome_Q
 from app.enums import QuestState, ParserKey
 
+# TODO Test if todo works
+
 def test_unlocked_welcome():
     parsed: dict = {ParserKey.METHOD_DATA: 'GET'}
     GM = GameManager(quest_data=welcome_Q,
