@@ -17,14 +17,14 @@ class GameManager:
                             code=StatusCode.SERVER_ERROR)
         self.state: QuestState = QuestState(state)
         
-        self.run_strategy: Callable = create_solution_validator(
+        self.execute_strategy: Callable = create_solution_validator(
             self.quest_data.solution_fn)
 
         self.user_answer: str = ''  #  TODO: not implemented yet.
         self.username: str = '' #  TODO: not implemented yet.
 
     def run_quest(self):
-        self.run_strategy(GM=self)
+        self.execute_strategy(GM=self)
 
     def get_response(self):
         if self.state == QuestState.LOCKED:

@@ -2,4 +2,8 @@
   "python.analysis.extraPaths": ["./app"],
   "python.analysis.typeCheckingMode": "basic",
   "python.languageServer": "Pylance",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.github": false
+  }
 }
