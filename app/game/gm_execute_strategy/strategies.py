@@ -1,11 +1,13 @@
 from app.errors import ParsingError, GameError
 from app.enums import StatusCode, QuestState
-from app.game.game_manager import GameManager
 
-def none_quest(GM: GameManager):
+def none_quest(gm: 'GameManager') -> None:
     # None quest will autocomplete or do nothing
-    if GM.state == QuestState.UNLOCKED:
-        GM.set_state(QuestState.COMPLETED)
+    from app.game.game_manager.game_manager import GameManager
+    if not isinstance(gm, GameManager):
+        raise GameError(f'none_quest() did not receive the GM but instead type: {type(gm)}: {gm}')
+    if gm.state == QuestState.UNLOCKED:
+        gm.set_state(QuestState.COMPLETED)
 
 def much_match(*args, **kwargs):
     user_input = kwargs.get('user_input')

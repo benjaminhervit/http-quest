@@ -1,7 +1,7 @@
 import pytest
 
 from app.errors import ValidationError
-from app.request_management import Validator
+from app.validator.validator import Validator
 
 @pytest.mark.parametrize("keys, parsed_data, raises_exception, expected_result",
                          [

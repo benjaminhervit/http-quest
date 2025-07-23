@@ -5,13 +5,11 @@ class Validator:
     
     @staticmethod
     def validate_request(parsed: dict, settings: dict):
-        print(f"Parsed:\n {parsed}\n\n")
-        
-        print(f"settings:\n {settings}")
+        # method
         Validator.validate_method_data(parsed.get(ParserKey.METHOD_DATA),
                                        settings.get(ParserKey.METHOD_DATA))
         
-        #query
+        # query
         Validator.validate_query_data(settings.get(ParserKey.QUERY_KEYS),
                                       parsed.get(ParserKey.QUERY_DATA) or {})
         
@@ -31,8 +29,6 @@ class Validator:
         if method not in allowed:
             raise ValidationError(f'Use request method {method} is not valid.',
                                   code=StatusCode.BAD_REQUEST)
-        
-        print(f"VALIDATE METHOD: {method}, {allowed}")
         
         return True
     

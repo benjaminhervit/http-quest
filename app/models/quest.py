@@ -10,11 +10,11 @@ from app.enums import InputLocation, ReqMethodType
 class Quest(db.Model, Base):
     __tablename__ = "quest"
     
-    #route and identifier
+    # route and identifier
     id = db.Column(Integer, primary_key=True, autoincrement=True)
     slug = db.Column(String(255), nullable=False, index=True)
     
-    #content
+    # content
     title = db.Column(String(255), nullable=False, index=True)
     directions = db.Column(Text, nullable=False)
     story = db.Column(Text, nullable=False)
@@ -23,11 +23,40 @@ class Quest(db.Model, Base):
     is_locked_response = db.Column(Text, nullable=False)
     is_completed_response = db.Column(Text, nullable=False)
     
-    #solution related
-    solver_method = db.Column(Text, nullable=False)
-    quest = db.Column(Text, nullable=True)
+    # request settings
+    allowed_req_methods = db.Column(String(255), nullable=True)
+    
+    expects_query = db.Column(db.Boolean, nullable=False)
+    query_keys = db.Column(String(255), nullable=True)
+    
+    # TODO: uncomment with first json quest
+    # expects_json = db.Column(db.Boolean, nullable=False)
+    # json_keys = db.Column(String(255), nullable=True)
+    
+    # TODO: uncomment with first form quest
+    # expects_form = db.Column(db.Boolean, nullable=False)
+    # form_keys = db.Column(String(255), nullable=True)
+    
+    # TODO: uncomment with first headers quest
+    # expects_headers = db.Column(db.Boolean, nullable=False)
+    # headers_keys = db.Column(String(255), nullable=True)
+    
+    # TODO: uncommment with first username quest
+    # username_loc = db.Column(String(255), nullable=True)
+    
+    # TODO: uncommment with first token quest
+    # token_loc = db.Column(String(255), nullable=True)
+    
+    # authentication
+    auth_type = db.Column(String(255), nullable=False)
+    
+    #execution settings
+    is_stateless = db.Column(db.Boolean, default=False)
+    quest_description = db.Column(Text, nullable=True)
     expected_solution = db.Column(Text, nullable=True)
-    solution_fn = db.Column(String(255), nullable=False)
+    execution_req_method = db.Column(String(255), nullable=False)
+    execution_strategy = db.Column(String(255), nullable=False)
+    answer_key = db.Column(String(255), nullable=True)
     
     #relationships
     prev_quest_id = db.Column(
@@ -39,20 +68,6 @@ class Quest(db.Model, Base):
         "Quest",
         remote_side=[id],
         backref="next_quests")
-
-    # parsing settings - all can be null if the setting is not needed.
-    # TODO: Consider explicit "NONE" to minimize errors and enum comparison
-    allowed_req_methods = db.Column(String(255), nullable=True)
-    query_keys = db.Column(String(255), nullable=True)
-    json_keys = db.Column(String(255), nullable=True)
-    form_keys = db.Column(String(255), nullable=True)
-    headers_keys = db.Column(String(255), nullable=True)
-    
-    username_loc = db.Column(String(255), nullable=True)
-    token_loc = db.Column(String(255), nullable=True)
-    input_loc = db.Column(String(255), nullable=True)
-    answer_key = db.Column(String(255), nullable=True)
-    auth_type = db.Column(String(255), nullable=True)
     
     def __init__(self, title, **kwargs):
         self.title = title

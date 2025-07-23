@@ -7,7 +7,7 @@ some standard rules, e.g. no Form together with GET.
 
 import pytest
 from flask import Flask, request
-from app.request_management import Parser
+from app.parsers import RequestParser as Parser
 from app.enums import ReqMethodType
 from app.errors import ParsingError
 

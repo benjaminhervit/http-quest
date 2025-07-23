@@ -3,6 +3,7 @@ from flask import Flask
 # from flask_login import UserMixin
 
 from config import Config
+import logging
 
 #import db
 from app.extensions import db
@@ -16,6 +17,12 @@ from app.blueprints.main import bp as main_bp
 from app.blueprints.auth import bp as auth_bp
 from app.blueprints.quest import bp as quest_bp
 from app.blueprints.dashboard import bp as dash_bp
+
+logging.basicConfig(
+    level=logging.DEBUG,  # or INFO, WARNING, ERROR
+    format='[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s'
+)
+
 blueprints = [main_bp, auth_bp, quest_bp, dash_bp]
 
 def create_app(config_class=Config):

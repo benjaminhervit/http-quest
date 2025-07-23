@@ -2,7 +2,7 @@ from app.enums import ParserKey, StatusCode
 from app.errors import AuthenticationError
 from app.models.user import User
 
-def no_auth(parsed:dict) -> bool:
+def no_auth(parsed: dict) -> bool:
     return True
 
 def by_username(parsed:dict) -> bool:

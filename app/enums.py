@@ -32,6 +32,7 @@ class ParserKey(str, Enum):
     AUTH_TYPE = "AUTH_TYPE"
     
     INPUT_LOC = "INPUT_LOC"
+    INPUT_DATA = "INPUT_DATA"
     
     QUERY_KEYS = "QUERY_KEYS"
     QUERY_DATA = "QUERY_DATA"
@@ -39,7 +40,14 @@ class ParserKey(str, Enum):
     PATH_DATA = "PATH_DATA"
     
     NONE = "NONE"
+
+class QuestExecutionStrategy(str, Enum):
+    NONE = "NONE"
+    MUST_MATCH = "MUST_MATCH"
     
+class AuthType(str, Enum):
+    NO_AUTH = "NO_AUTH"
+
 class StatusCode(int, Enum):
     OK = 200
     ACCEPTED = 202
