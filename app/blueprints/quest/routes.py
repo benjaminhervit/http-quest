@@ -1,43 +1,28 @@
-from typing import Optional
 from flask import request, jsonify
 
 from app.blueprints.quest import bp
 from app.errors import (ParsingError, ValidationError, 
                         AuthenticationError, GameError, QuestError)
 
-from app.enums import StatusCode, ParserKey
-
-from app.models import Quest, UserQuestState, User
-
-from app.game.game_manager.factory import create_game_manager
+from app.enums import StatusCode
+from app.models import Quest
 from app.request_manager import RequestManager
-# from app.request_manager import (RequestParser, QuestParser,
-#                                  Validator, create_authenticator)
 
 @bp.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 def welcome(path):
-    return "This is just a game. if you welcome with a name you can come further."
-
+    return "This is just a game. Extend welcome on your path and you can begin."
 
 @bp.route('<quest_slug>', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @bp.route('<quest_slug>/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def quest(quest_slug, path):
     try:
-        quest = Quest.get_by_slug(quest_slug)
-        if not isinstance(quest, Quest):
-            raise QuestError('Could not find quest. Check if you got the path right or talk with the developer.', code=StatusCode.SERVER_ERROR)
+        quest_m = Quest.get_by_slug(quest_slug)
+        if not isinstance(quest_m, Quest):
+            raise QuestError('Could not find quest. Check path '
+                             'or talk with the developer.',
+                             code=StatusCode.SERVER_ERROR)
         
-        parsed = RequestManager.handle(request, quest)
-        
-        gm = create_game_manager(quest, parsed)
-        gm.run_quest()
-        
-        if not quest.is_stateless:
-            uqs = UserQuestState.get_uqs(gm.user_name, quest.slug) 
-            if not isinstance(uqs, UserQuestState):
-                raise ImportError('Could not ')
-            UserQuestState.update_state(gm.get_end_state(), uqs=uqs)
-        return gm.get_response(), StatusCode.OK.value
+        return jsonify(RequestManager.handle(request, quest_m), StatusCode.OK)
     
     except ImportError as e:
         return jsonify({str(e)}), StatusCode.SERVER_ERROR

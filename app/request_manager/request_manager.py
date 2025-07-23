@@ -1,18 +1,24 @@
 from flask import Request
 import logging
 
+from app.enums import StatusCode
 from app.errors import ValidationError, AuthenticationError
-from app.models import Quest, User
-from app.authenticator.factory import create_authenticator
+from app.models import Quest
+
 from app.validator import Validator
 from app.parsers import QuestParser, RequestParser
+from app.request_manager.request_context import RequestContext
+from app.game.state_manager.factory import create_state_manager
+from app.game.state_manager.state_manager import StateManager
+from app.game.game_manager import GameManager
+from app.authenticator.factory import create_authenticator
 
 log = logging.getLogger(__name__)
 # TODO: setup log events
 
 class RequestManager:
     @staticmethod
-    def handle(request: Request, quest: Quest):
+    def handle(request: Request, quest: Quest) -> RequestContext:
         
         # PARSE
         parsed = RequestParser.parse(request)
@@ -22,13 +28,45 @@ class RequestManager:
         if not Validator.validate_request(parsed, settings):
             raise ValidationError(f'Could not successfully validate'
                                   f'{quest.title} with parsed data: \n'
-                                  f'{parsed} settings: {settings}')
+                                  f'{parsed} settings: {settings}',
+                                  code=StatusCode.BAD_REQUEST)
         
         # AUTHENTICATE    
         auth = create_authenticator(quest.auth_type)
-        if not auth.authenticate(parsed):
+        identify = auth.get_user_identity(parsed, settings)
+        auth_result = auth.authenticate(identify)
+        success, user = auth_result.success, auth_result.user
+        if not success:
             raise AuthenticationError('Could not authenticate player with '
                                       f'auth_type: {quest.auth_type}'
-                                      f'and parsed data: {parsed}')
-            
-        return parsed
+                                      f'and parsed data: {parsed}',
+                                      code=StatusCode.BAD_REQUEST)
+        
+        state_manager: StateManager = create_state_manager(quest.is_stateless)
+        state = state_manager.get_start_state(quest, user)
+        
+        # BUILD CONTEXT
+        context = RequestContext(
+            user=user,
+            parsed=parsed,
+            quest=quest,
+            state=state.value
+        )
+        
+        # EXECUTE QUEST
+        gm = GameManager(context)
+        gm.run_quest()
+        response = gm.get_response()
+        
+        # UPDATE QUEST STATE
+        # TODO: split up quest state and session outcome so that response and end state are independent
+        end_state = state_manager.get_end_state(gm.state)
+        username = user.username if user else ""
+        state_manager.update_quest_state(new_state=end_state.value,
+                                         username=username,
+                                         slug=quest.slug)
+        
+        # RETURN RESPONSE
+        print(f"RESPONSE: \n {response}")
+        
+        return response

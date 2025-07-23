@@ -7,4 +7,4 @@ class RequestContext:
     user: User | None
     parsed: dict
     quest: Quest
-    auth_type: str
+    state: str
