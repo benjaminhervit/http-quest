@@ -27,21 +27,38 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | UQS-002 |[ ]| While all precessor quests are not `CLOSED`, then the state is `LOCKED`|
 | UQS-003 |[ ]| state value can only be a valid QuestState enum value.|
 
+---
 
 ## Class: QUEST PARSER
-- [ ] parsed settings must include keys [METHOD_DATA, QUERY_KEYS, AUTH_TYPE]
-- [ ] all keys in parsed settings must be valid ParserKey enums.
+
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| QP-001 |[ ]| parsed settings must include keys [`METHOD_DATA`, `QUERY_KEYS`, `AUTH_TYPE`]|
+| QP-002 |[ ]| all keys in parsed settings must be valid ParserKey enums.|
+
+---
 
 ## Class: REQUEST PARSER
-- [ ] when request is parsed, returns a dict[FORMAT_DATA_KEY, dict_data] with all supported formats
-- [ ] when a data format has no data in request, then return empty dict in values
-- [ ] all keys in parsed are valid ParserKey enums.
+
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| RP-001 |[ ]| when request is parsed, returns a dict[`FORMAT_DATA_KEY`, dict_data] with all supported formats
+| RP-002 |[ ]| when a data format has no data in request, then return empty dict in values
+| RP-003 |[ ]| all keys in parsed are valid ParserKey enums.
+
 ### fn: parse_method
-- [x] Get method from request
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| RP_PM-001 |[x]| Get method from request|
+
+
 ### fn: parse_query
-- [x] returns dict format if request has query
-- [ ] returns empty dict if not query
-- [ ] query data is stored with key == enum.QUERY_DATA
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| RP_PQ-001 |[x]| returns dict format if request has query |
+| RP_PQ-002 |[ ] returns empty dict if not query |
+| RP_PQ-003 |[ ] query data is stored with key == enum.QUERY_DATA       |
+
 
 ## class: VALIDATOR
 - [ ] When input is not dict[REQUEST_KEYS, dict] raise error
