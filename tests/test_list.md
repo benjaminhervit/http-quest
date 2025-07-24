@@ -153,7 +153,7 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ---
 
-## class: REQUEST MANAGER (INTEGRATION TEST)
+## class: `REQUEST MANAGER` (INTEGRATION TEST)
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | RM-001 |[ ]| When a request parsing fails, then return error to requester with bad request code   |
