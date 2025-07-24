@@ -7,7 +7,7 @@ from app.game.state_manager.state_manager import StateManager
 def create_state_manager(is_stateless: bool):
     if is_stateless:
         return StateManager(stat_strat.get_stateless_start,
-                            end_strat.set_closed,
+                            end_strat.set_completed,
                             db_strat.no_update)
     
     return StateManager(stat_strat.get_state_by_user_quest,

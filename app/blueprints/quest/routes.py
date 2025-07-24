@@ -25,7 +25,7 @@ def quest(quest_slug, path):
         return jsonify(RequestManager.handle(request, quest_m), StatusCode.OK)
     
     except ImportError as e:
-        return jsonify({str(e)}), StatusCode.SERVER_ERROR
+        return jsonify({'error': str(e)}), StatusCode.SERVER_ERROR
     except QuestError as e:
         return jsonify({'error': f'Quest error: {str(e)}'}, e.code)
     except ParsingError as e:

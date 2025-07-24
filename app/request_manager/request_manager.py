@@ -1,7 +1,7 @@
 from flask import Request
 import logging
 
-from app.enums import StatusCode
+from app.enums import StatusCode, ParserKey
 from app.errors import ValidationError, AuthenticationError
 from app.models import Quest
 
@@ -10,7 +10,7 @@ from app.parsers import QuestParser, RequestParser
 from app.request_manager.request_context import RequestContext
 from app.game.state_manager.factory import create_state_manager
 from app.game.state_manager.state_manager import StateManager
-from app.game.game_manager import GameManager
+from app.game.game_manager.quest_manager import QuestManager
 from app.authenticator.factory import create_authenticator
 
 log = logging.getLogger(__name__)
@@ -44,6 +44,11 @@ class RequestManager:
         
         state_manager: StateManager = create_state_manager(quest.is_stateless)
         state = state_manager.get_start_state(quest, user)
+        user_input = {}
+        method = parsed.get(ParserKey.METHOD_DATA)
+        
+        print(f"PARSED:\n {parsed}")
+        print(f"settings:\n {settings}")
         
         # BUILD CONTEXT
         context = RequestContext(
@@ -54,8 +59,8 @@ class RequestManager:
         )
         
         # EXECUTE QUEST
-        gm = GameManager(context)
-        gm.run_quest()
+        gm = QuestManager(context)
+        gm.run()
         response = gm.get_response()
         
         # UPDATE QUEST STATE
@@ -65,8 +70,5 @@ class RequestManager:
         state_manager.update_quest_state(new_state=end_state.value,
                                          username=username,
                                          slug=quest.slug)
-        
-        # RETURN RESPONSE
-        print(f"RESPONSE: \n {response}")
         
         return response

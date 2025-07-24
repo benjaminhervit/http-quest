@@ -1,19 +1,20 @@
 from typing import Callable
 
-import app.game.gm_execute_strategy.strategies as strategies
+import app.game.game_manager.strategies as strategies
 from app.errors import GameError
-from app.enums import SolutionFunc, ParserKey
+from app.enums import QuestExecutionStrategy, ParserKey
 
 
 functions = {
-    SolutionFunc.NONE: strategies.none_quest
+    QuestExecutionStrategy.NONE: strategies.none_quest,
+    QuestExecutionStrategy.ACCEPT_QUEST: strategies.accept_quest
 }
 
 
 def create_gm_execute_strategy(fn_key: str) -> Callable:
-    if fn_key not in SolutionFunc:
+    if fn_key not in QuestExecutionStrategy:
         raise GameError(f'solution_fn key ({fn_key}) not in ValidatorKey enum.')
-    fn = functions.get(SolutionFunc(fn_key))
+    fn = functions.get(QuestExecutionStrategy(fn_key))
     if fn is None:
         raise GameError(
             f'No solution_fn for key ({fn}) in create_solution_validator.'

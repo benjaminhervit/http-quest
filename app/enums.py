@@ -43,7 +43,7 @@ class ParserKey(str, Enum):
 
 class QuestExecutionStrategy(str, Enum):
     NONE = "NONE"
-    MUST_MATCH = "MUST_MATCH"
+    ACCEPT_QUEST = "ACCEPT_QUEST"
     
 class AuthType(str, Enum):
     NO_AUTH = "NO_AUTH"
@@ -79,8 +79,3 @@ class InputLocation(str, Enum):
     PATH_DATA = ParserKey.PATH_DATA.value
     HEADERS_DATA = ParserKey.HEADERS_DATA.value
     NONE = ParserKey.NONE.value
-    
-class SolutionFunc(str, Enum):
-    SOLUTION_FN_KEY = ParserKey.SOLUTION_FN_KEY.value
-    NONE = ParserKey.NONE.value
-    MUST_MATCH = "MUST_MATCH"

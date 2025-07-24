@@ -3,11 +3,11 @@ from typing import Callable, Optional
 from app.enums import QuestState, StatusCode, ParserKey
 from app.errors import GameError
 from app.models import Quest, User
-from app.game.gm_execute_strategy.factory import create_gm_execute_strategy
+from app.game.game_manager.factory import create_gm_execute_strategy
 from app.request_manager.request_context import RequestContext
 
 
-class GameManager:
+class QuestManager:
     def __init__(self, context: RequestContext):
 
         # quest data
@@ -38,8 +38,11 @@ class GameManager:
             QuestState.CLOSED: lambda: self.quest.is_completed_response
         }
 
-    def run_quest(self):
-        self.execute_strategy(self)
+    def run(self):
+        if self.state == QuestState.UNLOCKED and self.execute:
+            self.set_state(QuestState.FAILED)
+            if self.execute_strategy(self):
+                self.set_state(QuestState.COMPLETED)
 
     def get_response(self):
         response_action = self.response_actions.get(QuestState(self.state))

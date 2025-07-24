@@ -34,11 +34,6 @@ class Validator:
     
     
     @staticmethod
-    def validate_json_data(keys: list[str] | None, data: dict):
-        return Validator.check_for_key_data_match(keys, data, 'JSON')
-    
-    
-    @staticmethod
     def validate_query_data(keys: list[str] | None, data: dict):
         return Validator.check_for_key_data_match(keys, data, 'Query')
     
@@ -54,7 +49,8 @@ class Validator:
             raise TypeError(f'Expected data to be dict in {loc}.')
         
         if not keys and data:
-            raise ValidationError(f'No keys but fount data in {loc}: {data}.')
+            raise ValidationError(f'No keys but fount data in {loc}: {data}.'
+                                  ' Do not send data in the wrong places.')
         
         if keys and not data:
             raise ValidationError(f'Found keys: {keys} but not data in {loc}.')

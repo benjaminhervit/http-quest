@@ -13,16 +13,16 @@ accept_Q = Quest(
     is_completed_response="You have already accepted the quest. GET GOING!",
 
     # execution
+    is_stateless=True,
     expected_solution="yes",
-    execution_strategy="SINGLE_INPUT",
-    execution_req_method="POST",
+    execution_strategy="ACCEPT_QUEST",
+    execution_req_method="GET",
 
     # parsing
-    allowed_req_methods='GET,POST',
+    allowed_req_methods='GET',
     
     expects_query=True,
     query_keys='accept',
-    #input_loc="QUERY_DATA",
 
     # authentication
     auth_type=AuthType.NO_AUTH.value

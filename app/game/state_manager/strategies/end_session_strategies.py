@@ -1,10 +1,7 @@
 from app.enums import QuestState
 
-def set_locked(this_state: QuestState) -> QuestState:
-    return QuestState.LOCKED
-
-def set_closed(this_state: QuestState) -> QuestState:
-    return QuestState.CLOSED
+def set_completed(this_state: QuestState) -> QuestState:
+    return QuestState.COMPLETED
 
 def set_by_active_state(this_state: QuestState) -> QuestState:
     # will update with most appropriate state based on the stated given
