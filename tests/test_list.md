@@ -1,6 +1,21 @@
-# TEST CHECK LIST
+# HTTP QUEST TEST CHECKLIST
 
 ## SQL Model: QUEST (@validates in sql alchemy)
+
+| ID       | Test Description                                                                 |
+|----------|-----------------------------------------------------------------------------------|
+| QM-001   | When quest is not stateless, `username_loc` must be specified                    |
+| QM-002   | Quest must have at least `GET` as an allowed request method                      |
+| QM-003   | Only `GET`, `POST`, `PUT`, `DELETE` are valid request methods                    |
+| QM-004   | `execution_strategy` must be a valid `ExecutionStrategy` enum                    |
+| QM-005   | If not the first quest, a predecessor quest must be specified                    |
+| QM-006   | If `solution` is set, `solution_key` and `solution_location` must also be set    |
+| QM-007   | If `solution_key` is set, `solution` and `solution_location` must also be set    |
+| QM-008   | If `solution_location` is set, `solution_key` and `solution` must also be set    |
+
+---
+
+
 - [ ] when quest is not stateless, then quest request settings specifies expected username location
 - [x] quest must have at least GET as expected method
 - [x] expected methods only takes GET, POST, PUT, and DELETE
