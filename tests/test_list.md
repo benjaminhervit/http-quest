@@ -29,7 +29,7 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ---
 
-## Class: QUEST PARSER
+## Class: `QUEST PARSER`
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
@@ -38,7 +38,7 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ---
 
-## Class: REQUEST PARSER
+## Class: `REQUEST PARSER`
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
@@ -46,49 +46,75 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | RP-002 |[ ]| when a data format has no data in request, then return empty dict in values
 | RP-003 |[ ]| all keys in parsed are valid ParserKey enums.
 
-### fn: parse_method
+### fn: `parse_method`
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | RP_PM-001 |[x]| Get method from request|
 
 
-### fn: parse_query
+### fn: `parse_query`
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | RP_PQ-001 |[x]| returns dict format if request has query |
 | RP_PQ-002 |[ ]| returns empty dict if not query |
 | RP_PQ-003 |[ ]| query data is stored with key == enum.QUERY_DATA       |
 
+---
 
-## class: VALIDATOR
-- [ ] When input is not dict[REQUEST_KEYS, dict] raise error
-- [ ] When input keys does nots include [METHOD, QUERY_DATA], then raise error
-### fn: validate_method
-- [x] when method is not allowed by quest, then raise validation error
-- [x] do nothing is method is allowed
-- [ ] when method is not GET, POST, PUT or DELETE, then raise error
-### fn: validate_query
-- [x] if parsed[QUERY_DATA] is empty but quest expect keys, then raise error
-- [x] if keys in parsed[QUERY_DATA] is not the same as expected query keys by quest, then raise error
+## class: `VALIDATOR`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| VA-001 |[x]| When input is not dict[`REQUEST_KEYS`, dict] raise error                       |
+| VA-002 |[ ]| When input keys does nots include [`METHOD`, `QUERY_DATA`], then raise error     |
 
-## class: AUTHENTICATOR
-### fn: get_identity
-- [ ] when quest has username_loc, then username is in identity 
-- [ ] when quest has not username_loc, then username is empty in identity
 
-### fn: authenticate
-- [ ] if quest has no authentication, then return True
+### fn: `validate_method`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| VA_VM-001 |[x]|when method is not allowed by quest, then raise validation error               |
+| VA_VM-002 |[x]| do nothing is method is allowed                                               |
+| VA_VM-003 |[ ]| when method is not `GET`, `POST`, `PUT` or `DELETE`, then raise error                 |
 
-## class: STATE MANAGER
-- [ ] when quest is stateless, then start state COMPLETED 
-- [ ] when quest has no authentication, then start state is UNLOCKED 
-- [ ] when quest has state, and user has not reached the quest, then the state is LOCKED
-- [ ] when the quest has state, and the user has reached the quest, then the initial state is UNLOCKED
-- [ ] when the quest has state and is UNLOCKED, when the user completes the quest, the state changes to COMPLETED
-- [ ] when the quest has state and is UNLOCKED, when the user fails the quest, the state changes to FAILED
-- [ ] when the quest has state and is COMPLETED, then the end state is CLOSED
-- [ ] when the quest has state and is FAILED, then the end state is reset to UNLOCKED
-- [ ] when state is not a valid QuestState enum, then State Manager raises an error
+
+### fn: `validate_query`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| VA_VQ-001 |[x]|when parsed[QUERY_DATA] is empty but quest expect keys, then raise error   |
+| VA_VQ-002|[x]| when keys in parsed[QUERY_DATA] is not the same as expected query keys by quest, then raise error |
+
+---
+
+## class: `AUTHENTICATOR`
+
+### fn: `get_identity`
+
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| AU_GI-001 |[ ]| when quest has username_loc, then username is in identity                 |
+| AU_GI-002 |[ ]| when quest has not username_loc, then username is empty in identity       |
+
+
+### fn: `authenticate`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| AU_AU-001 |[ ]| when quest has no authentication, then return True                |
+
+---
+
+
+## class: `STATE MANAGER`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| SM-001 |[ ]| when quest is stateless, then start state COMPLETED                              |
+| SM-001 |[ ]| when quest has no authentication, then start state is UNLOCKED                      |
+| SM-001 |[ ]| when quest has state, and user has not reached the quest, then the state is LOCKED                     |
+| SM-001 |[ ]| when the quest has state, and the user has reached the quest, then the initial state is UNLOCKED    |
+| SM-001 |[ ]| when the quest has state and is UNLOCKED, when the user completes the quest, the state changes to COMPLETED  |
+| SM-001 |[ ]| when the quest has state and is UNLOCKED, when the user fails the quest, the state changes to FAILED.     |
+| SM-001 |[ ]| when the quest has state and is COMPLETED, then the end state is CLOSED.      |
+| SM-001 |[ ]| when the quest has state and is FAILED, then the end state is reset to UNLOCKED.   |
+| SM-001 |[ ]| when state is not a valid QuestState enum, then State Manager raises an error.     |
+
 
 ## class: GAME MANAGER
 - [ ] When a stateless quest begins, the initial state is COMPLETED
