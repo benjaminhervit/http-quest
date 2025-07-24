@@ -56,8 +56,8 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | RP_PQ-001 |[x]| returns dict format if request has query |
-| RP_PQ-002 |[ ] returns empty dict if not query |
-| RP_PQ-003 |[ ] query data is stored with key == enum.QUERY_DATA       |
+| RP_PQ-002 |[ ]| returns empty dict if not query |
+| RP_PQ-003 |[ ]| query data is stored with key == enum.QUERY_DATA       |
 
 
 ## class: VALIDATOR
