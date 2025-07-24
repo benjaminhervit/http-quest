@@ -4,7 +4,7 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ---
 
-## 🧩 SQL Model: `QUEST` (@validates in SQLAlchemy)
+## 🧩 SQL Model: `Quest` (@validates in SQLAlchemy)
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
@@ -19,20 +19,14 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ---
 
+## 🧩 SQL Model: `UserQuestState` (@validates in SQLAlchemy)
 
-- [ ] when quest is not stateless, then quest request settings specifies expected username location
-- [x] quest must have at least GET as expected method
-- [x] expected methods only takes GET, POST, PUT, and DELETE
-- [ ] execution_strategy must be valid ExecutionStrategy enum
-- [ ] when quest is not the first, it must specify its precessor
-- [ ] when quest has a "solution" value, then it also has "solution_key" and "solution_location" values
-- [ ] when quest has a "solution_key" values, then it also has "solution" and "solution_location" values
-- [ ] when quest has a "solution_location" values, then it also has "solution_key" and "solution" values
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| UQS-001 |[ ]| When all precessor quests are `CLOSED`, then the the state changes to `UNLOCKED`|
+| UQS-002 |[ ]| While all precessor quests are not `CLOSED`, then the state is `LOCKED`|
+| UQS-003 |[ ]| state value can only be a valid QuestState enum value.|
 
-## SQL Model: USER QUEST STATE (@validates in sql alchemy)
-- [ ] When all precessor quests are CLOSED, then the the state changes to UNLOCKED
-- [ ] While all precessor quests are not CLOSED, then the state is LOCKED
-- [ ] state value can only be a valid QuestState enum value.
 
 ## Class: QUEST PARSER
 - [ ] parsed settings must include keys [METHOD_DATA, QUERY_KEYS, AUTH_TYPE]
