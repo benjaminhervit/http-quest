@@ -1,17 +1,21 @@
-# HTTP QUEST TEST CHECKLIST
+# ✅ HTTP Quest – Test Checklist
 
-## SQL Model: QUEST (@validates in sql alchemy)
+This document outlines the test plan for the `http-quest` project, organized by component. Each test case ensures functional integrity and consistent behavior across models, logic, and state transitions.
 
-| ID       | Test Description                                                                 |
-|----------|-----------------------------------------------------------------------------------|
-| QM-001   | When quest is not stateless, `username_loc` must be specified                    |
-| QM-002   | Quest must have at least `GET` as an allowed request method                      |
-| QM-003   | Only `GET`, `POST`, `PUT`, `DELETE` are valid request methods                    |
-| QM-004   | `execution_strategy` must be a valid `ExecutionStrategy` enum                    |
-| QM-005   | If not the first quest, a predecessor quest must be specified                    |
-| QM-006   | If `solution` is set, `solution_key` and `solution_location` must also be set    |
-| QM-007   | If `solution_key` is set, `solution` and `solution_location` must also be set    |
-| QM-008   | If `solution_location` is set, `solution_key` and `solution` must also be set    |
+---
+
+## 🧩 SQL Model: `QUEST` (@validates in SQLAlchemy)
+
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| QM-001 |[ ]| When quest is not stateless, `username_loc` must be specified                    |
+| QM-002 |[ ]| Quest must have at least `GET` as an allowed request method                      |
+| QM-003 |[ ]| Only `GET`, `POST`, `PUT`, `DELETE` are valid request methods                    |
+| QM-004 |[ ]| `execution_strategy` must be a valid `ExecutionStrategy` enum                    |
+| QM-005 |[ ]| If not the first quest, a predecessor quest must be specified                    |
+| QM-006 |[ ]| If `solution` is set, `solution_key` and `solution_location` must also be set    |
+| QM-007 |[ ]| If `solution_key` is set, `solution` and `solution_location` must also be set    |
+| QM-008 |[ ]| If `solution_location` is set, `solution_key` and `solution` must also be set    |
 
 ---
 
