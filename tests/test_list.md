@@ -120,31 +120,46 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | SM-001 |[ ]| when the quest has state and is FAILED, then the end state is reset to UNLOCKED.   |
 | SM-001 |[ ]| when state is not a valid QuestState enum, then State Manager raises an error.     |
 
+---
 
-## class: GAME MANAGER
-- [ ] When a stateless quest begins, the initial state is COMPLETED
+## class: `GAME MANAGER`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| GM-001 |[ ]| When a stateless quest begins, the initial state is COMPLETED    |
 
-### fn: get_response
-- [ ] When quest state is LOCKED, then return LOCKED response
-- [ ] When quest state is CLOSED, then return CLOSED response
-- [ ] When quest state is COMPLETED, then return COMPLETED response
-- [ ] When quest state is FAILED, then return FAILED response
-- [ ] When quest state is UNLOCKED, then return BASE response
+
+### fn: `get_response`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| GM_GR-001 |[ ]| When quest state is LOCKED, then return LOCKED response                   |
+| GM_GR-002 |[ ]| When quest state is CLOSED, then return CLOSED response       |
+| GM_GR-003 |[ ]| When quest state is COMPLETED, then return COMPLETED response       |
+| GM_GR-004 |[ ]| When quest state is FAILED, then return FAILED response       |
+| GM_GR-005 |[ ]| When quest state is UNLOCKED, then return BASE response       |
+
 
 ### fn: execute
-- [ ] When state is UNLOCKED and request method is valid action method, then quest execution runs
-- [ ] When state is not UNLOCKED, then quest execution is skipped
-- [ ] when quest execution runs, then state always changes
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| GM_EX-001 |[ ]| When state is UNLOCKED and request method is valid action method, then quest execution runs   |
+| GM_EX-002 |[ ]| When state is not UNLOCKED, then quest execution is skipped   |
+| GM_EX-003 |[ ]| when quest execution runs, then state always changes  |
+
+
+---
 
 ## class: REQUEST MANAGER (INTEGRATION TEST)
-- [ ] When a request parsing fails, then return error to requester with bad request code
-- [ ] When a request parses successfully, pass it on to validation
-- [ ] when a validation fails, then return the error to the request with bad request code
-- [ ] When a parsed request is validated, then pass it on to authentication
-- [ ] when an authentication fails, then return the error to the requester with bad request code
-- [ ] When an authentication passes, then build context for the game manager
-- [ ] When the game manager runs successfully, then return the response to the request with ok request code
-- [ ] When the game manager fails, return the error message to the request with game error code
-- [ ] When the game manager runs successfully, if the quest has state, update state in db
-- [ ] When the game manager runs successfully, if the quest is stateless, do nothing
-- [ ] When a response is sent to the request, if the requester is registered, store request in db as latest response
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| RM-001 |[ ]| When a request parsing fails, then return error to requester with bad request code   |
+| RM-002 |[ ]| When a request parses successfully, pass it on to validation |
+| RM-003 |[ ]| when a validation fails, then return the error to the request with bad request code  |
+| RM-004 |[ ]| When a parsed request is validated, then pass it on to authentication    |
+| RM-005 |[ ]| when an authentication fails, then return the error to the requester with bad request code   |
+| RM-006 |[ ]| When an authentication passes, then build context for the game manager   |
+| RM-007 |[ ]| When the game manager runs successfully, then return the response to the request with ok request code    |
+| RM-008 |[ ]| When the game manager fails, return the error message to the request with game error code    |
+| RM-009 |[ ]| When the game manager runs successfully, if the quest has state, update state in db  |
+| RM-010 |[ ]| When the game manager runs successfully, if the quest is stateless, do nothing   |
+| RM-011 |[ ]| When a response is sent to the request, if the requester is registered, store request in db as latest response   |
+
