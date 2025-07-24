@@ -86,6 +86,11 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ## class: `AUTHENTICATOR`
 
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| VA-001 |[]|                                                                       |
+
+
 ### fn: `get_identity`
 
 | ID     |  | Test Description                                                                 |
