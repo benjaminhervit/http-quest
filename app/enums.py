@@ -5,48 +5,76 @@ class ReqMethodType(str, Enum):
     POST = "POST"
     PUT = "PUT"
     DELETE = "DELETE"
+
+class QuestKey(str, Enum):
+    METHOD_DATA = "METHOD_DATA"
     
-class ParserKey(str, Enum):
     USERNAME = "username"
     USERNAME_LOC = "USERNAME_LOC"
-   
-    METHOD = "method"
-    METHOD_DATA = "METHOD_DATA"
     
     ANSWER = "answer"
     ANSWER_KEY = "ANSWER_KEY"
+    ANSWER_LOC = "ANSWER_LOC"
     SOLUTION_FN_KEY = "SOLUTION_FN"
     
     TOKEN = "token"
     TOKEN_LOC = "TOKEN_LOC"
     
     FORM_KEYS = "FORM_KEYS"
-    FORM_DATA = "FORM_DATA"
     
     JSON_KEYS = "JSON_KEYS"
-    JSON_DATA = "JSON_DATA"
     
     HEADERS_KEYS = "HEADERS_KEYS"
-    HEADERS_DATA = "HEADERS_DATA"
+    
+    INPUT_LOC = "INPUT_LOC"
+    
+    QUERY_KEYS = "QUERY_KEYS"
     
     AUTH_TYPE = "AUTH_TYPE"
     
-    INPUT_LOC = "INPUT_LOC"
-    INPUT_DATA = "INPUT_DATA"
+    NONE = "NONE"
     
-    QUERY_KEYS = "QUERY_KEYS"
+class ParserKey(str, Enum):
+    NONE = "NONE"
+    
+    #USERNAME = "username"
+    #USERNAME_LOC = "USERNAME_LOC"
+   
+    METHOD = "method"
+    METHOD_DATA = "METHOD_DATA"
+    
+    #ANSWER = "answer"
+    #ANSWER_KEY = "ANSWER_KEY"
+    #SOLUTION_FN_KEY = "SOLUTION_FN"
+    
+    #TOKEN = "token"
+    #TOKEN_LOC = "TOKEN_LOC"
+    
+    #FORM_KEYS = "FORM_KEYS"
+    FORM_DATA = "FORM_DATA"
+    
+    #JSON_KEYS = "JSON_KEYS"
+    JSON_DATA = "JSON_DATA"
+    
+    #HEADERS_KEYS = "HEADERS_KEYS"
+    HEADERS_DATA = "HEADERS_DATA"
+    
+    #AUTH_TYPE = "AUTH_TYPE"
+    
+    #INPUT_LOC = "INPUT_LOC"
+    #INPUT_DATA = "INPUT_DATA"
+    
+    #QUERY_KEYS = "QUERY_KEYS"
     QUERY_DATA = "QUERY_DATA"
     
     PATH_DATA = "PATH_DATA"
     
-    NONE = "NONE"
+    #NONE = "NONE"
 
 class QuestExecutionStrategy(str, Enum):
     NONE = "NONE"
     ACCEPT_QUEST = "ACCEPT_QUEST"
-    
-class AuthType(str, Enum):
-    NO_AUTH = "NO_AUTH"
+
 
 class StatusCode(int, Enum):
     OK = 200

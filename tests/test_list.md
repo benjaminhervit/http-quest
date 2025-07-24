@@ -33,8 +33,8 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| QP-001 |[ ]| parsed settings must include keys [`METHOD_DATA`, `QUERY_KEYS`, `AUTH_TYPE`]|
-| QP-002 |[ ]| all keys in parsed settings must be valid ParserKey enums.|
+| QP-001 |[x]| parsed settings must include keys [`METHOD_DATA`, `AUTH_TYPE`, `ANSWER`, `ANSWER_KEY`, `ANSWER_LOC`]|
+| QP-002 |[x]| all keys in parsed settings must be valid QuestKey enums.|
 
 ---
 
@@ -42,9 +42,11 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| RP-001 |[ ]| when request is parsed, returns a dict[`FORMAT_DATA_KEY`, dict_data] with all supported formats
-| RP-002 |[ ]| when a data format has no data in request, then return empty dict in values
-| RP-003 |[ ]| all keys in parsed are valid ParserKey enums.
+| RP-001 |[x]| when request is parsed, then key ParserKey.METHOD_DATA is returned dict
+| RP-001 |[x]| when request is parsed, then key ParserKey.PATH_DATA is returned dict
+| RP-001 |[x]| when request is parsed, then key ParserKey.QUERY_DATA is returned dict
+| RP-002 |[x]| when a data format has no data in request, then return empty dict in values
+| RP-003 |[x]| all keys in parsed are valid ParserKey enums.
 
 ### fn: `parse_method`
 | ID     |  | Test Description                                                                 |
@@ -56,8 +58,8 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | RP_PQ-001 |[x]| returns dict format if request has query |
-| RP_PQ-002 |[ ]| returns empty dict if not query |
-| RP_PQ-003 |[ ]| query data is stored with key == enum.QUERY_DATA       |
+| RP_PQ-002 |[x]| returns empty dict if not query |
+| RP_PQ-003 |[x]| query data is stored with key == enum.QUERY_DATA       |
 
 ---
 
@@ -104,6 +106,8 @@ This document outlines the test plan for the `http-quest` project, organized by 
 |--------|--|-----------------------------------------------------------------------------------|
 | AU_AU-001 |[ ]| when quest has no authentication, then return True                |
 
+
+
 ---
 
 
@@ -138,12 +142,13 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | GM_GR-005 |[ ]| When quest state is UNLOCKED, then return BASE response       |
 
 
-### fn: execute
+### fn: `execute`
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | GM_EX-001 |[ ]| When state is UNLOCKED and request method is valid action method, then quest execution runs   |
 | GM_EX-002 |[ ]| When state is not UNLOCKED, then quest execution is skipped   |
 | GM_EX-003 |[ ]| when quest execution runs, then state always changes  |
+
 
 
 ---

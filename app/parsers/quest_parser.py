@@ -1,4 +1,4 @@
-from app.enums import ParserKey, StatusCode
+from app.enums import ParserKey, QuestKey, StatusCode
 from app.models.quest import Quest
 from app.errors import ParsingError
 
@@ -7,16 +7,17 @@ class QuestParser:
     def get_settings(quest: Quest):
         try:
             return {
-                ParserKey.METHOD_DATA: QuestParser.get_keys_list(
+                QuestKey.METHOD_DATA: QuestParser.get_keys_list(
                     quest.allowed_req_methods) if quest.allowed_req_methods
                 else [],
                 
-                ParserKey.QUERY_KEYS: QuestParser.get_keys_list(
+                QuestKey.QUERY_KEYS: QuestParser.get_keys_list(
                     quest.query_keys) if quest.query_keys
                 else [],
                 
-                ParserKey.AUTH_TYPE: quest.auth_type,
-                ParserKey.ANSWER_KEY: quest.answer_key
+                QuestKey.AUTH_TYPE: quest.auth_type,
+                QuestKey.ANSWER_KEY: quest.answer_key,
+                QuestKey.ANSWER_LOC: quest.answer_loc
                 
                 # TODO: UNCOMMENT PARSERS WHEN RELEVANT FOR NEW QUESTS
                 # ParserKey.JSON_KEYS: Parser.get_keys_list(

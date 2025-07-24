@@ -2,35 +2,41 @@ import pytest
 from flask import Flask, request
 
 from app.parsers import RequestParser as Parser
-from app.enums import ParserKey
+from app.enums import ParserKey, QuestKey
 
 app = Flask(__name__)
 
-@pytest.fixture
-def base_quest_settings() -> dict:
-    return {
-            ParserKey.METHOD_DATA: ['GET'],
-            ParserKey.JSON_KEYS: None,
-            ParserKey.QUERY_KEYS: None,
-            ParserKey.FORM_KEYS: None,
-            ParserKey.HEADERS_KEYS: None,
-            ParserKey.USERNAME_LOC: None,
-            ParserKey.TOKEN_LOC: None,
-            ParserKey.INPUT_LOC: None,
-            ParserKey.AUTH_TYPE: None,
-            ParserKey.ANSWER_KEY: None
-        }
+def req_with_query_returns_dict_in_query_key():
+    with app.test_request_context(
+        path="?foo=bar"
+        ):
+        parsed = Parser.parse(request)
+        query_data = parsed.get(ParserKey.QUERY_DATA)
+        assert isinstance(query_data, dict)
+        assert query_data == {'foo': 'bar'}
+
+def empty_query_returns_empty_dict():
+    with app.test_request_context(
+        ):
+        parsed = Parser.parse(request)
+        assert parsed.get(ParserKey.QUERY_DATA) == {}
+
+def test_all_parsed_keys_are_valid_enums():
+    
+    with app.test_request_context(
+        ):
+        parsed = Parser.parse(request)
+        
+        for k,v in parsed.items():
+            assert k in ParserKey
 
 def test_key_values():
-    # valid
+    
     with app.test_request_context(
         ):
         parsed = Parser.parse(request)
         keys = parsed.keys()
-        assert ParserKey.METHOD_DATA.value in keys
-        assert ParserKey.QUERY_DATA.value in keys
-        assert ParserKey.PATH_DATA.value in keys
-        # assert ParserKey.FORM_DATA.value in keys
-        # assert ParserKey.JSON_DATA.value in keys
-        # assert ParserKey.HEADERS_DATA.value in keys
-        # assert ParserKey.USERNAME.value in keys
+        required_keys = [ParserKey.METHOD_DATA, ParserKey.QUERY_DATA,
+                         ParserKey.PATH_DATA]
+        
+        assert set(required_keys).issubset(keys)

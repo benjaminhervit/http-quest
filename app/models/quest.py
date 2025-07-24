@@ -57,6 +57,7 @@ class Quest(db.Model, Base):
     execution_req_method = db.Column(String(255), nullable=False)
     execution_strategy = db.Column(String(255), nullable=False)
     answer_key = db.Column(String(255), nullable=True)
+    answer_loc = db.Column(String(255), nullable=True)
     
     #relationships
     prev_quest_id = db.Column(
