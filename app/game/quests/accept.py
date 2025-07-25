@@ -1,5 +1,5 @@
 from app.models.quest import Quest
-from app.enums import ParserKey, AuthType
+from app.enums import ParserKey, AuthType, QuestExecutionStrategy
 
 accept_Q = Quest(
     # content
@@ -14,14 +14,16 @@ accept_Q = Quest(
 
     # execution
     is_stateless=True,
-    expected_solution="yes",
-    execution_strategy="ACCEPT_QUEST",
+    solution_expected="yes",
+    solution_location=ParserKey.QUERY_DATA.value,
+    solution_key='accept',
+    execution_strategy=QuestExecutionStrategy.ACCEPT_QUEST.value,
     execution_req_method="GET",
 
     # parsing
     allowed_req_methods='GET',
     
-    expects_query=True,
+    # expects_query=True,
     query_keys='accept',
 
     # authentication

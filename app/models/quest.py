@@ -5,7 +5,8 @@ from sqlalchemy.orm import validates
 
 from app.extensions import db
 from app.models.base import Base
-from app.enums import InputLocation, ReqMethodType
+from app.enums import InputLocation, ReqMethodType, QuestExecutionStrategy
+from app.utils import get_clean_list_from_string, get_enum_values_as_list
 
 class Quest(db.Model, Base):
     __tablename__ = "quest"
@@ -18,15 +19,16 @@ class Quest(db.Model, Base):
     title = db.Column(String(255), nullable=False, index=True)
     directions = db.Column(Text, nullable=False)
     story = db.Column(Text, nullable=False)
+    quest_description = db.Column(Text, nullable=True)
     success_response = db.Column(Text, nullable=False)
     failed_response = db.Column(Text, nullable=False)
     is_locked_response = db.Column(Text, nullable=False)
     is_completed_response = db.Column(Text, nullable=False)
     
     # request settings
-    allowed_req_methods = db.Column(String(255), nullable=True)
+    allowed_req_methods = db.Column(String(255), nullable=False)
     
-    expects_query = db.Column(db.Boolean, nullable=False)
+    #expects_query = db.Column(db.Boolean, nullable=False)
     query_keys = db.Column(String(255), nullable=True)
     
     # TODO: uncomment with first json quest
@@ -52,12 +54,11 @@ class Quest(db.Model, Base):
     
     #execution settings
     is_stateless = db.Column(db.Boolean, default=False)
-    quest_description = db.Column(Text, nullable=True)
-    expected_solution = db.Column(Text, nullable=True)
+    solution_expected = db.Column(Text, nullable=True)
+    solution_key = db.Column(String(255), nullable=True)
+    solution_location = db.Column(String(255), nullable=True)
     execution_req_method = db.Column(String(255), nullable=False)
     execution_strategy = db.Column(String(255), nullable=False)
-    answer_key = db.Column(String(255), nullable=True)
-    answer_loc = db.Column(String(255), nullable=True)
     
     #relationships
     prev_quest_id = db.Column(
@@ -73,6 +74,7 @@ class Quest(db.Model, Base):
     def __init__(self, title, **kwargs):
         self.title = title
         self.slug = slugify(title)
+        #print("KWARGS IN INIT:", kwargs)
         super().__init__(**kwargs)
         
     def as_dict(self):
@@ -94,7 +96,11 @@ class Quest(db.Model, Base):
     def __repr__(self):
         return (f'<Quest id={self.id}, '
                 f'title="{self.title}>')
-
+    
+    @validates('execution_strategy')
+    def validate_execution_strategy(self, key, value):
+        assert value in get_enum_values_as_list(QuestExecutionStrategy)
+        return value
     
     @validates('username_loc', 'token_loc', 'answer_loc')
     def validate_input_location(self, key, value):
@@ -106,34 +112,44 @@ class Quest(db.Model, Base):
             )
         return value
     
+    # VALIDATE ALLOWED_METHODS
     @validates('allowed_req_methods')
-    def validate_allowed_methods(self, key, value: str):
-        #  check against the saveable quest states
-        if value is None:
-            raise ValueError(
-                f"Must have at least GET method. allowed: {valid_values}"
-            )
+    def validate_get_is_always_allowed(self, key, value: str):
+        # GET must always be included
+        methods = get_clean_list_from_string(value, ",")
+        assert 'GET' in methods
         
-        valid_values = [e.value for e in ReqMethodType]
-        value = value.replace(' ', '').strip()  # removing empty spaces
-        methods: list[str] = value.split(',')
-        methods = [m.strip() for m in methods if m]
-        if methods == []:
-            raise ValueError(
-                f"No methos after cleaning {value}. allowed: {valid_values}"
-            )
-        
-        for method in methods:
-            if method not in valid_values:
-                raise ValueError(
-                    f"Invalided input locatoin value ({value}). allowed: {valid_values}"
-                )
+        # validate methods are supported
+        methods = get_clean_list_from_string(value, ",")
+        valid_values = ['GET', 'POST', 'PUT', 'DELETE']
+        assert set(methods).issubset(set(valid_values))
+    
         return value
     
-    @validates('query_keys', 'json_keys', 'form_keys', 'header_keys')
-    def validate_expected_keys(self, key, value: str):
-        if value is not None and ' ' in value:
-            raise ValueError(
-                f"No white spaces in keys. Use comma , as separator _ for key_name_spaces. Error found in: {value}"
-                )
-        return value
+    def validate(self):
+        self.validate_solution_settings()
+        
+    
+    def validate_solution_settings(self):
+        if self.solution_expected:
+            assert self.solution_location is not None
+            assert self.solution_key is not None
+            
+        if self.solution_location:
+            assert self.solution_expected is not None
+            assert self.solution_key is not None
+            
+        if self.solution_key:
+            assert self.solution_expected is not None
+            assert self.solution_location is not None
+    
+    
+    # VALIDATE EXPECTED_QUERIES
+    # @validates('query_keys')
+    # def validate_expected_keys(self, key, value: str):
+    #     if value:
+    #     # if not value:
+    #     #     raise ValueError(
+    #     #         f"No white spaces in keys. Use comma , as separator _ for key_name_spaces. Error found in: {value}"
+    #     #         )
+    #     return value

@@ -4,18 +4,19 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 ---
 
-## 🧩 SQL Model: `Quest` (@validates in SQLAlchemy)
+## SQL Model: `Quest`
+Testing for SQL Alchemy models are made with @validates and a custom validate(self) that is triggered by before insert and update.
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
 | QM-001 |[ ]| When quest is not stateless, `username_loc` must be specified                    |
-| QM-002 |[ ]| Quest must have at least `GET` as an allowed request method                      |
-| QM-003 |[ ]| Only `GET`, `POST`, `PUT`, `DELETE` are valid request methods                    |
-| QM-004 |[ ]| `execution_strategy` must be a valid `ExecutionStrategy` enum                    |
+| QM-002 |[x]| Quest must have at least `GET` as an allowed request method                      |
+| QM-003 |[x]| Only `GET`, `POST`, `PUT`, `DELETE` are valid request methods                    |
+| QM-004 |[x]| `execution_strategy` must be a valid `ExecutionStrategy` enum                    |
 | QM-005 |[ ]| If not the first quest, a predecessor quest must be specified                    |
-| QM-006 |[ ]| If `solution` is set, `solution_key` and `solution_location` must also be set    |
-| QM-007 |[ ]| If `solution_key` is set, `solution` and `solution_location` must also be set    |
-| QM-008 |[ ]| If `solution_location` is set, `solution_key` and `solution` must also be set    |
+| QM-006 |[x]| If `solution` is set, `solution_key` and `solution_location` must also be set    |
+| QM-007 |[x]| If `solution_key` is set, `solution` and `solution_location` must also be set    |
+| QM-008 |[x]| If `solution_location` is set, `solution_key` and `solution` must also be set    |
 
 ---
 
@@ -33,8 +34,8 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| QP-001 |[x]| parsed settings must include keys [`METHOD_DATA`, `AUTH_TYPE`, `ANSWER`, `ANSWER_KEY`, `ANSWER_LOC`]|
-| QP-002 |[x]| all keys in parsed settings must be valid QuestKey enums.|
+| QP-001 |[]| parsed settings must include keys [`METHOD_DATA`, `AUTH_TYPE`, `ANSWER`, `ANSWER_KEY`, `ANSWER_LOC`]|
+| QP-002 |[]| all keys in parsed settings must be valid QuestKey enums.|
 
 ---
 
@@ -75,7 +76,7 @@ This document outlines the test plan for the `http-quest` project, organized by 
 |--------|--|-----------------------------------------------------------------------------------|
 | VA_VM-001 |[x]|when method is not allowed by quest, then raise validation error               |
 | VA_VM-002 |[x]| do nothing is method is allowed                                               |
-| VA_VM-003 |[ ]| when method is not `GET`, `POST`, `PUT` or `DELETE`, then raise error                 |
+| VA_VM-003 |[x]| when method is not in RequestMethodType enum, then raise error                 |
 
 
 ### fn: `validate_query`
@@ -97,14 +98,16 @@ This document outlines the test plan for the `http-quest` project, organized by 
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| AU_GI-001 |[ ]| when quest has username_loc, then username is in identity                 |
-| AU_GI-002 |[ ]| when quest has not username_loc, then username is empty in identity       |
+| AU_GI-001 |[x]| when settings has key QuestKey.USERNAME_LOCATION, then data has not-empty value in expected location|
+| AU_GI-001 |[x]| when settings expects username but its is missing from data, then raise error     |
+| AU_GI-002 |[x]| when quest has not username_loc, then username is empty in identity       |
 
 
 ### fn: `authenticate`
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| AU_AU-001 |[ ]| when quest has no authentication, then return True                |
+| AU_AU-001 |[x]| when quest has no authentication and no user, then return True, None          |
+| AU_AU-001 |[x]| when quest has no authentication and user, then return True, temp_user with username only |
 
 
 
@@ -168,3 +171,15 @@ This document outlines the test plan for the `http-quest` project, organized by 
 | RM-010 |[ ]| When the game manager runs successfully, if the quest is stateless, do nothing   |
 | RM-011 |[ ]| When a response is sent to the request, if the requester is registered, store request in db as latest response   |
 
+## utils: `get_clean_list_from_string`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| UT_LS-001 |[x]| When string is empty, then return empty list obj  |
+| UT_LS-002 |[x]| When string has empty fields between separators, then they are removed  |
+| UT_LS-003 |[x]| When a value is not ' ', then it is its own value
+
+## utils: `get_enum_values_as_list`
+| ID     |  | Test Description                                                                 |
+|--------|--|-----------------------------------------------------------------------------------|
+| UT_EL-001 |[x]| When enum is empty, then return empty list obj  |
+| UT_EL-002 |[x]| All values in Enum are returned as list

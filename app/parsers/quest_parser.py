@@ -2,6 +2,8 @@ from app.enums import ParserKey, QuestKey, StatusCode
 from app.models.quest import Quest
 from app.errors import ParsingError
 
+from app.utils import get_clean_list_from_string
+
 class QuestParser:
     @staticmethod
     def get_settings(quest: Quest):
@@ -16,8 +18,8 @@ class QuestParser:
                 else [],
                 
                 QuestKey.AUTH_TYPE: quest.auth_type,
-                QuestKey.ANSWER_KEY: quest.answer_key,
-                QuestKey.ANSWER_LOC: quest.answer_loc
+                QuestKey.ANSWER_KEY: quest.solution_key,
+                QuestKey.ANSWER_LOC: quest.solution_location
                 
                 # TODO: UNCOMMENT PARSERS WHEN RELEVANT FOR NEW QUESTS
                 # ParserKey.JSON_KEYS: Parser.get_keys_list(
@@ -44,4 +46,4 @@ class QuestParser:
     def get_keys_list(string: str):
         # Helper method to extract keys from string field in Model.
         # E.g: query_keys="a,b,c"
-        return [q.strip() for q in string.split(',')]
+        return get_clean_list_from_string(string, ",")

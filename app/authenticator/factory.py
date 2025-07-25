@@ -8,7 +8,7 @@ import app.authenticator.strategies as strategies
 
 auth_functions = {
     AuthType.NO_AUTH: strategies.no_auth,
-    AuthType.USERNAME: strategies.by_username
+    AuthType.USERNAME: strategies.auth_by_username
 }
 
 def create_authenticator(auth_type) -> Authenticator:

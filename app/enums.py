@@ -37,7 +37,7 @@ class QuestKey(str, Enum):
 class ParserKey(str, Enum):
     NONE = "NONE"
     
-    #USERNAME = "username"
+    USERNAME = "username"
     #USERNAME_LOC = "USERNAME_LOC"
    
     METHOD = "method"
@@ -71,8 +71,9 @@ class ParserKey(str, Enum):
     
     #NONE = "NONE"
 
+
 class QuestExecutionStrategy(str, Enum):
-    NONE = "NONE"
+    AUTO_COMPLETE = "AUTO_COMPLETE"
     ACCEPT_QUEST = "ACCEPT_QUEST"
 
 

@@ -1,5 +1,5 @@
 from app.models.quest import Quest
-from app.enums import ParserKey, AuthType
+from app.enums import ParserKey, AuthType, QuestExecutionStrategy
 
 welcome_Q = Quest(
     # content
@@ -10,14 +10,14 @@ welcome_Q = Quest(
 
     # parsing settings
     allowed_req_methods="GET",
-    expects_query=False,
+    # expects_query=False,
 
     # authentication
     auth_type=AuthType.NO_AUTH.value,
 
     # exeuction
     is_stateless=True,
-    execution_strategy=ParserKey.NONE.value,
+    execution_strategy=QuestExecutionStrategy.AUTO_COMPLETE.value,
     execution_req_method="GET",
     success_response="There is no time to wait! Follow the directions and move forward!",
     failed_response="Here there is no failure. Only a wrong missing ANSWER... and the answer is YES",

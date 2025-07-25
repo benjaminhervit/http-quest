@@ -10,12 +10,13 @@ null_Q = Quest(
 
     # parsing
     allowed_req_methods="GET",
-    expects_query=False,
+    # expects_query=False,
 
     # authentication
     auth_type=AuthType.NO_AUTH.value,
 
     # execution
-    execution_strategy=QuestExecutionStrategy.NONE.value,
+    is_stateless=True,
+    execution_strategy=QuestExecutionStrategy.AUTO_COMPLETE.value,
     execution_req_method="GET"
 )

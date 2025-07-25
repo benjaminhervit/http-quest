@@ -6,7 +6,7 @@ from app.enums import QuestExecutionStrategy, ParserKey
 
 
 functions = {
-    QuestExecutionStrategy.NONE: strategies.none_quest,
+    QuestExecutionStrategy.AUTO_COMPLETE: strategies.none_quest,
     QuestExecutionStrategy.ACCEPT_QUEST: strategies.accept_quest
 }
 

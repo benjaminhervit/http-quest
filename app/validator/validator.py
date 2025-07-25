@@ -1,5 +1,6 @@
 from app.enums import ParserKey, StatusCode, ReqMethodType
 from app.errors import ValidationError
+from app.utils import get_enum_values_as_list
 
 class Validator:
     
@@ -22,7 +23,7 @@ class Validator:
         if not isinstance(allowed, list):
             raise ValueError('Allowed methods should be list.')
         
-        if method not in ReqMethodType:
+        if method not in get_enum_values_as_list(ReqMethodType):
             raise ValidationError(f'Could not recognize request method {method}',
                                   code=StatusCode.BAD_REQUEST)
         

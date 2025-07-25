@@ -33,7 +33,7 @@ class RequestManager:
         
         # AUTHENTICATE    
         auth = create_authenticator(quest.auth_type)
-        identify = auth.get_user_identity(parsed, settings)
+        identify = auth.get_identity(parsed, settings)
         auth_result = auth.authenticate(identify)
         success, user = auth_result.success, auth_result.user
         if not success:

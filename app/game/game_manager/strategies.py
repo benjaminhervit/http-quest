@@ -13,4 +13,4 @@ def accept_quest(gm: 'GameManager') -> bool:
                         code=StatusCode.SERVER_ERROR)
     
     answer = gm.player_inputs[ParserKey.QUERY_DATA]['accept']
-    return answer == gm.quest.expected_solution
+    return answer == gm.quest.solution_expected
