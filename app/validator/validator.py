@@ -16,10 +16,10 @@ class Validator:
         
         # method
         Validator.validate_req_method(parsed.get(ParserKey.METHOD_DATA),
-                                       settings.get(ParserKey.METHOD_DATA))
+                                      settings.get(QuestKey.METHOD_DATA) or [])
         
         # query
-        Validator.validate_query_data(settings.get(ParserKey.QUERY_KEYS),
+        Validator.validate_query_data(settings.get(QuestKey.QUERY_KEYS) or [],
                                       parsed.get(ParserKey.QUERY_DATA) or {})
         
         return True
@@ -77,7 +77,7 @@ class Validator:
     
     @staticmethod
     def validate_input_keys(input_keys: list, allowed_keys: list) -> bool:
-        if input_keys not in allowed_keys:
+        if not set(input_keys).issubset(set(allowed_keys)):
             raise ValueError(
                 f'Found one or more setting keys that are not valid.\n '
                 f'settings keys: {input_keys},\n '

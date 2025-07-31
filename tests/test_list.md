@@ -69,6 +69,8 @@ Testing for SQL Alchemy models are made with @validates and a custom validate(se
 |--------|--|-----------------------------------------------------------------------------------|
 | VA-001 |[x]| When input is not dict[`REQUEST_KEYS`, dict] raise error                       |
 | VA-002 |[ ]| When input keys does nots include [`METHOD`, `QUERY_DATA`], then raise error     |
+| VA-003 |[x]| When settings keys is not valid, then raise error                    |
+| VA-004 |[x]| When parsed keys is not valid, then raise error                    |
 
 
 ### fn: `validate_method`
