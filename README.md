@@ -1,37 +1,33 @@
-# Http quest
-## Project status
-The project is current in a poor, most likely broken state, after having been through its first few iteration and a single live test.
-Focus is currently on clean up and get a stable framework (no ETA).
-
-## Description
-HTTP Quest is a HTTP Client based adventure game framework to teach the basics of using HTTP.
-They players will have to send and read HTTP requests to progress in the game.
-The player will have to use GET, POST, PUT, DELETE correctly and passing the correct riddle answers as both forms and JSON.
+# ReQUEST
+ReQUEST is a HTTP Client based adventure game to teach the basics of HTTP and CRUD to students that are new to programming.
+To play the game, the player will send and read HTTP requests, using the browser, a client (e.g. Postman), or writing their own scripts.
+The player will have to use basic methos (GET, POST, PUT, DELETE) together with the right data format (Query, JSON, Form, path, headers) to complete quests.
 A shared leaderboard website shows how far each player is from completing the game.
 
-The project comes with a predefined path but it is being developed with the intention of easy extensibility and creating custom adventures (see Framework section).
+## Project status
+For self-educational purposes, I am currently rewriting the project as an extendable and scalabe framework, using TDD methodologies.
+Therefore, only the two first quests are currently working: Welcome, and Accept Quest.
 
 ### Player prerequisites
-The game requires some basic knowledge of HTTP terminology and a horrible sense of humor and bad puns.
-After completing the game, the player should have some basic experience with reading and writing HTTP requests using the browser, a HTTP client and maybe though code if they are up for the challenge. 
+The game requires some basic knowledge of HTTP terminology and a horrible sense of humor and likability of bad puns.
+After completing the game, the player should have some basic experience with reading and writing HTTP requests and some of the standards.
 
 ### Background
-I developed while being an instructor in the course Web of Things at Aarhus University.
-In the course, students are being expose to hands-on experience with a wide variety of technologies and tools in a very short time.
-As an instructor, my job was to go through exercises with them that would enable them to better make their hand-ins.
+I developed the game while being an instructor in the course Web of Things at Aarhus University.
+In the course, students learn to use a wide variety of technologies and tools in a very short time: python, JS, HTML, CSS, SQL.
+As an instructor, my job was to go through exercises and help them with their hand-ins.
 This project was an experiment to see how they responded to such exercises and if it should be developed further in the future.
 
 ## Framework
 
 ### Techstack
-The framework is build using Python Flask, SQLite, and vanilla HTML, CSS and JavaScript.
-The techstack was chosen based on what the students were learning to keep the code familiar to them (if they shoulld be curious) and to improve my own knowledge and experience for better support.
+The framework is build using Python Flask, SQL Alchemy, and vanilla HTML, CSS and JavaScript.
+The techstack was originally chosen based on the students coriculum but SQLite was replaced with SQL Alchemy for the framework because the models layout appealed to me. 
 
-## Installation
-- Python venv and requirements.txt should setup the backend.
-- Latest version of vanilla JavaScript should be sufficient.
-- Must run on a server (I used PythonAnywhere)
-- [ ] More detail to come
+## Installation (local testing and try out)
+- Install .venv with requirements.txt
+- Run pytest in terminal to validate that everything (tested) works.
+- Run flask run in terminal and the leaderboard should open.
 
 ### Features
 #### Public website 
@@ -39,24 +35,28 @@ The techstack was chosen based on what the students were learning to keep the co
 - Shared public leaderboard
 - Game manual
 
-#### Level creator
-- Create levels through JSON (hard coded in files)
-- Define HTTP settings, e.g. type (GET/POST/PUT/DELETE), body (form/JSON), expected body content.
-- Write level introduction, description, riddle, answer, correct response and wrong response.
-- Set next level and completion score.
-
-### Folder structure
-- [ ] on its way
 ### Architecture
-- [ ] on its way
-
-#### More to come...
+![ReQUEST framework](https://github.com/user-attachments/assets/3fdd755c-1005-4369-98d6-9ed9625a1160)
 
 ## Roadmap
-- [ ] Clean up and get current version up and running again.
-- [ ] Use database to store levels
-- [ ] 
-- [ ] Frontend for creating a 
+### MVP aka. v1.0: All Quests
+- [ ] Add all identified tests
+- [ ] Add Quest 3: Signup for the quest! support and tests for POST and Form.
+- [ ] Add quest 4: Learn telekinese: support and tests for identifier in headers
+- [ ] Add quest 5: Get your squire Jason! Support and tests for JSON
+- [ ] Add quest 6: Get some armor on! Support and tests for PUT
+- [ ] Add quest 7: Slay the Git monster! Support and tests for DELETE
+
+### v1.1: Quest renderer
+- [ ] All quests can be returned as JSON or HTML based on param in query.
+
+### v1.2: Story branching
+- [ ] Quests can have multiple precessors.
+- [ ] Precessors can be optional for unlocking a quest.
+- [ ] No armor - no git slaying! : Quest 7 is available without quest 6 - but requires armor to complete
+
+### v1.2: Create custom quests
+- [ ] Players can create their own quests with HTTP requests.
 
 ## Credits
 Thank you to Abdelhadi Dyouri and Caitlin Postal for this tutorial: https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy#step-5-adding-flask-sqlalchemy-models-to-your-flask-application
