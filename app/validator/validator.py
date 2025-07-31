@@ -1,4 +1,4 @@
-from app.enums import ParserKey, StatusCode, ReqMethodType
+from app.enums import ParserKey, QuestKey, StatusCode, ReqMethodType
 from app.errors import ValidationError
 from app.utils import get_enum_values_as_list
 
@@ -6,8 +6,16 @@ class Validator:
     
     @staticmethod
     def validate_request(parsed: dict, settings: dict):
+        # validate settings keys
+        Validator.validate_input_keys(list(settings.keys()),
+                                      get_enum_values_as_list(QuestKey))
+        
+        # validate parsed input keys
+        Validator.validate_input_keys(list(parsed.keys()),
+                                      get_enum_values_as_list(ParserKey))
+        
         # method
-        Validator.validate_method_data(parsed.get(ParserKey.METHOD_DATA),
+        Validator.validate_req_method(parsed.get(ParserKey.METHOD_DATA),
                                        settings.get(ParserKey.METHOD_DATA))
         
         # query
@@ -18,7 +26,7 @@ class Validator:
     
     
     @staticmethod
-    def validate_method_data(method: str | None, allowed: list[str] | None):
+    def validate_req_method(method: str | None, allowed: list[str]):
         
         if not isinstance(allowed, list):
             raise ValueError('Allowed methods should be list.')
@@ -65,4 +73,14 @@ class Validator:
             raise ValidationError(f'Could not find key {keys} in {loc}:'
                                   f' {data} - {list(data.keys())}')
 
+        return True
+    
+    @staticmethod
+    def validate_input_keys(input_keys: list, allowed_keys: list) -> bool:
+        if input_keys not in allowed_keys:
+            raise ValueError(
+                f'Found one or more setting keys that are not valid.\n '
+                f'settings keys: {input_keys},\n '
+                f'allowed keys: {allowed_keys}'
+            )
         return True

@@ -8,3 +8,10 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')\
         or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+class TestingConfig:
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"  # in-memory DB
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = "test-secret-key"

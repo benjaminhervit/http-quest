@@ -21,13 +21,3 @@ def test_no_auth_pass_without_user(identity, expects_user, raises_exception,
         assert result.success is True
         if user_returned is not None:
             assert result.user.username == user_returned.username
-    
-# def test_no_auth_pass_with_user():
-#     result = no_auth({ParserKey.USERNAME: 'test'}, expects_user=True)
-#     assert result.success == True
-#     assert result.user.username == 'test'
-    
-# def test_error_on_no_auth_pass_with_user():
-#     result = no_auth({ParserKey.USERNAME: 'test'}, expects_user=True)
-#     assert result.success == True
-#     assert result.user.username == 'test'

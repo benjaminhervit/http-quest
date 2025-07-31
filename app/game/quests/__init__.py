@@ -4,5 +4,6 @@
 
 from app.game.quests.welcome import welcome_Q
 from app.game.quests.accept import accept_Q
+from app.game.quests.null_q import null_Q #NOT INCLUDED IN GAME
 
 quests = [welcome_Q, accept_Q]

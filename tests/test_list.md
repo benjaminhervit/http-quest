@@ -1,4 +1,4 @@
-# ✅ HTTP Quest – Test Checklist
+# HTTP Quest – Test Checklist
 
 This document outlines the test plan for the `http-quest` project, organized by component. Each test case ensures functional integrity and consistent behavior across models, logic, and state transitions.
 
@@ -34,8 +34,8 @@ Testing for SQL Alchemy models are made with @validates and a custom validate(se
 
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| QP-001 |[]| parsed settings must include keys [`METHOD_DATA`, `AUTH_TYPE`, `ANSWER`, `ANSWER_KEY`, `ANSWER_LOC`]|
-| QP-002 |[]| all keys in parsed settings must be valid QuestKey enums.|
+| QP-001 |[x]| parsed settings must include keys [`METHOD_DATA`, `AUTH_TYPE`, `QUERY_KEYS`, `ANSWER_KEY`, `ANSWER_LOC`]|
+| QP-002 |[x]| all keys in parsed settings must be valid QuestKey enums.|
 
 ---
 
@@ -117,15 +117,14 @@ Testing for SQL Alchemy models are made with @validates and a custom validate(se
 ## class: `STATE MANAGER`
 | ID     |  | Test Description                                                                 |
 |--------|--|-----------------------------------------------------------------------------------|
-| SM-001 |[ ]| when quest is stateless, then start state COMPLETED                              |
-| SM-001 |[ ]| when quest has no authentication, then start state is UNLOCKED                      |
+| SM-001 |[x]| when quest is stateless, then start state COMPLETED                              |
 | SM-001 |[ ]| when quest has state, and user has not reached the quest, then the state is LOCKED                     |
 | SM-001 |[ ]| when the quest has state, and the user has reached the quest, then the initial state is UNLOCKED    |
 | SM-001 |[ ]| when the quest has state and is UNLOCKED, when the user completes the quest, the state changes to COMPLETED  |
 | SM-001 |[ ]| when the quest has state and is UNLOCKED, when the user fails the quest, the state changes to FAILED.     |
 | SM-001 |[ ]| when the quest has state and is COMPLETED, then the end state is CLOSED.      |
 | SM-001 |[ ]| when the quest has state and is FAILED, then the end state is reset to UNLOCKED.   |
-| SM-001 |[ ]| when state is not a valid QuestState enum, then State Manager raises an error.     |
+| SM-001 |[x]| when state is not a valid value, then raises an error.     |
 
 ---
 

@@ -98,8 +98,8 @@ class QuestState(Enum):
     CLOSED = "CLOSED"
     FAILED = "FAILED"
     COMPLETED = "COMPLETED"
-    
-#  Helper enum to validate values in different contexts
+
+
 class InputLocation(str, Enum):
     METHOD = ParserKey.METHOD.value
     FORM_DATA = ParserKey.FORM_DATA.value

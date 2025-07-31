@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates
 
 from app.extensions import db
 from app.models.base import Base
-from app.enums import InputLocation, ReqMethodType, QuestExecutionStrategy
+from app.enums import InputLocation, QuestExecutionStrategy, AuthType
 from app.utils import get_clean_list_from_string, get_enum_values_as_list
 
 class Quest(db.Model, Base):
@@ -97,6 +97,11 @@ class Quest(db.Model, Base):
         return (f'<Quest id={self.id}, '
                 f'title="{self.title}>')
     
+    @validates('auth_type')
+    def validate_auth_type(self, key, value):
+        assert value in get_enum_values_as_list(AuthType)
+        return value
+    
     @validates('execution_strategy')
     def validate_execution_strategy(self, key, value):
         assert value in get_enum_values_as_list(QuestExecutionStrategy)
@@ -108,7 +113,8 @@ class Quest(db.Model, Base):
         valid_values = [e.value for e in InputLocation]
         if value not in valid_values:
             raise ValueError(
-                f"Invalided input locatoin value ({value}). allowed: {valid_values}"
+                (f'Invalided input locatoin value ({value}).'
+                 f' allowed: {valid_values}')
             )
         return value
     
