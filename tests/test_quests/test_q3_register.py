@@ -39,5 +39,3 @@ def test_only_form_expects_data(app):
 def test_no_auth():
     q = make_register_q()
     assert q.auth_type is AuthType.NO_AUTH.value
-
-

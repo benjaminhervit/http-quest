@@ -13,16 +13,15 @@ def make_register_q() -> Quest:
         # parsing settings
         allowed_req_methods="GET,POST",
         form_keys="username",
-        
 
         # authentication
         auth_type=AuthType.NO_AUTH.value,
 
         # exeuction
         is_stateless=True,
-        execution_strategy=QuestExecutionStrategy.AUTO_COMPLETE.value,
+        execution_strategy=QuestExecutionStrategy.REGISTER.value,
         execution_req_method="POST",
-        success_response="There is no time to wait! Follow the directions and move forward!",
+        success_response="HURRAY!",
         failed_response="Here there is no failure. Only a wrong missing ANSWER... and the answer is YES",
         is_locked_response="How did you even get here? This quest is LOCKED! Go back where you came from!",
         is_completed_response="What are you even doing here?? Get goin!"

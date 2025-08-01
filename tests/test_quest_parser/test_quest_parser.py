@@ -40,12 +40,14 @@ def wrong_quest() -> Quest:
 def test_min_key_requirements(null_quest):
     settings = QuestParser.get_settings(null_quest)
     keys = settings.keys()
-    assert len(keys) == 5
+    assert len(keys) == 6
     assert set(keys).issubset(set({QuestKey.METHOD_DATA.value, 
                                    QuestKey.AUTH_TYPE.value,
                                    QuestKey.QUERY_KEYS,
                                    QuestKey.ANSWER_KEY,
-                                   QuestKey.ANSWER_LOC}))
+                                   QuestKey.ANSWER_LOC,
+                                   QuestKey.FORM_KEYS
+                                   }))
     
     for k in keys:
         assert QuestKey(k)

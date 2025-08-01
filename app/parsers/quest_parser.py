@@ -17,6 +17,10 @@ class QuestParser:
                     quest.query_keys) if quest.query_keys
                 else [],
                 
+                QuestKey.FORM_KEYS: QuestParser.get_keys_list(
+                    quest.form_keys) if quest.form_keys
+                else [],
+                
                 QuestKey.AUTH_TYPE: quest.auth_type,
                 QuestKey.ANSWER_KEY: quest.solution_key,
                 QuestKey.ANSWER_LOC: quest.solution_location

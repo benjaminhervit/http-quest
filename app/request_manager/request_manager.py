@@ -22,6 +22,7 @@ class RequestManager:
         
         # PARSE
         parsed = RequestParser.parse(request)
+        print(f'PARSED:\n {parsed}')
         
         # VALIDATE
         settings: dict = QuestParser.get_settings(quest)

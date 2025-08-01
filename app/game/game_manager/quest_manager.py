@@ -9,7 +9,6 @@ from app.request_manager.request_context import RequestContext
 
 class QuestManager:
     def __init__(self, context: RequestContext):
-
         # quest data
         self.quest: Quest = context.quest
         self.req_method = context.parsed.get(ParserKey.METHOD_DATA)
@@ -80,7 +79,8 @@ class QuestManager:
             'title': self.quest.title,
             'story': self.quest.story,
             'quest': self.quest.quest_description,
-            'directions': self.quest.directions
+            'directions': self.quest.directions,
+            'state': self.state.value
         }
     
     def set_state(self, new_state: QuestState):

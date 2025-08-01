@@ -23,12 +23,19 @@ class RequestParser:
         return [p.strip() for p in path if p]
     
     @staticmethod
+    def parse_form(req: Request):
+        if req.method == 'POST':
+            return req.form.to_dict() if req.form else {}
+        return {}
+    
+    @staticmethod
     def parse(req: Request):
         try:
             return {
                 ParserKey.METHOD_DATA: RequestParser.parse_method(req),
                 ParserKey.PATH_DATA: RequestParser.parse_path(req),
                 ParserKey.QUERY_DATA: RequestParser.parse_query(req),
+                ParserKey.FORM_DATA: RequestParser.parse_form(req)
             }
         except ParsingError as exc:
             raise ParsingError(f'Failed to parse request: {req} - {str(exc)}',
