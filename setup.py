@@ -6,3 +6,4 @@ setup(
     packages=find_packages(),  # auto-detects all packages like `app/`
     install_requires=[],       # you can list Flask, SQLAlchemy etc. here
 )
+

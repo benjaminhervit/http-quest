@@ -18,7 +18,7 @@ from flask import Flask, request
 
 from app.enums import QuestState
 from app.errors import GameError
-from app.game.quests import welcome_Q, accept_Q, null_Q
+from app.game.quests_factory import make_welcome_q, make_accept_q, make_null_q
 from app.game.state_manager.state_manager import StateManager
 from app.game.state_manager.factory import create_state_manager
 import app.game.state_manager.strategies.start_session_strategies as start_state_strategies
@@ -26,11 +26,11 @@ import app.game.state_manager.strategies.end_session_strategies as end_state_str
 
 @pytest.fixture
 def q1_welcome():
-    return welcome_Q
+    return make_welcome_q()
 
 @pytest.fixture
 def null_quest():
-    return null_Q
+    return make_null_q()
 
 # @pytest.mark.parametrize("",[()])
 def test_stateless_starts_as_completed(null_quest):

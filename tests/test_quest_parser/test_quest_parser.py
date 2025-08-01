@@ -10,11 +10,11 @@ import pytest
 from app.enums import QuestKey, QuestExecutionStrategy
 from app.models.quest import Quest
 from app.parsers import QuestParser
-from app.game.quests.null_q import null_Q
+from app.game.quests_factory.make_null_q import make_null_q
 
 @pytest.fixture
 def null_quest() -> Quest:
-    return null_Q
+    return make_null_q()
 
 @pytest.fixture
 def wrong_quest() -> Quest:

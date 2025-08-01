@@ -2,7 +2,7 @@ import pytest
 from flask import Flask, request
 
 from app.enums import QuestKey, ReqMethodType, AuthType, ParserKey
-from app.game.quests import welcome_Q, accept_Q
+from app.game.quests_factory import make_welcome_q, make_accept_q
 from app.parsers.quest_parser import QuestParser
 
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @pytest.fixture
 def q1_welcome():
-    return welcome_Q
+    return make_welcome_q()
 
 def test_welcome_q_settings(q1_welcome):
     assert q1_welcome.is_stateless is True
@@ -23,11 +23,17 @@ def test_welcome_q_settings(q1_welcome):
 @pytest.mark.parametrize("quest, keys_with_values, expected_values_per_key",
                          [
                              #  welcome q
-                             (welcome_Q, [QuestKey.AUTH_TYPE.value, QuestKey.METHOD_DATA.value], 
+                             (make_welcome_q(), [QuestKey.AUTH_TYPE.value,
+                                                 QuestKey.METHOD_DATA.value], 
                               [AuthType.NO_AUTH.value, ['GET']]),
                              #  accept q
-                             (accept_Q, [QuestKey.AUTH_TYPE.value, QuestKey.METHOD_DATA.value, QuestKey.QUERY_KEYS, QuestKey.ANSWER_KEY, QuestKey.ANSWER_LOC], 
-                              [AuthType.NO_AUTH.value, ['GET'], ['accept'], 'accept', 'QUERY_DATA'])
+                             (make_accept_q(), [QuestKey.AUTH_TYPE.value,
+                                                QuestKey.METHOD_DATA.value,
+                                                QuestKey.QUERY_KEYS,
+                                                QuestKey.ANSWER_KEY,
+                                                QuestKey.ANSWER_LOC], 
+                              [AuthType.NO_AUTH.value, ['GET'], ['accept'],
+                               'accept', 'QUERY_DATA'])
                           ])
 def test_quest_parser_on_welcome_quest(quest, keys_with_values,
                                        expected_values_per_key):

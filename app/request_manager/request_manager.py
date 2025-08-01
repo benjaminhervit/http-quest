@@ -47,9 +47,6 @@ class RequestManager:
         user_input = {}
         method = parsed.get(ParserKey.METHOD_DATA)
         
-        print(f"PARSED:\n {parsed}")
-        print(f"settings:\n {settings}")
-        
         # BUILD CONTEXT
         context = RequestContext(
             user=user,

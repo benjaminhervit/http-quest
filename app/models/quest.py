@@ -5,8 +5,9 @@ from sqlalchemy.orm import validates
 
 from app.extensions import db
 from app.models.base import Base
-from app.enums import InputLocation, QuestExecutionStrategy, AuthType
+from app.enums import InputLocation, QuestExecutionStrategy, AuthType, QuestKey
 from app.utils import get_clean_list_from_string, get_enum_values_as_list
+from app import utils
 
 class Quest(db.Model, Base):
     __tablename__ = "quest"
@@ -27,9 +28,8 @@ class Quest(db.Model, Base):
     
     # request settings
     allowed_req_methods = db.Column(String(255), nullable=False)
-    
-    #expects_query = db.Column(db.Boolean, nullable=False)
     query_keys = db.Column(String(255), nullable=True)
+    form_keys = db.Column(String(255), nullable=True)
     
     # TODO: uncomment with first json quest
     # expects_json = db.Column(db.Boolean, nullable=False)
@@ -91,7 +91,10 @@ class Quest(db.Model, Base):
     
     @classmethod
     def get_by_slug(cls, slug: str):
-        return cls.query.filter_by(slug=slug).first()
+        quest = cls.query.filter_by(slug=slug).first()
+        # if not quest:
+        #     raise ValueError(f'Could not find Quest from slug: {slug}.')
+        return quest
 
     def __repr__(self):
         return (f'<Quest id={self.id}, '
@@ -132,10 +135,23 @@ class Quest(db.Model, Base):
     
         return value
     
+    @validates('form_keys')
+    def validate_form_keys_are_allowed(self, key, value):
+        if value:
+            valid = get_enum_values_as_list(QuestKey)
+            assert value in valid
+        return value
+    
     def validate(self):
         self.validate_solution_settings()
-        
     
+    def validate_req_method_settings(self):
+        # when quest has an execution_req_method, then it must also be in allowed_req_methods
+        if self.execution_req_method:
+            allowed_methods = utils.get_clean_list_from_string(
+                self.allowed_req_methods, ",")
+            assert self.execution_req_method in allowed_methods
+            
     def validate_solution_settings(self):
         if self.solution_expected:
             assert self.solution_location is not None
@@ -148,14 +164,3 @@ class Quest(db.Model, Base):
         if self.solution_key:
             assert self.solution_expected is not None
             assert self.solution_location is not None
-    
-    
-    # VALIDATE EXPECTED_QUERIES
-    # @validates('query_keys')
-    # def validate_expected_keys(self, key, value: str):
-    #     if value:
-    #     # if not value:
-    #     #     raise ValueError(
-    #     #         f"No white spaces in keys. Use comma , as separator _ for key_name_spaces. Error found in: {value}"
-    #     #         )
-    #     return value
