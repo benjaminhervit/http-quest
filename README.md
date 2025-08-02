@@ -47,9 +47,9 @@ It the players entry and interaction loop together with the technical flow the H
 Key system features include:
 - Modular route and request handling via Flask blueprints
 - Stateless vs stateful quest support
-- Fine-grained Player:Quest state management (locked, completed, failed)
+- Player:Quest state management (locked, completed, failed)
 - Error handling via standard HTTP codes (400, 401, 404, 500)
-- JSON-based output for frontend or API clients
+- JSON-based output
 
 ## Roadmap
 ### MVP aka. v1.0: All Quests
