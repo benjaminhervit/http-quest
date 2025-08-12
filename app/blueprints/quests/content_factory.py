@@ -1,6 +1,14 @@
 from app.enums import QuestState, ContentKeys
 
 
+def create_error_msg(msg: str, error_type: str, status_code: int) -> dict:
+    return {
+        ContentKeys.ERROR_MSG.value: msg,
+        ContentKeys.ERROR_TYPE.value: error_type,
+        ContentKeys.STATUS_CODE.value: status_code
+    }
+
+
 def replace_placeholders(content: dict, placeholder_map: dict):
     updated_content = dict()
     if isinstance(content, dict) and isinstance(placeholder_map, dict):

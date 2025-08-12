@@ -1,0 +1,6 @@
+{%extends 'base.html'%}
+{%block body%}
+    {%if content['error_msg']%}
+        {% include 'error_base.html'%}
+    {%endif%}
+{%endblock%}

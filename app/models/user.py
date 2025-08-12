@@ -8,6 +8,11 @@ class User(db.Model, Base):
     xp = db.Column('xp', db.Integer, nullable = False, default = 0)
     
     @classmethod
+    def user_exists(cls, username) -> bool:
+        user = cls.get_by_username(username)
+        return True if user else False
+
+    @classmethod
     def get_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
     

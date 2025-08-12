@@ -8,6 +8,9 @@ class ContentKeys(str, Enum):
     NEXT_PATH = "next_path"
     START_MESSAGE = "start_message"
     COMPLETED = "completed"
+    ERROR_MSG = "error_msg"
+    ERROR_TYPE = "error_type"
+    STATUS_CODE = "status_code"
 
 class ReqMethodType(str, Enum):
     GET = "GET"
