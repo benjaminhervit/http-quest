@@ -5,7 +5,7 @@ from app.blueprints.auth import bp
 from app.extensions import db
 from app.models.user import User
 
-@bp.route('/register', methods=['POST'])
+@bp.route('/register', methods=['GET', 'POST'])
 def register():
     #TODO: make try/except instead to use error handling
     if request.method == 'POST':

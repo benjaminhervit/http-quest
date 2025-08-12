@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <title>Hello world!</title>
+  </head>
+  <body>
+    <main class="container">
+      <article>
+        <header>
+          QUEST RENDERER! YEARH!
+        </header>
+        <footer id="game-feedback">
+          {% if content %}
+          <p>{{content['title']}}</p>
+          <p>{{content['status']}}</p>
+          <p>{{content['story']}}</p>
+          <p>{{content['quest']}}</p>
+          <p>{{content['next_path']}}</p>
+          {%else%}
+          <p>No content?!?!?</p>
+          {%endif%}
+        </footer>
+      </article>
+    </main>
+  </body>
+</html>

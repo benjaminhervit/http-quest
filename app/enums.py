@@ -1,5 +1,14 @@
 from enum import Enum
 
+class ContentKeys(str, Enum):
+    STATUS = "status"
+    TITLE = "title"
+    STORY = "story"
+    QUEST = "quest"
+    NEXT_PATH = "next_path"
+    START_MESSAGE = "start_message"
+    COMPLETED = "completed"
+
 class ReqMethodType(str, Enum):
     GET = "GET"
     POST = "POST"
