@@ -9,7 +9,7 @@ from app.extensions import db
 #blueprints
 from app.blueprints.main import bp as main_bp
 from app.blueprints.auth import bp as auth_bp
-from app.blueprints.quest import bp as quest_bp
+from app.blueprints.quests import bp as quest_bp
 from app.blueprints.dashboard import bp as dash_bp
 
 blueprints = [main_bp, auth_bp, quest_bp, dash_bp]
