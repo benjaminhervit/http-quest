@@ -13,8 +13,8 @@ class UserQuestState(db.Model, Base):
     
     username = db.Column(db.String(255), 
                          db.ForeignKey("user.username"), primary_key=True)
-    slug = db.Column(db.String(255),
-                     db.ForeignKey("quest.slug"), primary_key=True)
+    path = db.Column(db.String(255),
+                     db.ForeignKey("quest.path"), primary_key=True)
     state = db.Column(db.String(255), nullable=False)
     
     @validates('state')

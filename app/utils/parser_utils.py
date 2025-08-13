@@ -25,7 +25,7 @@ def get_field_from_request_data(req: Request, field_name: str,
     if not isinstance(parsing_method, Callable):
         raise TypeError('parsing_method is not Callable.')
     
-    data: dict | None = parsing_method(req=req, field_name=field_name)
+    data: dict | None = parsing_method(req=req)
     if not data:
         raise ParsingError('Found no data in request in expected format',
                            StatusCode.BAD_REQUEST.value)
