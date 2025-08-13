@@ -12,8 +12,9 @@ from app.blueprints.auth import bp as auth_bp
 from app.blueprints.quests import bp as quest_bp
 from app.blueprints.dashboard import bp as dash_bp
 from app.blueprints.quest_render import bp as quest_renderer_bp
+from app.blueprints.api import bp as api_bp
 
-blueprints = [main_bp, auth_bp, quest_bp, dash_bp, quest_renderer_bp]
+blueprints = [main_bp, auth_bp, quest_bp, dash_bp, quest_renderer_bp, api_bp]
 
 def create_app(config_class=Config) -> Flask:
     app = Flask(__name__)

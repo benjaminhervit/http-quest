@@ -12,11 +12,12 @@ Registration
         {%else%}
             {%include 'quest_base.html'%}
             {% if content['status'] != 'COMPLETED' %}
-            <form method="POST" action="{{url_for('auth.register')}}" role="group" class="register-form" required>
-                <input type="text" id="username-input" name="username" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
-                <button type="submit">Begin</button>
-            </form>
+                <form method="POST" action="{{url_for('auth.register')}}" role="group" class="register-form" required>
+                    <input type="text" id="username-input" name="username" placeholder="Enter your party's name here. For you own sake - do not use spaces" required>
+                    <button type="submit">Begin</button>
+                </form>
             {%endif%}
         {%endif%}
     {%endif%}
+    {%include 'leaderboard.html'%}
 {%endblock%}

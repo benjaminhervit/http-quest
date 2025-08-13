@@ -1,12 +1,12 @@
-from flask import request, jsonify
+from flask import request, jsonify, Request
 
 from app.blueprints.auth import bp
-from app.utils import is_browser_request, respond
+from app.utils import is_browser_request, respond, get_form_field
 
 from app.extensions import db
 from app.models.user import User
 from app.enums import StatusCode, ContentKeys as CK
-from app.errors import ParsingError, ValidationError, QuestError, AuthenticationError, GameError
+from app.errors import ParsingError, ValidationError, GameError
 from app.blueprints.quests import content_factory
 
 quest = {
@@ -33,18 +33,21 @@ quest = {
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     try:
-        return_as_html = is_browser_request(request)
+        #  Setup
+        req_from_browser = is_browser_request(request)
         content = content_factory.create_start_content(quest)
+
+        #  handle GET
         if request.method == 'GET':
-            return respond(content, StatusCode.OK.value, return_as_html,
-                    html='register.html')
-        
-        #  validate form data
-        username = request.form['username'] if request.form else None
+            return respond(content, StatusCode.OK.value, req_from_browser,
+                           html='register.html')
+
+        #  Handle POST
+        #  data validation
+        username = get_form_field(request, 'username')
         if not username:
             raise ParsingError('Found no username in form?',
                                StatusCode.BAD_REQUEST.value)
-        
         if User.user_exists(username):
             raise ValidationError('Username already exists',
                                   StatusCode.BAD_REQUEST.value)
@@ -52,23 +55,30 @@ def register():
         new_user = User(username=username)
         db.session.add(new_user)
         db.session.commit()
-        
-        #  build content
-        raw_content = content_factory.create_completed_content(quest)
+
+        #  build response content
+        content = content_factory.create_completed_content(quest)
         placeholder_map = {'[HERO]': username}
-        content = content_factory.replace_placeholders(raw_content,
+        content = content_factory.replace_placeholders(content,
                                                        placeholder_map)
-        return respond(content, StatusCode.OK.value, return_as_html,
-                       html='register.html')
-        
+        return respond(content, StatusCode.OK.value, req_from_browser)
+    
     # error handling
     except ParsingError as e:
         print("DOWN IN PARSING!")
         content = content_factory.create_error_msg(str(e), 
                                                    'ParsingError', e.code)
-        return respond(content, StatusCode.SERVER_ERROR.value, return_as_html,
+        return respond(content, StatusCode.SERVER_ERROR.value, req_from_browser,
                        html='error_message.html')
+    
     except ValidationError as e:
         content = content_factory.create_error_msg(str(e),
                                                    'ValidationError', e.code)
-        return respond(content, e.code, return_as_html, html='error_message.html')
+        return respond(content, e.code, req_from_browser,
+                       html='error_message.html')
+    
+    except GameError as e:
+        content = content_factory.create_error_msg(str(e),
+                                                   'GameError', e.code)
+        return respond(content, e.code, req_from_browser,
+                       html='error_message.html')

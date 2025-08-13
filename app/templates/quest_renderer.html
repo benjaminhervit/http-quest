@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{%block title%}
-Quest
-{%endblock%}
+
+{%block title%} Quest {%endblock%}
+
 {%block header%}
     {% if content %}
     {% else  %}
@@ -16,9 +16,5 @@ Quest
         <p>No content?!?!?</p>
     {%endif%}
 
-    {% if users %}
-        {% include 'leaderboard.html'%}
-    {% else %}
-        <p>No leaderboard?</p>
-    {% endif %}
+    {% include 'leaderboard.html'%}
 {%endblock%}
