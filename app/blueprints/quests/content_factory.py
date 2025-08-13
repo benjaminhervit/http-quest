@@ -35,7 +35,8 @@ def create_locked_content(quest: QuestData) -> dict:
                  quest.title),
              ContentKeys.STORY.value: quest.locked,
              ContentKeys.QUEST.value: "",
-             ContentKeys.NEXT_PATH.value: ""
+             ContentKeys.NEXT_PATH.value: "",
+             ContentKeys.HINT.value: "No hints just yet"
              }
 
 def create_start_content(quest: QuestData) -> dict:
@@ -43,6 +44,7 @@ def create_start_content(quest: QuestData) -> dict:
     content.update({ContentKeys.STATUS.value: QuestState.UNLOCKED.value})
     content.update({ContentKeys.STORY.value: build_json_string(quest.start_message)})
     content.update({ContentKeys.QUEST.value: build_json_string(quest.quest)})
+    content.update({ContentKeys.HINT.value: build_json_string(quest.hint)})
     return content
 
 
