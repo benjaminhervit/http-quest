@@ -6,7 +6,7 @@ from app.errors import (ParsingError, ValidationError,
 
 from app.enums import StatusCode
 from app.models import Quest
-from app.request_manager import RequestManager
+# from app.request_manager import RequestManager
 
 @bp.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 def welcome(path):

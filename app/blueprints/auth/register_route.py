@@ -1,7 +1,9 @@
 from flask import request, jsonify, Request
 
 from app.blueprints.auth import bp
-from app.utils import is_browser_request, respond, get_form_field
+from app.quest import QuestData
+from app.utils import is_browser_request, respond
+import app.utils.parser_utils as Parsers
 
 from app.extensions import db
 from app.models.user import User
@@ -9,26 +11,27 @@ from app.enums import StatusCode, ContentKeys as CK
 from app.errors import ParsingError, ValidationError, GameError
 from app.blueprints.quests import content_factory
 
-quest = {
-    CK.TITLE.value: "Registration",
-    CK.START_MESSAGE.value: ("""To begin the quest, you must tell us your
+quest = QuestData(
+    title="Registration",
+    start_message=("""To begin the quest, you must tell us your
                                  name,so that we can follow you on y
                                  our adventures."""),
-    CK.QUEST.value: ("""FORM username:your_name and POST to auth/register
+    quest=("""FORM username:your_name and POST to auth/register
                       or... you know... just use the form below?"""),
-    CK.COMPLETED.value: ("""
+    locked="",
+    completed=("""
                          Thank you [HERO]! Now, you are ready!",
                          Finally, someone with a heroic name as [HERO]
                          cannot fail! Move on! 
                          REEEEEMEMBEEEER to aaaalwaaaayyyyys 
                          keep your name in your head at all times.
                          """),
-    CK.NEXT_PATH.value: ("""
-                         GET to /telekenisis as fast as you can.
+    next_path=("""
+                         GET to /hire_jason as fast as you can.
                          This is a skill that you cannot 
                          ignore if you want to succeed!
                          """)
-}
+)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,7 +47,9 @@ def register():
 
         #  Handle POST
         #  data validation
-        username = get_form_field(request, 'username')
+        
+        username = Parsers.get_field_from_request_data(request, 'username',
+                                                       Parsers.get_form)
         if not username:
             raise ParsingError('Found no username in form?',
                                StatusCode.BAD_REQUEST.value)
