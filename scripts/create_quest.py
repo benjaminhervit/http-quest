@@ -41,7 +41,7 @@ def post_handler(quest: QuestData, req: Request):
     #username = parser_utils.get_auth_username(req)
     #if authenticator.authenticate(req):
     #    pass
-    return "get_handler template"
+    return "post_handler template"
 '''
 
 ROUTE_TEMPLATE_FILE = '''

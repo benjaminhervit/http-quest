@@ -7,7 +7,7 @@ from .handlers import get_handlers
 from app.blueprints.quests import bp
 from app.request_manager import RequestHandler
 
-@bp.route("/hire-jason", methods=['GET, POST'])
+@bp.route("/hire-jason", methods=['GET', 'POST'])
 def jason_route():
     handlers = get_handlers()
     quest = get_quest()
