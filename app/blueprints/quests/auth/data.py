@@ -1,6 +1,5 @@
 from app.quest import QuestData
-from app.blueprints.auth import bp
-
+from app.blueprints.quests.auth import bp
 
 def get_signup_quest():
     return QuestData(

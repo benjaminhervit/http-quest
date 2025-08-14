@@ -1,4 +1,6 @@
-def is_browser_request(req) -> bool:
+from flask import Request
+
+def is_browser_request(req: Request) -> bool:
     ua = req.headers.get("User-Agent", "").lower()
     has_browser_headers = ({"sec-fetch-site", "sec-fetch-mode", 
                             "sec-fetch-dest"} 

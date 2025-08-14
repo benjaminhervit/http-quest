@@ -1,4 +1,0 @@
-from app.quest_factory.get_welcome_quest import get_welcome_quest
-from app.quest_factory.get_signup_quest import get_signup_quest
-from app.quest_factory.get_identify_yourself_quest import get_identify_yourself_quest
-from app.quest_factory.get_hire_jason_quest import get_hire_jason_quest

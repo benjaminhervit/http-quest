@@ -2,4 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-from app.blueprints.auth import register_route
+from app.blueprints.quests.auth import routes

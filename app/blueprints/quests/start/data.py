@@ -1,7 +1,7 @@
 from app.quest import QuestData
 from app.blueprints.quests import bp
 
-def get_welcome_quest():
+def get_start_quest():
     return QuestData(
         title="Welcome",
         start_message=("""

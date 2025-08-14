@@ -1,9 +1,10 @@
-from flask import jsonify, render_template
+from flask import jsonify, render_template, Request
+from app.utils import browser_detector
 
-def respond(content: dict, status_code: int, return_html: bool = False,
-            html: str = 'quest_renderer.html'):
+def send_response(req: Request, content: dict, status_code: int,
+                  html: str = 'quest_renderer.html'):
     
-    if return_html:
+    if browser_detector.is_browser_request(req):
         return render_template(html, content=content)
     return jsonify({
         'content': content

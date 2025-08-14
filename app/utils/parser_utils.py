@@ -4,8 +4,14 @@ from typing import Callable
 from app.errors import ParsingError
 from app.enums import StatusCode
 
+
+def get_view_args(req: Request):
+    return req.view_args if req.view_args else None
+
+
 def get_headers(req: Request) -> dict | None:
     return {k.lower(): v for k, v in req.headers.items()}
+
 
 def get_json(req: Request) -> dict | None:
     return req.json.to_dict() if req.json else None
