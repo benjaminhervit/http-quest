@@ -2,7 +2,7 @@ from dataclasses import dataclass, asdict, field
 import json
 from slugify import slugify
 
-from app.models import Quest
+# from app.models import Quest
 from app.extensions import db
 
 @dataclass
@@ -31,9 +31,9 @@ class QuestData(Serializable):
         self.path = self.url_prefix + "/" + self.slug
         
         
-        print(f"Saving {self.title} to database")
-        if not Quest.quest_exists(self.title):
-            quest: Quest = Quest(title=self.title,
-                                 path=self.path)
-            db.session.add(quest)
-            db.session.commit()
+        # print(f"Saving {self.title} to database")
+        # if not Quest.quest_exists(self.title):
+        #     quest: Quest = Quest(title=self.title,
+        #                          path=self.path)
+        #     db.session.add(quest)
+        #     db.session.commit()
