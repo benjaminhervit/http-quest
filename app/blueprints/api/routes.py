@@ -7,5 +7,4 @@ from app.enums import StatusCode
 @bp.route('/all_users', methods=['GET'])
 def get_all_users():
     dict_users = [user.to_dict() for user in User.get_all()]
-    print("here")
     return jsonify(dict_users), StatusCode.OK.value

@@ -10,8 +10,9 @@ def create_error_msg(msg: str, error_type: str, status_code: int) -> dict:
     }
 
 
-def create_locked_content(quest: QuestData, formatting: dict = {}) -> dict:
+def create_locked_content(quest: QuestData, formatting: dict | None = None) -> dict:
     #Assumes bad request and quest is locked as a start
+    formatting = formatting or {}
     title: str = format_string(quest.title, formatting)
     story: str = format_string(quest.locked, formatting)
     
@@ -30,13 +31,14 @@ def format_string(string: str, fomatting: dict):
     return formatted
 
 
-def create_start_content(quest: QuestData, format_map: dict = {}) -> dict:
-    content = create_locked_content(quest, format_map)
+def create_start_content(quest: QuestData, formatting: dict | None = None) -> dict:
+    formatting = formatting or {}
+    content = create_locked_content(quest, formatting)
     
     status = QuestState.UNLOCKED.value
-    story = format_string(quest.start_message, format_map)
-    quest_txt = format_string(quest.quest, format_map)
-    hint = format_string(quest.hint, format_map)
+    story = format_string(quest.start_message, formatting)
+    quest_txt = format_string(quest.quest, formatting)
+    hint = format_string(quest.hint, formatting)
     
     content.update({ContentKeys.STATUS.value: status})
     content.update({ContentKeys.STORY.value: story})
@@ -45,12 +47,13 @@ def create_start_content(quest: QuestData, format_map: dict = {}) -> dict:
     return content
 
 
-def create_completed_content(quest: QuestData, format_map: dict = {}) -> dict:
-    content = create_start_content(quest, format_map)
+def create_completed_content(quest: QuestData, formatting: dict | None = None) -> dict:
+    formatting = formatting or {}
+    content = create_start_content(quest, formatting)
     
     status = QuestState.COMPLETED.value
-    story = format_string(quest.completed, format_map)
-    next_path = format_string(quest.next_path, format_map)
+    story = format_string(quest.completed, formatting)
+    next_path = format_string(quest.next_path, formatting)
     
     content.update({ContentKeys.STATUS.value: status})
     content.update({ContentKeys.STORY.value: story})
