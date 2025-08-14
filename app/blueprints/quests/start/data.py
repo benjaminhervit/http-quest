@@ -11,7 +11,7 @@ def get_start_quest():
         quest="Extend the path with /your_name",
         locked="",
         completed=("""
-                        What a pleasure to meet you [HERO]! Now, I believe in you! I do but...
+                        What a pleasure to meet you {HERO}! Now, I believe in you! I do but...
                         how should I put it... I prefer not to put all my trust in one hero?
                         Better 10 heroes on the roof than one in my pocket?
                         What I mean is that there are other heroes and before you can join the quest,

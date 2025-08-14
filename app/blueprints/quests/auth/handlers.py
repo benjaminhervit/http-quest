@@ -4,7 +4,7 @@ from app.extensions import db
 from app.models.user import User
 from app.enums import StatusCode
 from app.errors import ParsingError, ValidationError
-from app.utils import content_generator, parser_utils as Parsers
+from app.utils import content_generator, parser_utils
 from app.quest import QuestData
 
 
@@ -20,8 +20,9 @@ def get_handler(quest: QuestData, req: Request):
 
     
 def post_handler(quest: QuestData, req: Request):
-    username = Parsers.get_field_from_request_data(req, 'username',
-                                                   Parsers.get_form)
+    username = parser_utils.get_field_from_request_data(req,
+                                                        'username',
+                                                        parser_utils.get_form)
     if not username:
         raise ParsingError('Found no username in form?',
                            StatusCode.BAD_REQUEST.value)
@@ -34,7 +35,6 @@ def post_handler(quest: QuestData, req: Request):
     db.session.commit()
 
     #  build response content
-    content = content_generator.create_completed_content(quest)
-    placeholder_map = {'[HERO]': username}
-    return content_generator.replace_placeholders(content,
-                                                  placeholder_map)
+    formatting = {'HERO': username}
+    return content_generator.create_completed_content(quest, formatting)
+    

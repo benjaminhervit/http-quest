@@ -6,8 +6,7 @@ from app.authentication_manager import authenticator
 def standard_get_handler(quest: QuestData, req: Request):
     username = parser_utils.get_auth_username(req)
     if authenticator.authenticate(req):
-        content = content_generator.create_start_content(quest)
-        placeholders = {'[HERO]': username}
-        content = content_generator.replace_placeholders(content, placeholders)
+        formatting = {'HERO': username}
+        content = content_generator.create_start_content(quest, formatting)
         return content
     return "something went wrong. You should not end up here?"

@@ -27,32 +27,29 @@ def build_json_string(data: list[str] | str) -> str:
     return ""
 
 
-def create_locked_content(quest: QuestData) -> dict:
+def create_locked_content(quest: QuestData, format_map: dict = {}) -> dict:
     #Assumes bad request and quest is locked as a start
     return {
              ContentKeys.STATUS.value: QuestState.LOCKED.value,
-             ContentKeys.TITLE.value: build_json_string(
-                 quest.title),
-             ContentKeys.STORY.value: quest.locked,
+             ContentKeys.TITLE.value: quest.title.format(**format_map),
+             ContentKeys.STORY.value: quest.locked.format(**format_map),
              ContentKeys.QUEST.value: "",
              ContentKeys.NEXT_PATH.value: "",
              ContentKeys.HINT.value: "No hints just yet"
              }
 
-def create_start_content(quest: QuestData) -> dict:
-    content = create_locked_content(quest)
+def create_start_content(quest: QuestData, format_map: dict = {}) -> dict:
+    content = create_locked_content(quest, format_map)
     content.update({ContentKeys.STATUS.value: QuestState.UNLOCKED.value})
-    content.update({ContentKeys.STORY.value: build_json_string(quest.start_message)})
-    content.update({ContentKeys.QUEST.value: build_json_string(quest.quest)})
-    content.update({ContentKeys.HINT.value: build_json_string(quest.hint)})
+    content.update({ContentKeys.STORY.value: quest.start_message.format(**format_map)})
+    content.update({ContentKeys.QUEST.value: quest.quest.format(**format_map)})
+    content.update({ContentKeys.HINT.value: quest.hint.format(**format_map)})
     return content
 
 
-def create_completed_content(quest: QuestData, 
-                             placeholder_map: dict | None = None) -> dict:
-    #  build content
-    content = create_start_content(quest)
+def create_completed_content(quest: QuestData, format_map: dict = {}) -> dict:
+    content = create_start_content(quest, format_map)
     content.update({ContentKeys.STATUS.value: QuestState.COMPLETED.value})
-    content.update({ContentKeys.STORY.value: build_json_string(quest.completed)})
-    content.update({ContentKeys.NEXT_PATH.value: build_json_string(quest.next_path)})
+    content.update({ContentKeys.STORY.value: quest.completed.format(**format_map)})
+    content.update({ContentKeys.NEXT_PATH.value: quest.next_path.format(**format_map),})
     return content

@@ -1,7 +1,6 @@
 from flask import Flask
 
-from app.config import Config, TestingConfig
-import logging
+from app.config import Config
 
 #import db
 from app.extensions import db

@@ -1,5 +1,6 @@
 from flask import Request
 from typing import Callable
+import collections.abc as colabc
 
 from app.errors import ParsingError
 from app.enums import StatusCode
@@ -30,7 +31,7 @@ def get_field_from_request_data(req: Request, field_name: str,
         raise TypeError('req is not Request obj.')
     if not isinstance(field_name, str):
         raise TypeError('field_name is not string.')
-    if not isinstance(parsing_method, Callable):
+    if not isinstance(parsing_method, colabc.Callable):
         raise TypeError('parsing_method is not Callable.')
 
     data: dict | None = parsing_method(req=req)

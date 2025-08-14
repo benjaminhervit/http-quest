@@ -9,7 +9,7 @@ from app.models.quest import Quest
 
 
 class UserQuestState(db.Model, Base):
-    __table_name__ = 'user_quest_state'
+    __tablename__ = 'user_quest_state'
     
     username = db.Column(db.String(255), 
                          db.ForeignKey("user.username"), primary_key=True)

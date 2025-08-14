@@ -8,4 +8,4 @@ def send_response(req: Request, content: dict, status_code: int,
         return render_template(html, content=content)
     return jsonify({
         'content': content
-    }, status_code)
+    }), status_code

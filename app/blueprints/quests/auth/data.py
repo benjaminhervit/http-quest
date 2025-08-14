@@ -11,8 +11,8 @@ def get_signup_quest():
                         or... you know... just use the form below?"""),
         locked="",
         completed=("""
-                            Thank you [HERO]! Now, you are ready!",
-                            Finally, someone with a heroic name as [HERO]
+                            Thank you {HERO}! Now, you are ready!",
+                            Finally, someone with a heroic name as {HERO}
                             cannot fail! Move on! 
                             REEEEEMEMBEEEER to aaaalwaaaayyyyys 
                             keep your name in your head at all times.

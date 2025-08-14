@@ -12,10 +12,8 @@ def get_handler(quest: QuestData, req: Request):
     username = req.view_args.get('username') if req.view_args else None
     
     if username:
-        content = content_generator.create_completed_content(quest)
-        placeholder_map = {'[HERO]': username}
-        content = content_generator.replace_placeholders(content,
-                                                         placeholder_map)
+        formatting = {'HERO': username}
+        content = content_generator.create_completed_content(quest, formatting)
     else:
         content = content_generator.create_start_content(quest)
     return content
