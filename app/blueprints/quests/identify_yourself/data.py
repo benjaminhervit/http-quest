@@ -2,7 +2,7 @@ from app.quest import QuestData
 from app.blueprints.quests import bp
 
 
-def get_identify_yourself_quest():
+def get_quest():
     return QuestData(
         title="Identify yourself!",
         start_message=("""
@@ -21,9 +21,7 @@ def get_identify_yourself_quest():
                 Now you know our secret ways of telling friend from enemy! Onwards!
                 """),
         next_path=("""
-                GET to /hire_jason as fast as you can.
-                This is a skill that you cannot 
-                ignore if you want to succeed!
+                GET to /game/hire_jason
                 """),
         hint="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
         url_prefix=bp.url_prefix if bp.url_prefix else ""

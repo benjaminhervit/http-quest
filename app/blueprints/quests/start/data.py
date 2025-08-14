@@ -21,7 +21,7 @@ def get_start_quest():
                         quest its really no big deal... It actually sounds much worse now that I am 
                         trying to explain it...
                         """),
-        next_path="GET to auth/register for your next instructions.",
+        next_path="GET to auth/register",
         hint="",
         url_prefix=bp.url_prefix if bp.url_prefix else ""
     )

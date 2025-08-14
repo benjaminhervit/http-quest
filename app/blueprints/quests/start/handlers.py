@@ -3,7 +3,7 @@ from app.utils import content_generator
 from app.quest import QuestData
 
 
-def get_handlers_map():
+def get_handlers():
     return {
         'GET': get_handler
     }

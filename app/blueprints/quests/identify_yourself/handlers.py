@@ -10,7 +10,6 @@ def get_handlers():
         'POST': post_handler
     }
 
-
 def get_handler(quest: QuestData, req: Request):
     return content_generator.create_start_content(quest)
 

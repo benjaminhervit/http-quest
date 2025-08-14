@@ -1,7 +1,7 @@
 from app.quest import QuestData
 from app.blueprints.quests.auth import bp
 
-def get_signup_quest():
+def get_quest():
     return QuestData(
         title="Registration",
         start_message=("""To begin the quest, you must tell us your
@@ -17,11 +17,7 @@ def get_signup_quest():
                             REEEEEMEMBEEEER to aaaalwaaaayyyyys 
                             keep your name in your head at all times.
                             """),
-        next_path=("""
-                            GET to /hire_jason as fast as you can.
-                            This is a skill that you cannot 
-                            ignore if you want to succeed!
-                            """),
+        next_path=("GET to /game/identify-yourself"),
         hint="",
         url_prefix=bp.url_prefix if bp.url_prefix else ""
     )

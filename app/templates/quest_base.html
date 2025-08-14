@@ -3,10 +3,25 @@
         <h1>{{content['title']}}</h1>
     </header>
     <body>
-        <p>Story: {{content['story']}}</p>
-        <p>Quest: {{content['quest']}}</p>
-        <p>Hint: {{content['hint']}}</p>
-        <p>{{content['next_path']}}</p>
+        <details open>
+            <summary>Story</summary>
+            <p>{{content['story']}}</p>
+        </details>
+        
+        <details open>
+            <summary>Quest</summary>
+            <p>{{content['quest']}}</p>
+        </details>
+
+        <details open>
+            <summary>Hint</summary>
+            <p>{{content['hint']}}</p>
+        </details>
+
+        <details open>
+            <summary>Next path</summary>
+            <p>{{content['next_path']}}</p>
+        </details>
     </body>
     <footer>
         <p>Status: {{content['status']}}</p>
