@@ -5,6 +5,7 @@ from app.blueprints.quests import bp
 from app.request_manager import RequestHandler
 from app.blueprints.quests.start.handlers import get_handlers_map
 
+
 @bp.route("/start", methods=['GET'])
 @bp.route("/start" + '/<username>', methods=['GET'])
 def start(username=None):
