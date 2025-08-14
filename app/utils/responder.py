@@ -6,7 +6,6 @@ from app import services
 def send_response(
     req: Request, content: dict, status_code: int, html: str = "quest_renderer.html"
 ):
-
     if browser_detector.is_browser_request(req):
         headers, table = services.get_progress_matrix()
         return (

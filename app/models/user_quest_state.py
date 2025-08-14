@@ -1,11 +1,9 @@
 from sqlalchemy.orm import validates
-from sqlalchemy import update
 from typing import Optional
 
 from app.extensions import db
 from app.enums import QuestState
 from app.models.base import Base
-from app.models.quest import Quest
 
 
 class UserQuestState(db.Model, Base):
@@ -49,4 +47,4 @@ class UserQuestState(db.Model, Base):
         return cls.query.filter_by(username=username, quest=quest_title).first()
 
     def __repr__(self):
-        return f"<Quest state={self.state}, " f'slug="{self.quest}>'
+        return f'<Quest state={self.state}, slug="{self.quest}>'

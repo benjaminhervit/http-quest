@@ -1,5 +1,4 @@
-from flask import request, render_template, session
-import json
+from flask import render_template, session
 from app.blueprints.quest_render import bp
 
 

@@ -29,7 +29,6 @@ def get_form(req: Request) -> dict | None:
 def get_field_from_request_data(
     req: Request, field_name: str, parsing_method: Callable
 ) -> str:
-
     if not isinstance(req, Request):
         raise TypeError("req is not Request obj.")
     if not isinstance(field_name, str):

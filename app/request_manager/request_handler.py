@@ -9,10 +9,8 @@ from app.quest import QuestData
 
 
 class RequestHandler:
-
     @classmethod
     def validate_handlers_map(cls, handlers_map: dict, valid_methods: list) -> bool:
-
         for m in valid_methods:
             if m not in handlers_map:
                 raise ValueError(f"Missing handler for method {m}")
@@ -27,7 +25,6 @@ class RequestHandler:
         valid_req_methods: list,
         html_template: str = "quest_renderer.html",
     ):
-
         # validate
         cls.validate_handlers_map(handlers_map, valid_req_methods)
 
@@ -37,7 +34,7 @@ class RequestHandler:
             handler = handlers_map.get(req.method)
             if not handler:
                 raise GameError(
-                    f"Could not find handler for method" f"{req.method}",
+                    f"Could not find handler for method{req.method}",
                     StatusCode.SERVER_ERROR.value,
                 )
             content = handler(quest=quest, req=req)

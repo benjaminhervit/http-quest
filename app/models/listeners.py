@@ -1,5 +1,4 @@
 from sqlalchemy import event, insert, select, literal, case
-from app.extensions import db
 from app.models import User, Quest, UserQuestState
 from app.enums import QuestState
 

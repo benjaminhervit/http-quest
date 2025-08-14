@@ -5,7 +5,6 @@ from app.blueprints.quests.get_all_quests import get_all_quests
 
 
 def create_and_seed_app(config_class=None):
-
     from app.config import Config  # avoid circular import
 
     app = create_app(config_class or Config)

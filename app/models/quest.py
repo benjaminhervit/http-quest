@@ -1,7 +1,5 @@
 from sqlalchemy import Integer, String
 
-from sqlalchemy.inspection import inspect
-from sqlalchemy.orm import validates
 
 from app.extensions import db
 from app.models.base import Base

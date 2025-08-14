@@ -3,7 +3,6 @@ import json
 from slugify import slugify
 
 # from app.models import Quest
-from app.extensions import db
 
 
 @dataclass
