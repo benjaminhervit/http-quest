@@ -19,7 +19,7 @@ def get_headers(req: Request) -> dict | None:
 
 
 def get_json(req: Request) -> dict | None:
-    return req.json.to_dict() if req.json else None
+    return req.get_json() if req.json else None
 
 
 def get_form(req: Request) -> dict | None:
