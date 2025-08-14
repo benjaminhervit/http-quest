@@ -5,6 +5,7 @@ from app.quest import QuestData
 from app.utils import content_generator, parser_utils, standard_get_handler
 from app.authentication_manager import authenticator
 
+
 def get_handlers():
     return {
         'GET': get_handler,

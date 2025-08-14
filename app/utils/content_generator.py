@@ -10,23 +10,6 @@ def create_error_msg(msg: str, error_type: str, status_code: int) -> dict:
     }
 
 
-def replace_placeholders(content: dict, placeholder_map: dict):
-    updated_content = dict()
-    if isinstance(content, dict) and isinstance(placeholder_map, dict):
-        for placeholder, real_value in placeholder_map.items():
-            for key, value in content.items():
-                updated_content[key] = value.replace(placeholder, real_value) 
-    return updated_content
-
-
-def build_json_string(data: list[str] | str) -> str:
-    if isinstance(data, str):
-        return data
-    if data and all(isinstance(i, str) for i in data):
-        return "\n".join(data)
-    return ""
-
-
 def create_locked_content(quest: QuestData, format_map: dict = {}) -> dict:
     #Assumes bad request and quest is locked as a start
     return {
@@ -37,6 +20,7 @@ def create_locked_content(quest: QuestData, format_map: dict = {}) -> dict:
              ContentKeys.NEXT_PATH.value: "",
              ContentKeys.HINT.value: "No hints just yet"
              }
+
 
 def create_start_content(quest: QuestData, format_map: dict = {}) -> dict:
     content = create_locked_content(quest, format_map)

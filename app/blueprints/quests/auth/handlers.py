@@ -37,4 +37,3 @@ def post_handler(quest: QuestData, req: Request):
     #  build response content
     formatting = {'HERO': username}
     return content_generator.create_completed_content(quest, formatting)
-    

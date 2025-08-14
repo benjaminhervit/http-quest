@@ -20,7 +20,6 @@ def post_handler(quest: QuestData, req: Request):
     username = parser_utils.get_auth_username(req)
     if authenticator.authenticate(req):
         #  build response content
-        content = content_generator.create_completed_content(quest)
-        placeholder_map = {'[HERO]': username}
-        return content_generator.replace_placeholders(content,
-                                                      placeholder_map)
+        formatting = {'HERO': username}
+        content = content_generator.create_completed_content(quest, formatting)
+        return content

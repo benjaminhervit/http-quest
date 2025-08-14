@@ -3,6 +3,7 @@ from app.quest import QuestData
 from app.utils import parser_utils, content_generator
 from app.authentication_manager import authenticator
 
+
 def standard_get_handler(quest: QuestData, req: Request):
     username = parser_utils.get_auth_username(req)
     if authenticator.authenticate(req):

@@ -2,10 +2,12 @@ from flask import Request
 from app.utils import content_generator
 from app.quest import QuestData
 
+
 def get_handlers_map():
     return {
         'GET': get_handler
     }
+
 
 def get_handler(quest: QuestData, req: Request):
     content = content_generator.create_locked_content(quest)

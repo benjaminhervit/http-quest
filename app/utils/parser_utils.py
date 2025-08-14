@@ -5,8 +5,10 @@ import collections.abc as colabc
 from app.errors import ParsingError
 from app.enums import StatusCode
 
+
 def get_auth_username(req: Request):
     return get_field_from_request_data(req, 'authorization', get_headers)
+
 
 def get_view_args(req: Request):
     return req.view_args if req.view_args else None

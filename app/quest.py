@@ -29,11 +29,3 @@ class QuestData(Serializable):
     def __post_init__(self):
         self.slug = slugify(self.title)
         self.path = self.url_prefix + "/" + self.slug
-        
-        
-        # print(f"Saving {self.title} to database")
-        # if not Quest.quest_exists(self.title):
-        #     quest: Quest = Quest(title=self.title,
-        #                          path=self.path)
-        #     db.session.add(quest)
-        #     db.session.commit()
