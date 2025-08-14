@@ -1,0 +1,29 @@
+<!-- LEADER BOARD -->
+<details>
+  <summary>Player progress</summary>
+  <p>HEADER{{headers}}</p>
+  <p>TABLE{{table}}</p>
+  <table>
+    <thead>
+      <th>Player</th>
+      {%if headers%}
+      {%for q in headers%}<th>{{q}}</th>{%endfor%}
+      {%else%}
+      <p>wooop</p>
+      {%endif%}
+    </thead>
+    <tbody id="progress_body">
+      {%if table%}
+      {%for row in table%}
+      <tr>
+        <td>{{row.username}}</td>
+        {% for q in headers %}<td>{{row[q]}}</td>{%endfor%}
+      </tr>
+      {%endfor%}
+      <p>HALLLOOOO</p>
+      {%else%}
+      <p>more wooops</p>
+      {%endif%}
+    </tbody>
+  </table>
+</details>

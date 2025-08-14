@@ -1,7 +1,5 @@
 from flask import request
 
-
-
 from app.request_manager import RequestHandler
 from app.blueprints.quests import bp
 from .handlers import get_handlers

@@ -24,6 +24,9 @@ def create_app(config_class=Config) -> Flask:
 
     for bp in blueprints:
         app.register_blueprint(bp)
+        
+    with app.app_context():
+        from app.models import listeners
 
     @app.route('/test')
     def test_page():

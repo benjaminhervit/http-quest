@@ -1,7 +1,7 @@
 from app import create_app
 from app.extensions import db
-from app.models.user import User
-from app.game.quests_factory import make_all_quests
+from app.models import User, Quest
+from app.blueprints.quests.get_all_quests import get_all_quests
 
 def create_and_seed_app(config_class=None):
     
@@ -13,11 +13,10 @@ def create_and_seed_app(config_class=None):
         db.drop_all()
         db.create_all()
         
-        all_quests = make_all_quests()
-        db.session.add_all(all_quests)
-        
-        for i in range(1, len(all_quests)):
-            all_quests[i].prev_quest_id = all_quests[i - 1].id
+        all_quests = get_all_quests()
+        for q in all_quests:
+            db.session.add(Quest(title=q.title))
+
         db.session.commit()
 
         db.session.add(User(username="admin"))

@@ -1,38 +1,43 @@
-from sqlalchemy import event, inspect
-from sqlalchemy.orm import Session
-from flask import has_app_context
-from typing import cast
-
-from app.models.user import User
-from app.models.quest import Quest
-from app.models.user_quest_state import UserQuestState
-from app.enums import QuestState
+from sqlalchemy import event, insert, select, literal, case
 from app.extensions import db
+from app.models import User, Quest, UserQuestState
+from app.enums import QuestState
 
-@event.listens_for(db.session, "after_flush")
-def populate_user_state_after_commit(session, flush_context):
-    if not has_app_context():
-        print("NO CONTEXT FOR POPULATE QUEST LISTENER!")
-        return
+print("event listeners registered")
 
-    for obj in session.new:
-        if isinstance(obj, User):
-            quests: list[Quest] = Quest.query.all()
-            for quest in quests:
-                if not quest.is_stateless:    
-                    uqs: UserQuestState = UserQuestState(
-                        username=obj.username,
-                        slug=quest.slug,
-                        state=state
-                    )
-                    db.session.add(uqs)
-                    
-@event.listens_for(Quest, 'before_insert')
-def validate_quest_before_insert(mapper, connection, target: Quest):
-    print(f'Validating {target.title} from before_insert')
-    target.validate()
+@event.listens_for(Quest, "after_insert")
+def backfill_states_for_new_quest(mapper, connection, target: Quest):
+    user_tbl = User.__table__
+    uqs_tbl = UserQuestState.__table__
 
-@event.listens_for(Quest, 'before_update')
-def validate_quest_before_update(mapper, connection, target: Quest):
-    print(f'Validating {target.title} from before_update')
-    target.validate()
+    insert_statement = insert(uqs_tbl).from_select(
+        ["username", "quest", "state"],
+        select(
+            user_tbl.c.username,
+            literal(target.title),
+            literal(QuestState.UNLOCKED.value)  # or UNLOCKED if you prefer
+        )
+    )
+    connection.execute(insert_statement)
+    
+@event.listens_for(User, "after_insert")
+def create_user_quest_states(mapper, connection, target: User):
+    quest_tbl = Quest.__table__
+    uqs_tbl = UserQuestState.__table__
+    
+    completed_titles = ("Welcome", "Registration")
+    
+    state_expr = case(
+        (quest_tbl.c.title.in_(completed_titles), literal(QuestState.COMPLETED.value)),
+        else_=literal(QuestState.UNLOCKED.value),
+    )
+
+    stmt = insert(uqs_tbl).from_select(
+        ["username", "quest", "state"],
+        select(
+            literal(target.username),
+            quest_tbl.c.title,
+            state_expr
+        )
+    )
+    connection.execute(stmt)
