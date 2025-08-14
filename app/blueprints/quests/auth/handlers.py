@@ -1,11 +1,10 @@
 from flask import Request
 
-import app.utils.parser_utils as Parsers
 from app.extensions import db
 from app.models.user import User
 from app.enums import StatusCode
 from app.errors import ParsingError, ValidationError
-from app.utils import content_generator
+from app.utils import content_generator, parser_utils as Parsers
 from app.quest import QuestData
 
 

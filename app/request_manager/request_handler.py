@@ -1,7 +1,7 @@
 
 from flask import Request
 
-from app.utils import is_browser_request, send_response
+from app.utils import send_response
 
 from app.enums import StatusCode
 from app.errors import ParsingError, ValidationError, GameError

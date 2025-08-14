@@ -4,8 +4,8 @@ from app.quest import QuestData
 from app.models.user import User
 from app.enums import StatusCode
 from app.errors import ParsingError, ValidationError
-from app.utils import content_generator
-import app.utils.parser_utils as Parsers
+from app.utils import content_generator, parser_utils as Parsers
+from app.authentication_manager import authenticator
 
 def get_handlers():
     return {
@@ -20,22 +20,13 @@ def get_handler(quest: QuestData, req: Request):
 
 def post_handler(quest: QuestData, req: Request):
     #  Handle POST
-    username = Parsers.get_field_from_request_data(req,
-                                                   'authorization',
-                                                   Parsers.get_headers)
-    if not username:
-        raise ParsingError('Found no username in form?',
-                           StatusCode.BAD_REQUEST.value)
-    if not User.user_exists(username):
-        raise ValidationError((f'Username {username} does not exists'
-                               'go to /auth/register to sign up.'),
-                              StatusCode.BAD_REQUEST.value)
-
-    #  build response content
-    content = content_generator.create_completed_content(quest)
-    placeholder_map = {'[HERO]': username}
-    return content_generator.replace_placeholders(content,
-                                                  placeholder_map)
+    username = Parsers.get_auth_username(req)
+    if authenticator.authenticate(req):
+        #  build response content
+        content = content_generator.create_completed_content(quest)
+        placeholder_map = {'[HERO]': username}
+        return content_generator.replace_placeholders(content,
+                                                    placeholder_map)
 
 
 # @bp.route('/identify_yourself', methods=['GET', 'POST'])
