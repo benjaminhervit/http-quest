@@ -2,16 +2,12 @@
 let leaderboard;
 let timer = null;
 let controller = null; // optional, for pause/visibility
-const interval = 5000;
+const interval = 15000;
 
 document.addEventListener('DOMContentLoaded', function() {
     leaderboard = document.querySelector("#table_body");
     startLoop();
     document.addEventListener('visibilitychange', onVisChange)
-    // updateLeaderBoard();
-    // setInterval(function() {
-    //     updateLeaderBoard();
-    // }, 5000);
 });
 
 function onVisChange(){
@@ -88,48 +84,6 @@ function renderLeaderboard(data){
 
     });
 }
-
-// function updateLeaderBoard(){
-//     if (leaderboard === null){
-//         console.log("no leaderboard found. Update aborted.");
-//         return;
-//     }
-
-//     fetch('/api/all_users')
-//             .then(response => {
-//                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-//                 return response.json();
-//             })
-//             .then(data => {
-//                 //console.log("Updating leaderboard")
-//                 leaderboard.innerHTML = '';
-//                 data.forEach(user => {
-//                     //create row
-//                     const row = document.createElement("tr");
-//                     leaderboard.appendChild(row);
-                    
-//                     //team name
-//                     const userEl = document.createElement("td");
-//                     userEl.textContent = user.username;
-//                     row.appendChild(userEl);
-
-//                     // //level
-//                     const xpEL = document.createElement("td");
-//                     xpEL.textContent = user.xp;
-//                     row.appendChild(xpEL);
-
-//                     // TODO: MAKE SURE SCORE AND MAX VALUE MATCHES THE LEVELS
-//                     row.appendChild(createProgressBarGroupEl(user.xp, 0, 4));
-//                     //open the gate
-//                     row.appendChild(createProgressBarGroupEl(user.xp, 4, 8));
-//                     //claim the crown
-//                     row.appendChild(createProgressBarGroupEl(user.xp, 8, 10));
-
-//                 });
-
-//             })
-//             .catch(error => console.error('Error fetching user:', error));
-// }
 
 function createProgressBarGroupEl(exp, treshold, max){
     const divEl = document.createElement('td');
