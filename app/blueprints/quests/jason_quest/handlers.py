@@ -1,4 +1,3 @@
-
 from flask import Request
 
 from app.quest import QuestData
@@ -7,10 +6,7 @@ from app.authentication_manager import authenticator
 
 
 def get_handlers():
-    return {
-        'GET': get_handler,
-        'POST': post_handler
-    }
+    return {"GET": get_handler, "POST": post_handler}
 
 
 def get_handler(quest: QuestData, req: Request):
@@ -20,13 +16,12 @@ def get_handler(quest: QuestData, req: Request):
 def post_handler(quest: QuestData, req: Request):
     if authenticator.authenticate(req):
         hire_jason = parser_utils.get_field_from_request_data(
-            req,
-            'jason',
-            parser_utils.get_json)
+            req, "jason", parser_utils.get_json
+        )
 
-        if hire_jason == 'hire':
+        if hire_jason == "hire":
             username = parser_utils.get_auth_username(req)
-            formatting = {'HERO': username}
+            formatting = {"HERO": username}
             return content_generator.create_completed_content(quest, formatting)
-        
+
     return "you should not get this far"

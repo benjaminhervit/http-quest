@@ -9,13 +9,13 @@ app = create_app()
 with app.app_context():
     db.drop_all()
     db.create_all()
-      
+
     all_quests = get_all_quests()
     for q in all_quests:
         db.session.add(Quest(title=q.title))
     db.session.commit()
-    
-    admin_exists = User.get_by_username('admin')
+
+    admin_exists = User.get_by_username("admin")
     if not admin_exists:
         db.session.add(User(username="admin"))
         db.session.commit()

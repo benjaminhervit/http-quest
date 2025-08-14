@@ -7,5 +7,5 @@ def get_enum_values_as_list(enum: Type[Enum]):
 
 
 def get_clean_list_from_string(string: str, separator: str):
-    #converts string to list without empty values based on separator
+    # converts string to list without empty values based on separator
     return [s.strip() for s in string.split(separator) if s.strip()]

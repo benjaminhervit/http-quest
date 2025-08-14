@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ContentKeys(str, Enum):
     STATUS = "status"
     TITLE = "title"
@@ -13,41 +14,43 @@ class ContentKeys(str, Enum):
     STATUS_CODE = "status_code"
     HINT = "hint"
 
+
 class ReqMethodType(str, Enum):
     GET = "GET"
     POST = "POST"
     PUT = "PUT"
     DELETE = "DELETE"
 
+
 class QuestKey(str, Enum):
     METHOD_DATA = "METHOD_DATA"
-    
+
     USERNAME = "username"
     USERNAME_LOC = "USERNAME_LOC"
-    
+
     ANSWER = "answer"
     ANSWER_KEY = "ANSWER_KEY"
     ANSWER_LOC = "ANSWER_LOC"
     SOLUTION_FN_KEY = "SOLUTION_FN"
-    
+
     TOKEN = "token"
     TOKEN_LOC = "TOKEN_LOC"
-    
+
     FORM_KEYS = "FORM_KEYS"
-    
+
     JSON_KEYS = "JSON_KEYS"
-    
+
     HEADERS_KEYS = "HEADERS_KEYS"
-    
+
     INPUT_LOC = "INPUT_LOC"
-    
+
     QUERY_KEYS = "QUERY_KEYS"
-    
+
     AUTH_TYPE = "AUTH_TYPE"
-    
+
     NONE = "NONE"
 
-    
+
 class ParserKey(str, Enum):
     NONE = "NONE"
     USERNAME = "username"
@@ -63,7 +66,7 @@ class ParserKey(str, Enum):
 class QuestExecutionStrategy(str, Enum):
     AUTO_COMPLETE = "AUTO_COMPLETE"
     ACCEPT_QUEST = "ACCEPT_QUEST"
-    REGISTER="REGISTER"
+    REGISTER = "REGISTER"
 
 
 class StatusCode(int, Enum):
@@ -73,16 +76,16 @@ class StatusCode(int, Enum):
     NOT_CREATED = 999
     UNAUTHORIZED = 401
     SERVER_ERROR = 500
- 
-    
+
+
 class AuthType(str, Enum):
     USERNAME = "USERNAME"
     BEARER_TOKEN = "BEARER_TOKEN"
     NO_AUTH = "NO_AUTH"
     SECRET_KEY = "X-Secret-Key"
     NONE = "NONE"
- 
-    
+
+
 class QuestState(Enum):
     LOCKED = "LOCKED"
     UNLOCKED = "UNLOCKED"

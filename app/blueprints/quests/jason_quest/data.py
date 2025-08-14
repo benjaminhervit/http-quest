@@ -1,5 +1,5 @@
-
 from app.quest import QuestData
+
 
 def get_quest():
     return QuestData(
@@ -13,5 +13,5 @@ def get_quest():
         completed="ALRIGHTY OH! Jasons screams and charges ahead. He does not really seem to care what orders he gets...",
         next_path="TBD",
         hint="",
-        url_prefix="/game"
+        url_prefix="/game",
     )
