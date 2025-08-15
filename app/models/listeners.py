@@ -1,9 +1,8 @@
-from sqlalchemy import event, insert, select, literal, case
+from sqlalchemy import event, insert, select, update, literal, case, func, inspect
 from app.models import User, Quest, UserQuestState
 from app.enums import QuestState
 
 print("event listeners registered")
-
 
 @event.listens_for(Quest, "after_insert")
 def backfill_states_for_new_quest(mapper, connection, target: Quest):

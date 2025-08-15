@@ -1,20 +1,19 @@
-# from https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy
 import os
+from pathlib import Path
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = Path(__file__).resolve().parent  # .../app
 
+class DevelopmentConfig:
+    DEBUG = True
+    TESTING = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # In-memory DB; resets on every process start/reload
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    # Auto-create the schema on startup
+    AUTO_CREATE_DB = True
+    # Optional tiny seed so you can see data immediately
+    AUTO_SEED = True
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-change-me")
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URI"
-    ) or "sqlite:///" + os.path.join(basedir, "app.db")
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-
-class TestingConfig:
-    TESTING = True
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"  # in-memory DB
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = "test-secret-key"

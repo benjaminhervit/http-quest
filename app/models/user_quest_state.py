@@ -1,19 +1,23 @@
+from sqlalchemy import Integer, String, Boolean, update, func, select
 from sqlalchemy.orm import validates
 from typing import Optional
 
 from app.extensions import db
 from app.enums import QuestState
 from app.models.base import Base
+from app.models import User, Quest
 
 
 class UserQuestState(db.Model, Base):
     __tablename__ = "user_quest_state"
-
-    username = db.Column(
-        db.String(255), db.ForeignKey("user.username"), primary_key=True
+    
+    id = db.Column("id", Integer, autoincrement=True)
+    username = db.Column("username",
+        String, db.ForeignKey("user.username"), primary_key=True
     )
-    quest = db.Column(db.String(255), db.ForeignKey("quest.title"), primary_key=True)
-    state = db.Column(db.String(255), nullable=False)
+    quest = db.Column("quest", String, db.ForeignKey("quest.title"), primary_key=True)
+    state = db.Column("state", String, nullable=False)
+    xp_awarded = db.Column("xp_awarded", Boolean, nullable=False, default=False)
 
     @validates("state")
     def validate_state(self, key, value):
@@ -22,6 +26,7 @@ class UserQuestState(db.Model, Base):
             QuestState.LOCKED.value,
             QuestState.UNLOCKED.value,
             QuestState.CLOSED.value,
+            QuestState.COMPLETED.value,
         ]
         if value not in valid_values:
             raise ValueError(
@@ -34,17 +39,45 @@ class UserQuestState(db.Model, Base):
         uqs.state = new_state
         db.session.commit()
 
-    # @classmethod
-    # def unlock_next_quests(cls, quest: Quest, state: 'UserQuestState', username: str):
-    #     if state.state == QuestState.CLOSED.value:
-    #         for q in quest.next_quests:
-    #             next_q_state: 'UserQuestState' = cls.get_uqs(username, q.slug)
-    #             if next_q_state.state == QuestState.LOCKED.value:
-    #                 cls.update_state(QuestState.UNLOCKED.value, next_q_state)
-
     @classmethod
     def get_state(cls, username: str, quest_title: str) -> Optional["UserQuestState"]:
         return cls.query.filter_by(username=username, quest=quest_title).first()
 
     def __repr__(self):
         return f'<Quest state={self.state}, slug="{self.quest}>'
+
+    @classmethod
+    def complete_and_award_xp(cls, username: str, quest_title: str) -> bool:
+        print("TIME TO GET SOME XP!")
+        print(username, quest_title)
+        uqs = UserQuestState.__table__
+        users = User.__table__
+        quests = Quest.__table__
+        
+        res = db.session.execute(
+            update(uqs)
+            .where(uqs.c.username == username, uqs.c.quest == quest_title)
+            .where((uqs.c.xp_awarded.is_(False)) | (uqs.c.xp_awarded.is_(None)))
+            .values(state=QuestState.COMPLETED.value, xp_awarded=True)
+        )
+        
+        print(f"res: {res}")
+        print(f"res.rowcount: {res.rowcount}")
+        
+        if res.rowcount != 1:
+            db.session.commit()
+            return False #No XP
+        
+        quest_xp = db.session.execute(
+            select(quests.c.xp).where(quests.c.title==quest_title)
+            ).scalar_one_or_none() or 0
+        
+        if quest_xp:
+            db.session.execute(
+                update(users)
+                .where(users.c.username == username)
+                .values(xp=func.coalesce(users.c.xp, 0) + quest_xp)
+            )
+        
+        db.session.commit()
+        return True

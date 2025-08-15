@@ -1,18 +1,7 @@
-from dataclasses import dataclass, asdict, field
-import json
+from dataclasses import dataclass, field
 from slugify import slugify
 
-# from app.models import Quest
-
-
-@dataclass
-class Serializable:
-    def to_dict(self):
-        return asdict(self)
-
-    def to_json(self, json_kwargs):
-        return json.dumps(self.to_dict(), **json_kwargs)
-
+from .base import Serializable
 
 @dataclass
 class QuestData(Serializable):
@@ -24,6 +13,8 @@ class QuestData(Serializable):
     next_path: str
     hint: str
     url_prefix: str
+    xp: int
+    failed: str = field(default="Ah that is wrong! Try again {HERO}")
     path: str = field(init=False)
     slug: str = field(init=False)
 

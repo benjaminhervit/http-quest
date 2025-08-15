@@ -13,5 +13,6 @@ def get_quest():
         completed="ALRIGHTY OH! Jasons screams and charges ahead. He does not really seem to care what orders he gets...",
         next_path="TBD",
         hint="",
+        xp=1,
         url_prefix="/game",
     )

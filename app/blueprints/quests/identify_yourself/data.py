@@ -32,5 +32,6 @@ def get_quest():
                 """
         ),
         hint="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
+        xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
     )

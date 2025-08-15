@@ -87,11 +87,11 @@ class AuthType(str, Enum):
 
 
 class QuestState(Enum):
-    LOCKED = "LOCKED"
-    UNLOCKED = "UNLOCKED"
-    CLOSED = "CLOSED"
-    FAILED = "FAILED"
-    COMPLETED = "COMPLETED"
+    LOCKED = "locked"
+    UNLOCKED = "unlocked"
+    CLOSED = "closed"
+    FAILED = "failed"
+    COMPLETED = "completed"
 
 
 class InputLocation(str, Enum):
