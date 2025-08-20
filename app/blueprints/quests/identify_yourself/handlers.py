@@ -27,4 +27,6 @@ def post_handler(quest: QuestData, req: Request):
         if authenticator.authenticate_with_username(req):
             session.state = QuestState.COMPLETED.value
             UserQuestState.complete_and_award_xp(session.username, session.quest_title)
-    return content_generator.create_content(quest, session.state, formatting)
+    content = content_generator.create_content(quest, session.state, formatting)
+    print(content)
+    return content

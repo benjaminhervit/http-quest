@@ -4,7 +4,16 @@ import collections.abc as colabc
 
 from app.errors import ParsingError
 from app.enums import StatusCode
+import json
 
+
+def try_json_loads(s, default=None):
+    if not s:
+        return default
+    try:
+        return json.loads(s)
+    except json.JSONDecodeError:
+        return default
 
 def get_auth_username(req: Request):
     return get_field_from_request_data(req, "authorization", get_headers)

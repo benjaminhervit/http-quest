@@ -1,4 +1,6 @@
 from typing import Any
+import re
+import textwrap
 
 from app.enums import QuestState, ContentKeys, StatusCode
 from app.quest import QuestData
@@ -45,9 +47,16 @@ def create_locked_content(quest: QuestData) -> dict:
              ContentKeys.HINTS.value: "No hints just yet"
              }
 
+def clean_text(s: str) -> str:
+    # remove common leading indentation and trim ends
+    s = textwrap.dedent(s).strip()
+    # collapse multiple spaces/tabs inside each line
+    s = "\n".join(re.sub(r"[ \t]+", " ", line).rstrip() for line in s.splitlines())
+    return s
 
 def format_string(string: str, fomatting: dict):
     formatted = string.format(**fomatting).replace("\n", "")
+    formatted = clean_text(formatted)
     return formatted
 
 

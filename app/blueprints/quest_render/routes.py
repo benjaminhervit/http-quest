@@ -17,29 +17,24 @@ def renderer():
 def render_last_request():
     try:
         content: LastUserRequestLog | None = LastUserRequestLog.query.first()
+        if not content:
+            return jsonify({'error': 'No logs created yet'})
         
         user: str | None = parser_utils.get_field_from_request_data(request, 'username', parser_utils.get_query)
-        print(f"USER: {user}")
         if user:
             content: LastUserRequestLog | None = LastUserRequestLog.query.filter_by(username=user).first()
         
         if not isinstance(content, LastUserRequestLog):
             return ParsingError('Could not parse last request',
                                 StatusCode.SERVER_ERROR.value)
+            
+        # convert data strings to json
         data = content.to_dict()
-        req = data.get("request_json", "")
-        data.update({"request_json": json.loads(req) if req else ""})
+        data["request_json"] = parser_utils.try_json_loads(data.get("request_json"), {})
         
-        resp = data.get("response_json", "")
-        resp_json = json.loads(resp) if resp else None
-        if resp_json:
-            body = resp_json["body_text"] or None
-            print(body)
-            print(type(body))
-            body_json = json.loads(body) if body else ""
-            print(body_json)
-            resp_json["body_text"] = body_json
-        data.update({"response_json": resp_json if resp else ""})
+        resp = parser_utils.try_json_loads(data.get("response_json"), {})
+        resp["body_text"] = parser_utils.try_json_loads(resp.get("body_text"), {})
+        data["response_json"] = resp
     
         return render_template("logging.html", content=data)            
     

@@ -64,7 +64,6 @@ def create_app() -> Flask:
             db.session.commit()
             
             latest = LastUserRequestLog.query.filter_by(username=username).first()
-            print(f"latest: {latest.username}")
             #log_count = LastUserRequestLog.query.count()
             #print(f"Total LastUserRequestLog entries: {log_count}")
         except Exception:
