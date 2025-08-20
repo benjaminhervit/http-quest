@@ -22,9 +22,12 @@ def render_last_request():
         
         user: str | None = parser_utils.get_field_from_request_data(request, 'username', parser_utils.get_query)
         if user:
-            content: LastUserRequestLog | None = LastUserRequestLog.query.filter_by(username=user).first()
+            content: LastUserRequestLog | None = LastUserRequestLog.query.filter_by(username=user).order_by(LastUserRequestLog.id.desc()).first()
+            print(content)
         
         if not isinstance(content, LastUserRequestLog):
+            response = jsonify({'error': 'Could not parse last request'}), StatusCode.SERVER_ERROR.value
+            return response
             return ParsingError('Could not parse last request',
                                 StatusCode.SERVER_ERROR.value)
             

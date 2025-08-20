@@ -18,15 +18,21 @@ def get_handler(quest: QuestData, req: Request):
 
 def post_handler(quest: QuestData, req: Request):
     state = QuestState.LOCKED.value
-    formatting = {}
+    formatting = content_generator.get_base_formatting()
+    
+    print(f"JSON: {parser_utils.get_json(req)}")
+    
     hire_jason = parser_utils.get_field_from_request_data(
         req, "jason", parser_utils.get_json
     )
     
     state = QuestState.FAILED.value  # if parsing succeeds - assume failure
-    if hire_jason == "hire":
-        username = parser_utils.get_auth_username(req) or "Mysterious unknown... unknowning? ... HERO"
-        formatting.update({"HERO": username})
+    if hire_jason == "hired":
+        print("WOHO!")
+        state = QuestState.COMPLETED.value  # if parsing succeeds - assume failure
+        username = parser_utils.get_auth_username(req)
+        if username:
+            formatting.update({"HERO": username})
 
     content = content_generator.create_content(quest, state, formatting)
     

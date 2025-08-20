@@ -22,12 +22,18 @@ def create_app() -> Flask:
     # Extensions
     db.init_app(app)
     
+    # Blueprints
+    for bp in get_all_blueprints():
+        app.register_blueprint(bp)
+    
     @app.before_request
     def _capture_request_snapshot():
         username = try_authenticate(request) or "dev"
         # print(f"user: {username}",
         #       f"endpoint: {request.endpoint}")
-        if not username or request.endpoint in {"static", "api.get_all_users", "renderer.render_last_request"}:
+        if not username or request.endpoint in {"static", "api.get_all_users",
+                                                "renderer.render_last_request",
+                                                "main.index"}:
             g._skip_reqlog = True
             return
         g._current_user = username
@@ -70,11 +76,6 @@ def create_app() -> Flask:
             db.session.rollback()
             current_app.logger.exception("Request logging failed")
         return resp
-        
-
-    # Blueprints
-    for bp in get_all_blueprints():
-        app.register_blueprint(bp)
 
     # Create tables (and small seed) each time the serving process starts.
     # With in-memory SQLite this is required; with file DB this still works.
@@ -83,28 +84,27 @@ def create_app() -> Flask:
         from app.models import User, Quest, UserQuestState, LastUserRequestLog
         
         # Only the serving process (child) should do this when reloader is on
-        is_serving_proc = os.environ.get("WERKZEUG_RUN_MAIN") == "true" or not app.debug
+        # is_serving_proc = os.environ.get("WERKZEUG_RUN_MAIN") == "true" or not app.debug
         
-        print("DEBUG flags:",
-              "AUTO_CREATE_DB =", app.config.get("AUTO_CREATE_DB"),
-              "AUTO_SEED =", app.config.get("AUTO_SEED"),
-              "app.debug =", app.debug,
-              "WERKZEUG_RUN_MAIN =", os.environ.get("WERKZEUG_RUN_MAIN"))
-        if app.config.get("AUTO_CREATE_DB") and is_serving_proc:
-            print("I AM READY TO CREATE DB!")
-            # Import models before create_all
-            db.create_all()
-            
-            rows = [{"title": q.title, "xp": q.xp} for q in get_all_quests()]
-            if rows:
-                statement = sqlite_insert(Quest).values(rows)
-                statement = statement.on_conflict_do_nothing(index_elements=["title"])
-                db.session.execute(statement)
-                db.session.commit()
-            
-
-            if app.config.get("AUTO_SEED") and not User.query.first():
-                db.session.add(User(username="dev"))
-                db.session.commit()
+        # print("DEBUG flags:",
+        #       "AUTO_CREATE_DB =", app.config.get("AUTO_CREATE_DB"),
+        #       "AUTO_SEED =", app.config.get("AUTO_SEED"),
+        #       "app.debug =", app.debug,
+        #       "WERKZEUG_RUN_MAIN =", os.environ.get("WERKZEUG_RUN_MAIN"))
+        # if app.config.get("AUTO_CREATE_DB") and is_serving_proc:
+        
+        # Import models before create_all
+        db.create_all()
+        
+        rows = [{"title": q.title, "xp": q.xp} for q in get_all_quests()]
+        if rows:
+            statement = sqlite_insert(Quest).values(rows)
+            statement = statement.on_conflict_do_nothing(index_elements=["title"])
+            db.session.execute(statement)
+            db.session.commit()
+        
+        if app.config.get("AUTO_SEED") and not User.query.first():
+            db.session.add(User(username="dev"))
+            db.session.commit()
 
     return app
