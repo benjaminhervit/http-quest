@@ -1,7 +1,6 @@
-from flask import render_template, session, request, jsonify
+from flask import render_template, session, jsonify
+import json
 from app.blueprints.quest_render import bp
-from app.authentication_manager import authenticate_with_username
-from app.utils import responder
 from app.errors import ParsingError, AuthenticationError
 from app.enums import StatusCode
 from app.models import LastUserRequestLog
@@ -20,9 +19,23 @@ def render_last_request():
         if not isinstance(content, LastUserRequestLog):
             return ParsingError('Could not parse last request',
                                 StatusCode.SERVER_ERROR.value)
-        response = responder.send_response()
-        return jsonify(content.to_dict())
-        return render_template("quest_renderer.html", content=content.to_dict())            
+        data = content.to_dict()
+        req = data.get("request_json", "")
+        data.update({"request_json": json.loads(req) if req else ""})
+        
+        resp = data.get("response_json", "")
+        resp_json = json.loads(resp) if resp else None
+        if resp_json:
+            body = resp_json["body_text"] or None
+            print(body)
+            print(type(body))
+            body_json = json.loads(body) if body else ""
+            print(body_json)
+            resp_json["body_text"] = body_json
+        data.update({"response_json": resp_json if resp else ""})
+    
+        return render_template("logging.html", content=data)            
+    
     except ParsingError as e:
         return (jsonify({'error': str(e)}),
                 StatusCode.UNAUTHORIZED.value)

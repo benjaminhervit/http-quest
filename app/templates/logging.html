@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+{%block body%}
+{%if content%}
+<h1>{{content.request_json.user}}s Last request</h2>
+<details open>
+    <p>id: {{content.id}}</p>
+    <p>user: {{content.request_json.user}}</p>
+    <p>Created at: {{content.created_at}}</p>
+
+    <details closed>
+        <summary>Request</summary>
+        <pre style="white-space:pre-wrap; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">
+        {{ content.request_json | tojson(indent=2) }}
+        </pre>
+    </details>
+
+    <details closed>
+        <summary>Response</summary>
+        <pre style="white-space:pre-wrap; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">
+        {{ content.response_json | tojson(indent=2) }}
+        </pre>
+    </details>
+    
+</details>
+{%else%}
+No last request identified
+{%endif%}
+{%endblock%}

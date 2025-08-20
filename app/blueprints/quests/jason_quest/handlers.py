@@ -27,11 +27,7 @@ def post_handler(quest: QuestData, req: Request):
     if hire_jason == "hire":
         username = parser_utils.get_auth_username(req) or "Mysterious unknown... unknowning? ... HERO"
         formatting.update({"HERO": username})
-        
-        # content = content_generator.create_completed_content(quest)
-        # content = content_generator.format_content(content, formatting)
-        # return content
-    
+
     content = content_generator.create_content(quest, state, formatting)
     
     return content
