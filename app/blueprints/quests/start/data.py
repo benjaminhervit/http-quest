@@ -26,7 +26,6 @@ def get_start_quest():
                         """
         ),
         next_path="GET to auth/register",
-        hint="",
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
     )

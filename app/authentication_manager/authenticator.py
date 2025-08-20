@@ -39,9 +39,9 @@ def try_authenticate(req: Request) -> str | None:
     except (ParsingError, AuthenticationError):
         return None  # silent fail, mostly used for request_snapshot
 
-def no_authentication(*args, **kwargs) -> bool:
+def no_authentication(*args, **kwargs) -> str:
     """
     Mostly used in the early quests where the player
     has not learned how to authenticate 
     """
-    return True
+    return "Unknown Player"

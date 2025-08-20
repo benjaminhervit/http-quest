@@ -1,1 +1,1 @@
-from app.request_manager.request_handler import RequestHandler
+from app.request_manager.request_handler import QuestRequestHandler

@@ -12,7 +12,7 @@ class ContentKeys(str, Enum):
     ERROR_MSG = "error_msg"
     ERROR_TYPE = "error_type"
     STATUS_CODE = "status_code"
-    HINT = "hint"
+    HINTS = "hints"
 
 
 class ReqMethodType(str, Enum):

@@ -2,7 +2,7 @@ from flask import Request
 
 from app.extensions import db
 from app.models import User, UserQuestState
-from app.enums import StatusCode
+from app.enums import StatusCode, QuestState
 from app.errors import ParsingError, ValidationError, GameError
 from app.utils import content_generator, parser_utils
 from app.quest import QuestData
@@ -13,7 +13,7 @@ def get_handlers():
 
 
 def get_handler(quest: QuestData, req: Request):
-    return content_generator.create_start_content(quest)
+    return content_generator.create_content(quest, QuestState.UNLOCKED.value)
 
 
 def post_handler(quest: QuestData, req: Request):
@@ -40,4 +40,7 @@ def post_handler(quest: QuestData, req: Request):
     
     #  build response content
     formatting = {"HERO": username}
-    return content_generator.create_completed_content(quest, formatting)
+    return content_generator.create_content(
+        quest=quest,
+        quest_state=QuestState.COMPLETED.value,
+        formatting=formatting)

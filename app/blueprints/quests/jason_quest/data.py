@@ -12,7 +12,6 @@ def get_quest():
         quest="POST jason:hired in Jasons mother toungue also known as... yes... json...",
         completed="ALRIGHTY OH! Jasons screams and charges ahead. He does not really seem to care what orders he gets...",
         next_path="TBD",
-        hint="",
         xp=1,
         url_prefix="/game",
     )

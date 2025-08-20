@@ -13,10 +13,15 @@
             <p>{{content['quest']}}</p>
         </details>
 
-        <details open>
-            <summary>Hint</summary>
-            <p>{{content['hint']}}</p>
-        </details>
+        {% if content.hints%}
+            <details open>
+                <summary>Hints</summary>
+                {% for h in content.hints %}
+                <p>{{h}}</p>
+                {% endfor %}
+                
+            </details>
+        {% endif %}
 
         <details open>
             <summary>Next path</summary>

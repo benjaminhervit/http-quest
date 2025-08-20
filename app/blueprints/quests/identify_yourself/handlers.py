@@ -12,7 +12,7 @@ def get_handlers():
 
 
 def get_handler(quest: QuestData, req: Request):
-    return content_generator.create_start_content(quest)
+    return content_generator.create_content(quest, QuestState.UNLOCKED.value)
 
 
 def post_handler(quest: QuestData, req: Request):
@@ -21,12 +21,10 @@ def post_handler(quest: QuestData, req: Request):
     username = parser_utils.get_auth_username(req)
     formatting = {"[HERO]": username or "Unknown Mysterious Savior"}
     session = QuestSession(quest.title, username)
-
-    if session.state != QuestState.UNLOCKED.value:
-        return content_generator.create_content(quest, session.state, formatting)
-
-    session.state = QuestState.FAILED.value
-    if authenticator.authenticate_with_username(req):
-        session.state = QuestState.COMPLETED.value
-        UserQuestState.complete_and_award_xp(session.username, session.quest_title)
+    
+    if session.state == QuestState.UNLOCKED.value:
+        session.state = QuestState.FAILED.value
+        if authenticator.authenticate_with_username(req):
+            session.state = QuestState.COMPLETED.value
+            UserQuestState.complete_and_award_xp(session.username, session.quest_title)
     return content_generator.create_content(quest, session.state, formatting)
