@@ -7,7 +7,7 @@ def get_start_quest():
         title="Welcome",
         start_message=(
             """
-                    Welcome reQuest! An epic adventure to claim the CRUDe crown! 
+                    Welcome dear {HERO} to... reQuest! An epic adventure to claim the CRUDe crown! 
                     But before we begin, you must tell me who you are adventurer?
                     """
         ),

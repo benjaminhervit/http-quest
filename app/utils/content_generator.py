@@ -4,6 +4,7 @@ import textwrap
 
 from app.enums import QuestState, ContentKeys, StatusCode
 from app.quest import QuestData
+import random
 
 
 def create_content(quest: QuestData,
@@ -26,6 +27,8 @@ def create_content(quest: QuestData,
                          StatusCode.SERVER_ERROR.value)
     
     content = format_content(content, formatting)
+    # print(content)
+    # print(formatting)
     return content
 
 
@@ -63,15 +66,39 @@ def format_string(string: str, fomatting: dict):
 def format_content(content: dict[str, Any], formatting: dict[str, str]):
     for k, v in content.items():
         if isinstance(v, str):
-            formatted = format_string(v, formatting)
+            content[k] = format_string(v, formatting)
         elif isinstance(v, list):
             formatted = []
             for i in v:
                 t = format_string(i, formatting)
                 formatted.append(t)
-        
-        content.update({k: formatted})
+            content[k] = formatted
     return content
+
+
+def get_base_formatting():
+    attributes = [
+        "enigmatic",
+        "shadow-veiled",
+        "whisper-walking",
+        "myth-wrapped",
+        "legend-breathing",
+        "phantom-hearted",
+        "star-touched",
+        "riddle-minded",
+        "moonlit",
+        "mirage-born",
+        "secret-keeper",
+        "arcane-gifted",
+        "fortune-favored",
+        "destiny-dancing",
+        "paradoxical",
+        "unsong"
+    ]
+    three_attributes = ", ".join(random.sample(attributes, 3))
+    return {
+        "HERO": "unknown, " + three_attributes + " hero"
+    }
 
 
 def create_start_content(quest: QuestData) -> dict:

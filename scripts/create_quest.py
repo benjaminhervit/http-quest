@@ -14,7 +14,7 @@ from app.quest import QuestData
             completed="",
             locked="",
             next_path="",
-            hint="",
+            hints=[],
             url_prefix="/game"
         )
 """
@@ -23,8 +23,9 @@ TEMPLATE_HANDLER_FILE = """
 from flask import Request
 
 from app.quest import QuestData
-from app.utils import content_generator, parser_utils, standard_get_handler
+from app.utils import content_generator, parser_utils
 from app.authentication_manager import authenticator
+from app.enums import QuestState
 
 def get_handlers():
     return {
@@ -34,13 +35,14 @@ def get_handlers():
 
 
 def get_handler(quest: QuestData, req: Request):
-    return standard_get_handler(req=req, quest=quest)
+    state = QuestState.LOCKED.value
+    formatting = content_generator.get_base_formatting()
+    return "get handler template"
 
 
 def post_handler(quest: QuestData, req: Request):
-    #username = parser_utils.get_auth_username(req)
-    #if authenticator.authenticate(req):
-    #    pass
+    state = QuestState.LOCKED.value
+    formatting = content_generator.get_base_formatting()
     return "post_handler template"
 """
 
@@ -52,13 +54,19 @@ from .handlers import get_handlers
 
 from app.blueprints.quests import bp
 from app.request_manager import RequestHandler
+from app.authentication_manager import authenticate_with_username
 
 @bp.route("/", methods=['GET'])
 def {slug}_route():
     handlers = get_handlers()
     quest = get_quest()
     valid_methods = ['GET']
-    response = RequestHandler.execute(request, quest, handlers, valid_methods)
+    response = QuestRequestHandler.execute(
+        req=request,
+        quest=quest,
+        authenticator=authenticate_with_username,
+        handlers_map=handlers,
+        valid_req_methods=valid_methods)
     return response
 """
 

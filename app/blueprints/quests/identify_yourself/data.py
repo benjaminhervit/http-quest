@@ -28,7 +28,7 @@ def get_quest():
         locked="",
         completed=(
             """
-                Did I not know better, I would think you had telekinetic powers [HERO].
+                Did I not know better, I would think you had telekinetic powers {HERO}.
                 Now you know our secret ways of telling friend from enemy! Onwards!
                 """
         ),
