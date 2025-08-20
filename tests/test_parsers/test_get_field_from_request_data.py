@@ -29,7 +29,7 @@ from app.errors import ParsingError
         ("/", "", "GET", None, {'foo': 'bar'}, None, get_json, 'foo', ValueError) #form instead of json
     ]
 )
-def test_valid_get_field_from_query(app, _path, _query, _method, _json, _form,
+def test_get_field(app, _path, _query, _method, _json, _form,
                                     _headers, _func, field_name, expected):
     with app.test_request_context(
         path=_path+_query,
@@ -46,30 +46,3 @@ def test_valid_get_field_from_query(app, _path, _query, _method, _json, _form,
         else:
             result: str | None = get_field_from_request_data(request, field_name, _func)
             assert result == expected
-
-
-# def test_wrong_json(app):
-#     #when no form is send, an error is raised
-#     with app.test_request_context(
-#         path="/",
-#     ):
-#         with pytest.raises(ValueError) as excinfo:
-#             get_form(request)
-#         assert 'Expected mimetype application/x-www-form-urlencoded' in str(excinfo)
-        
-#     #when the right mime type but form is send, None is returned
-#     with app.test_request_context(
-#         path="/",
-#         headers={'content-type': "application/x-www-form-urlencoded"}
-#     ):
-#         assert get_form(request) is None
-        
-#     #when the wrong mime type is used with form, an error is raised
-#     with app.test_request_context(
-#         path="/",
-#         headers={'content-type': "application/json"},
-#         data={'foo': 'bar'}
-#     ):
-#         with pytest.raises(ValueError) as excinfo:
-#             get_form(request)
-#         assert 'Expected mimetype application/x-www-form-urlencoded' in str(excinfo)

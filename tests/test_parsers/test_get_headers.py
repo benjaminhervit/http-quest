@@ -18,7 +18,6 @@ def test_valid_get_headers(app, _headers, expected):
         assert isinstance(result, dict)
         assert all(item in result.items() for item in expected.items())
 
-        
 def test_catches_wrong_input(app):
     with pytest.raises(TypeError):
         assert get_headers({"authorization": "test"})

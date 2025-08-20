@@ -16,3 +16,10 @@ def validate_type(item: Any, _type: Any) -> bool:
     if not isinstance(item, _type):
         raise TypeError(f'Expected {_type} but got {item}')
     return True
+
+def validate_headers_obj(headers):
+    try:
+        # check if object is iterable with k,v
+        iter(headers.items()) 
+    except Exception as exc:
+        raise TypeError("Expected headers-like object with .items()") from exc

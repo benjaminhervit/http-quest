@@ -17,7 +17,7 @@ def create_content(quest: QuestData,
         QuestState.LOCKED.value: create_locked_content(quest),
         QuestState.UNLOCKED.value: create_start_content(quest),
         QuestState.COMPLETED.value: create_completed_content(quest),
-        QuestState.FAILED.value: create_completed_content(quest),
+        QuestState.FAILED.value: create_failed_content(quest),
     }
     
     content: dict | None = content_map.get(quest_state)
@@ -57,10 +57,17 @@ def clean_text(s: str) -> str:
     s = "\n".join(re.sub(r"[ \t]+", " ", line).rstrip() for line in s.splitlines())
     return s
 
-def format_string(string: str, fomatting: dict):
-    formatted = string.format(**fomatting).replace("\n", "")
-    formatted = clean_text(formatted)
-    return formatted
+def format_string(string: str, formatting: dict):
+    if not formatting:
+        raise ValueError(f'formatting cannot by falsy: {formatting}')
+    
+    try:
+        formatted = string.format(**formatting).replace("\n", "")
+        formatted = clean_text(formatted)
+        return formatted
+    except KeyError:
+        raise KeyError(f'Missing key in formatter {formatting}')
+    
 
 
 def format_content(content: dict[str, Any], formatting: dict[str, str]):
@@ -123,7 +130,6 @@ def create_completed_content(quest: QuestData) -> dict:
 def create_failed_content(quest: QuestData) -> dict:
     content = create_start_content(quest) # get base
     
-    content.update({ContentKeys.STATUS.value: QuestState.COMPLETED.value})
+    content.update({ContentKeys.STATUS.value: QuestState.FAILED.value})
     content.update({ContentKeys.STORY.value: quest.failed})
-    content.update({ContentKeys.NEXT_PATH.value: quest.next_path})
     return content

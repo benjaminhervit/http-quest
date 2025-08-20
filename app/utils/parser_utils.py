@@ -25,7 +25,7 @@ def get_auth_username(req: Request):
 
 def get_headers(req: Request) -> dict | None:
     validate_utils.validate_type(req, Request)
-    validate_utils.validate_type(req.headers, dict)
+    validate_utils.validate_headers_obj(req.headers)
     try:
         headers = {k.lower(): v for k, v in req.headers.items()}
     except TypeError as exc:
