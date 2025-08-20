@@ -10,8 +10,8 @@ def get_handlers():
 
 def get_handler(quest: QuestData, req: Request):
     state = QuestState.UNLOCKED.value
-    username = parser_utils.get_auth_username(req) or "[HERO]"
-    formatting = {"[HERO]": username}
+    username = parser_utils.get_auth_username(req) or "HERO"
+    formatting = {"HERO": username}
     content = content_generator.create_content(quest, state, formatting)
     return content
 

@@ -14,7 +14,7 @@ def get_handler(quest: QuestData, req: Request):
     formatting = content_generator.get_base_formatting()
     username = req.view_args.get("username") if req.view_args else None
     if username:
-        formatting.update({"[HERO]": username})
+        formatting.update({"HERO": username})
         state = QuestState.COMPLETED.value
     else:
         state = QuestState.UNLOCKED.value

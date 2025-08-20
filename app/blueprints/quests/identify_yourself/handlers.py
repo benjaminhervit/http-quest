@@ -19,7 +19,7 @@ def post_handler(quest: QuestData, req: Request):
     #  Handle POST
     #  setup session
     username = parser_utils.get_auth_username(req)
-    formatting = {"[HERO]": username or "Unknown Mysterious Savior"}
+    formatting = {"HERO": username or "Unknown Mysterious Savior"}
     session = QuestSession(quest.title, username)
     
     if session.state == QuestState.UNLOCKED.value:

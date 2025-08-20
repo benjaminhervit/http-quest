@@ -11,7 +11,7 @@ def create_content(quest: QuestData,
                    quest_state: str,
                    formatting: dict | None = None) -> dict:
     
-    formatting = formatting or {}
+    formatting = formatting or get_base_formatting()
     
     content_map: dict = {
         QuestState.LOCKED.value: create_locked_content(quest),
