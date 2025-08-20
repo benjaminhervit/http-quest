@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+#to make executable: chmod +x scripts/create_quest.py 
 import os
 import sys
 from slugify import slugify
@@ -16,6 +17,7 @@ from app.quest import QuestData
             completed="",
             locked="",
             next_path="",
+            xp=1,
             hints=[],
             url_prefix="/game"
         )
@@ -28,6 +30,7 @@ from app.quest import QuestData
 from app.utils import content_generator, parser_utils
 from app.authentication_manager import authenticator
 from app.enums import QuestState
+
 
 def get_handlers():
     return {
@@ -55,7 +58,7 @@ from .data import get_quest
 from .handlers import get_handlers
 
 from app.blueprints.quests import bp
-from app.request_manager import RequestHandler
+from app.request_manager import QuestRequestHandler
 from app.authentication_manager import authenticate_with_username
 
 @bp.route("/", methods=['GET'])
