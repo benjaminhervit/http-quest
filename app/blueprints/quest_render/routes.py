@@ -1,9 +1,10 @@
-from flask import render_template, session, jsonify
+from flask import render_template, session, jsonify, request
 import json
 from app.blueprints.quest_render import bp
 from app.errors import ParsingError, AuthenticationError
 from app.enums import StatusCode
 from app.models import LastUserRequestLog
+from app.utils import parser_utils
 
 
 @bp.route("/", methods=["GET"])
@@ -16,6 +17,12 @@ def renderer():
 def render_last_request():
     try:
         content: LastUserRequestLog | None = LastUserRequestLog.query.first()
+        
+        user: str | None = parser_utils.get_field_from_request_data(request, 'username', parser_utils.get_query)
+        print(f"USER: {user}")
+        if user:
+            content: LastUserRequestLog | None = LastUserRequestLog.query.filter_by(username=user).first()
+        
         if not isinstance(content, LastUserRequestLog):
             return ParsingError('Could not parse last request',
                                 StatusCode.SERVER_ERROR.value)

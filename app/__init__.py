@@ -24,10 +24,9 @@ def create_app() -> Flask:
     
     @app.before_request
     def _capture_request_snapshot():
-        print("CATCH THAT REQUEST!")
         username = try_authenticate(request) or "dev"
-        print(f"user: {username}",
-              f"endpoint: {request.endpoint}")
+        # print(f"user: {username}",
+        #       f"endpoint: {request.endpoint}")
         if not username or request.endpoint in {"static", "api.get_all_users", "renderer.render_last_request"}:
             g._skip_reqlog = True
             return
@@ -40,7 +39,6 @@ def create_app() -> Flask:
             if getattr(g, "_skip_reqlog", False):
                 return resp
             
-            print("CATCH THAT RESPONSE!!")
             req_snap = getattr(g, "_req_snapshot", None)
             username = getattr(g, "_current_user", "dev")
             if req_snap is None:
@@ -50,22 +48,25 @@ def create_app() -> Flask:
             resp_snap = snapshot_response(resp, include_body=True)
             # print(f"resp: {resp_snap}")
             
-            print(f"route: {request.endpoint or request.path}",
-                  f"user: {username}",
-                  f"req_json: {json.dumps(req_snap)}",
-                  f"resp_json: {json.dumps(resp_snap)}")
+            # print(f"route: {request.endpoint or request.path}",
+            #       f"user: {username}",
+            #       f"req_json: {json.dumps(req_snap)}",
+            #       f"resp_json: {json.dumps(resp_snap)}")
             entry = LastUserRequestLog(
                 route = request.endpoint or request.path,
                 username = username,
                 request_json = json.dumps(req_snap),
                 response_json = json.dumps(resp_snap)
             )
-            print("AND HERE!!")
+            print(entry.username)
             
             db.session.add(entry)
             db.session.commit()
-            log_count = LastUserRequestLog.query.count()
-            print(f"Total LastUserRequestLog entries: {log_count}")
+            
+            latest = LastUserRequestLog.query.filter_by(username=username).first()
+            print(f"latest: {latest.username}")
+            #log_count = LastUserRequestLog.query.count()
+            #print(f"Total LastUserRequestLog entries: {log_count}")
         except Exception:
             db.session.rollback()
             current_app.logger.exception("Request logging failed")
