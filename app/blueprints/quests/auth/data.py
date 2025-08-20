@@ -1,10 +1,14 @@
 from app.quest import QuestData
 from app.blueprints.quests.auth import bp
 
+_title = "Registration"
+
+def get_quest_title():
+    return _title
 
 def get_quest():
     return QuestData(
-        title="Registration",
+        title=_title,
         start_message=(
             """To begin the quest, you must tell us your
                                     name,so that we can follow you on y

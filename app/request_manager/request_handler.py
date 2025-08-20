@@ -30,7 +30,7 @@ class RequestHandler:
 
         try:
             #  Setup
-            content = content_generator.create_locked_content(quest)
+            # content = content_generator.create_locked_content(quest)
             handler = handlers_map.get(req.method)
             if not handler:
                 raise GameError(

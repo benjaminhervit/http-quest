@@ -25,6 +25,9 @@ def get_json(req: Request) -> dict | None:
 def get_form(req: Request) -> dict | None:
     return req.form.to_dict() if req.form else None
 
+def get_query(req: Request) -> dict | None:
+    return req.args.to_dict() if req.args else None
+
 
 def get_field_from_request_data(
     req: Request, field_name: str, parsing_method: Callable

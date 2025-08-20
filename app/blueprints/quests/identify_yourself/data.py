@@ -1,10 +1,16 @@
 from app.quest import QuestData
 from app.blueprints.quests import bp
 
+_title = "Identify yourself!"
+
+
+def get_quest_title():
+    return _title
+
 
 def get_quest():
     return QuestData(
-        title="Identify yourself!",
+        title=_title,
         start_message=(
             """
                     Okay. You should have signed up for the quest by now

@@ -13,7 +13,7 @@ class UserQuestState(db.Model, Base):
     
     id = db.Column("id", Integer, autoincrement=True)
     username = db.Column("username",
-        String, db.ForeignKey("user.username"), primary_key=True
+        String, db.ForeignKey("users.username"), primary_key=True
     )
     quest = db.Column("quest", String, db.ForeignKey("quest.title"), primary_key=True)
     state = db.Column("state", String, nullable=False)

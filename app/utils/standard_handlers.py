@@ -6,7 +6,7 @@ from app.authentication_manager import authenticator
 
 def standard_get_handler(quest: QuestData, req: Request):
     username = parser_utils.get_auth_username(req)
-    if authenticator.authenticate(req):
+    if authenticator.authenticate_with_username(req):
         formatting = {"HERO": username}
         content = content_generator.create_start_content(quest, formatting)
         return content

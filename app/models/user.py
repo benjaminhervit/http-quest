@@ -3,6 +3,8 @@ from app.models.base import Base
 
 
 class User(db.Model, Base):
+    __tablename__ = "users"
+    
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column("username", db.String(31), nullable=False, unique=True)
     xp = db.Column("xp", db.Integer, nullable=False, default=0)

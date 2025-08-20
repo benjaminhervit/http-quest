@@ -14,7 +14,7 @@ def get_handler(quest: QuestData, req: Request):
 
 
 def post_handler(quest: QuestData, req: Request):
-    if authenticator.authenticate(req):
+    if authenticator.authenticate_with_username(req):
         hire_jason = parser_utils.get_field_from_request_data(
             req, "jason", parser_utils.get_json
         )
