@@ -61,7 +61,7 @@ class UserQuestState(db.Model, Base):
             .values(state=QuestState.COMPLETED.value, xp_awarded=True)
         )
         
-        print(f"res: {res}")
+        # print(f"res: {res}")
         print(f"res.rowcount: {res.rowcount}")
         
         if res.rowcount != 1:

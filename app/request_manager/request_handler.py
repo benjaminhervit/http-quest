@@ -16,8 +16,8 @@ class QuestRequestHandler:
             if m not in handlers_map:
                 raise ValueError(f"Missing handler for method {m}")
         return True 
-    
-    
+
+
     @classmethod
     def execute(
         cls,
@@ -39,7 +39,7 @@ class QuestRequestHandler:
             if not username:
                 raise AuthenticationError('Could not authenticate user',
                                           StatusCode.UNAUTHORIZED.value)
-            
+
             #  Setup quest
             handler = handlers_map.get(req.method)
             if not handler:
@@ -68,3 +68,11 @@ class QuestRequestHandler:
         except GameError as e:
             content = content_generator.create_error_msg(str(e), "GameError", e.code)
             return send_response(req, content, e.code, html="error_message.html")
+
+        except ValueError as e:
+            content = content_generator.create_error_msg(str(e), "ValueError", StatusCode.BAD_REQUEST.value)
+            return send_response(req, content, StatusCode.BAD_REQUEST.value, html="error_message.html")
+
+        except TypeError as e:
+            content = content_generator.create_error_msg(str(e), "TypeError", StatusCode.BAD_REQUEST.value)
+            return send_response(req, content, StatusCode.BAD_REQUEST.value, html="error_message.html")

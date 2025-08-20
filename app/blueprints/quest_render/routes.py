@@ -28,8 +28,6 @@ def render_last_request():
         if not isinstance(content, LastUserRequestLog):
             response = jsonify({'error': 'Could not parse last request'}), StatusCode.SERVER_ERROR.value
             return response
-            return ParsingError('Could not parse last request',
-                                StatusCode.SERVER_ERROR.value)
             
         # convert data strings to json
         data = content.to_dict()

@@ -35,7 +35,6 @@ def get_headers(req: Request) -> dict | None:
 
 def get_json(req: Request) -> dict | None:
     validate_utils.validate_type(req, Request)
-    # _validate_req_param(req)
     validate_utils.validate_mimetype(req.mimetype, "application/json")
     return req.get_json() if req.json else None
 
@@ -51,25 +50,22 @@ def get_query(req: Request) -> dict | None:
     return req.args.to_dict() if req.args else None
 
 
-def get_field_from_request_data(
-    req: Request, field_name: str, parsing_method: Callable) -> str:
-    
+def get_field_from_request_data(req: Request, field_name: str,
+                                parsing_method: Callable) -> str:
+
     validate_utils.validate_type(req, Request)
     if not isinstance(parsing_method, colabc.Callable):
         raise TypeError("parsing_method is not Callable.")
-    
+
     if not isinstance(field_name, str):
         raise TypeError("field_name is not string.")
-    
+
     data: dict | None = parsing_method(req=req)
     if not data:
         raise ParsingError(
             "Found no data in request in expected format", StatusCode.BAD_REQUEST.value
         )
-        
-    if isinstance(data, str):
-        data = try_json_loads(data)
-        
+
     if not isinstance(data, dict):
         raise TypeError(f'req data format is not valid: {data}',
                         StatusCode.BAD_REQUEST.value)

@@ -2,6 +2,7 @@ import os
 from flask import Flask, current_app, request, g
 from flask.cli import with_appcontext
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
+from sqlalchemy import update as sql_update
 import json
 
 from .extensions import db
@@ -28,14 +29,13 @@ def create_app() -> Flask:
     
     @app.before_request
     def _capture_request_snapshot():
-        username = try_authenticate(request) or "dev"
-        # print(f"user: {username}",
-        #       f"endpoint: {request.endpoint}")
-        if not username or request.endpoint in {"static", "api.get_all_users",
-                                                "renderer.render_last_request",
-                                                "main.index"}:
+        username = try_authenticate(request)
+        is_quest: bool = (request.endpoint or request.path).__contains__("game")
+        
+        if not username or is_quest is False:
             g._skip_reqlog = True
             return
+        print("New log ordered in before_request")
         g._current_user = username
         g._req_snapshot = snapshot_request(request, username, include_body=True)
         
@@ -49,51 +49,27 @@ def create_app() -> Flask:
             username = getattr(g, "_current_user", "dev")
             if req_snap is None:
                 req_snap = snapshot_request(request, username, include_body=False)
-            # print(f"req: {req_snap}\n\n")
             
             resp_snap = snapshot_response(resp, include_body=True)
-            # print(f"resp: {resp_snap}")
             
-            # print(f"route: {request.endpoint or request.path}",
-            #       f"user: {username}",
-            #       f"req_json: {json.dumps(req_snap)}",
-            #       f"resp_json: {json.dumps(resp_snap)}")
-            entry = LastUserRequestLog(
-                route = request.endpoint or request.path,
-                username = username,
-                request_json = json.dumps(req_snap),
-                response_json = json.dumps(resp_snap)
+            log: LastUserRequestLog | None = LastUserRequestLog.upsert_for_username(
+                username=username,
+                route=request.endpoint or request.path,
+                request_json=json.dumps(req_snap),
+                response_json=json.dumps(resp_snap)
             )
-            print(entry.username)
-            
-            db.session.add(entry)
-            db.session.commit()
-            
-            latest = LastUserRequestLog.query.filter_by(username=username).first()
-            #log_count = LastUserRequestLog.query.count()
-            #print(f"Total LastUserRequestLog entries: {log_count}")
+            print("Log created") if log else print("No new log")
+        
         except Exception:
             db.session.rollback()
             current_app.logger.exception("Request logging failed")
         return resp
 
     # Create tables (and small seed) each time the serving process starts.
-    # With in-memory SQLite this is required; with file DB this still works.
     with app.app_context():
         from app.models import listeners
         from app.models import User, Quest, UserQuestState, LastUserRequestLog
         
-        # Only the serving process (child) should do this when reloader is on
-        # is_serving_proc = os.environ.get("WERKZEUG_RUN_MAIN") == "true" or not app.debug
-        
-        # print("DEBUG flags:",
-        #       "AUTO_CREATE_DB =", app.config.get("AUTO_CREATE_DB"),
-        #       "AUTO_SEED =", app.config.get("AUTO_SEED"),
-        #       "app.debug =", app.debug,
-        #       "WERKZEUG_RUN_MAIN =", os.environ.get("WERKZEUG_RUN_MAIN"))
-        # if app.config.get("AUTO_CREATE_DB") and is_serving_proc:
-        
-        # Import models before create_all
         db.create_all()
         
         rows = [{"title": q.title, "xp": q.xp} for q in get_all_quests()]
