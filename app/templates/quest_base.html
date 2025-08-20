@@ -9,7 +9,11 @@
         </details>
         
         <details open>
-            <summary>Quest</summary>
+            {% if content.status =='completed'%}
+            <summary>Quest: Completed!</p></summary>
+            {%else%}
+            <summary>Quest: Active</summary>
+            {%endif%}
             <p>{{content['quest']}}</p>
         </details>
 

@@ -10,9 +10,8 @@ def get_quest():
     return QuestData(
         title=_title,
         start_message=(
-            """To begin the quest, you must tell us your
-                                    name,so that we can follow you on y
-                                    our adventures."""
+            """Ah... I am glad you made it here {HERO}. To begin the quest, you must tell us your
+            name (again yes). We got some... ehm... trust issues, so prefer to know who our heroes are."""
         ),
         quest=(
             """FORM username:your_name and POST to auth/register
@@ -23,9 +22,10 @@ def get_quest():
             """
                             Thank you {HERO}! Now, you are ready!",
                             Finally, someone with a heroic name as {HERO}
-                            cannot fail! Move on! 
-                            REEEEEMEMBEEEER to aaaalwaaaayyyyys 
-                            keep your name in your head at all times.
+                            cannot fail! .... {HERO}... {HERO}...{HERO}{HERO} ....
+                            {HERO}{HERO}{HERO}{HERO}{HERO}{HERO}. It has a certain ring to it the more I say it.  Try it?
+                            {HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}....
+                            What were we talking about?
                             """
         ),
         next_path=("GET to /game/identify-yourself"),
