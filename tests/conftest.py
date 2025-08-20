@@ -1,12 +1,11 @@
 import pytest
 from app.extensions import db
-from app.setup import create_and_seed_app
-from app.config import TestingConfig
+from app import create_app
 
 
 @pytest.fixture
 def app():
-    app = create_and_seed_app(TestingConfig)
+    app = create_app()
     yield app
     with app.app_context():
         db.session.remove()
