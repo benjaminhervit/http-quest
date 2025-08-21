@@ -56,15 +56,17 @@ Key system features include:
 
 ## Roadmap
 ### MVP aka. v1.0: All Quests
-- [ ] Add all identified tests
-- [ ] Add Quest 3: Signup for the quest! support and tests for POST and Form.
-- [ ] Add quest 4: Learn telekinese: support and tests for identifier in headers
-- [ ] Add quest 5: Get your squire Jason! Support and tests for JSON
-- [ ] Add quest 6: Get some armor on! Support and tests for PUT
-- [ ] Add quest 7: Slay the Git monster! Support and tests for DELETE
+- [x] Quest 1: learn about path extension in browser.
+- [x] Quest 2: learn about form and post.
+- [x] Quest 3: learn about authorization header.
+- [x] Quest 4: learn about json and post.
+- [ ] Quest 5: learn about accessing request logs (game specific)
+- [ ] Quest 6: learn about PUT.
+- [ ] Quest 7: learn about DELETE.
 
 ### v1.1: Quest renderer
-- [ ] All quests can be returned as JSON or HTML based on param in query.
+- [x] All quests can be returned as JSON or HTML based on param in query.
+- [ ] Quests have precessors that needs to be unlocked.
 
 ### v1.2: Story branching
 - [ ] Quests can have multiple precessors.
