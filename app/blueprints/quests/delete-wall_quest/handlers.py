@@ -1,4 +1,3 @@
-
 from flask import Request
 
 from app.quest import QuestData
@@ -8,10 +7,7 @@ from app.enums import QuestState
 
 
 def get_handlers():
-    return {
-        'GET': get_handler,
-        'POST': post_handler
-    }
+    return {"GET": get_handler, "POST": post_handler}
 
 
 def get_handler(quest: QuestData, req: Request):

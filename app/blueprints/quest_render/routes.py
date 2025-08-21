@@ -13,35 +13,43 @@ def renderer():
     print(content)
     return render_template("quest_renderer.html", content=content)
 
+
 @bp.route("/last-request", methods=["GET"])
 def render_last_request():
     try:
         content: LastUserRequestLog | None = LastUserRequestLog.query.first()
         if not content:
-            return jsonify({'error': 'No logs created yet'})
-        
-        user: str | None = parser_utils.get_field_from_request_data(request, 'username', parser_utils.get_query)
+            return jsonify({"error": "No logs created yet"})
+
+        user: str | None = parser_utils.get_field_from_request_data(
+            request, "username", parser_utils.get_query
+        )
         if user:
-            content: LastUserRequestLog | None = LastUserRequestLog.query.filter_by(username=user).order_by(LastUserRequestLog.id.desc()).first()
+            content: LastUserRequestLog | None = (
+                LastUserRequestLog.query.filter_by(username=user)
+                .order_by(LastUserRequestLog.id.desc())
+                .first()
+            )
             print(content)
-        
+
         if not isinstance(content, LastUserRequestLog):
-            response = jsonify({'error': 'Could not parse last request'}), StatusCode.SERVER_ERROR.value
+            response = (
+                jsonify({"error": "Could not parse last request"}),
+                StatusCode.SERVER_ERROR.value,
+            )
             return response
-            
+
         # convert data strings to json
         data = content.to_dict()
         data["request_json"] = parser_utils.try_json_loads(data.get("request_json"), {})
-        
+
         resp = parser_utils.try_json_loads(data.get("response_json"), {})
         resp["body_text"] = parser_utils.try_json_loads(resp.get("body_text"), {})
         data["response_json"] = resp
-    
-        return render_template("logging.html", content=data)            
-    
+
+        return render_template("logging.html", content=data)
+
     except ParsingError as e:
-        return (jsonify({'error': str(e)}),
-                StatusCode.UNAUTHORIZED.value)
+        return (jsonify({"error": str(e)}), StatusCode.UNAUTHORIZED.value)
     except AuthenticationError as e:
-        return (jsonify({'error': str(e)}),
-                StatusCode.UNAUTHORIZED.value)
+        return (jsonify({"error": str(e)}), StatusCode.UNAUTHORIZED.value)

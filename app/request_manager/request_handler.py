@@ -15,8 +15,7 @@ class QuestRequestHandler:
         for m in valid_methods:
             if m not in handlers_map:
                 raise ValueError(f"Missing handler for method {m}")
-        return True 
-
+        return True
 
     @classmethod
     def execute(
@@ -31,14 +30,15 @@ class QuestRequestHandler:
         # validate
         cls.validate_handlers_map(handlers_map, valid_req_methods)
         if not isinstance(authenticator, Callable):
-            raise ValueError('Passed authenticator is not callable')
+            raise ValueError("Passed authenticator is not callable")
 
         try:
             #  Authenticate user
             username = authenticator(req=req)
             if not username:
-                raise AuthenticationError('Could not authenticate user',
-                                          StatusCode.UNAUTHORIZED.value)
+                raise AuthenticationError(
+                    "Could not authenticate user", StatusCode.UNAUTHORIZED.value
+                )
 
             #  Setup quest
             handler = handlers_map.get(req.method)
@@ -70,9 +70,17 @@ class QuestRequestHandler:
             return send_response(req, content, e.code, html="error_message.html")
 
         except ValueError as e:
-            content = content_generator.create_error_msg(str(e), "ValueError", StatusCode.BAD_REQUEST.value)
-            return send_response(req, content, StatusCode.BAD_REQUEST.value, html="error_message.html")
+            content = content_generator.create_error_msg(
+                str(e), "ValueError", StatusCode.BAD_REQUEST.value
+            )
+            return send_response(
+                req, content, StatusCode.BAD_REQUEST.value, html="error_message.html"
+            )
 
         except TypeError as e:
-            content = content_generator.create_error_msg(str(e), "TypeError", StatusCode.BAD_REQUEST.value)
-            return send_response(req, content, StatusCode.BAD_REQUEST.value, html="error_message.html")
+            content = content_generator.create_error_msg(
+                str(e), "TypeError", StatusCode.BAD_REQUEST.value
+            )
+            return send_response(
+                req, content, StatusCode.BAD_REQUEST.value, html="error_message.html"
+            )

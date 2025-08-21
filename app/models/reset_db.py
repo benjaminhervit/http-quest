@@ -1,8 +1,10 @@
 from app.extensions import db
 from app.blueprints.quests.get_all_quests import get_all_quests
 
+
 def reset_db():
     from app.models import User, Quest, UserQuestState
+
     db.drop_all()
     db.create_all()
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#to make executable: chmod +x scripts/create_quest.py 
+# to make executable: chmod +x scripts/create_quest.py
 import os
 import sys
 from slugify import slugify

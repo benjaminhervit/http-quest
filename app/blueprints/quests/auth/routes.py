@@ -18,5 +18,5 @@ def register():
         authenticator=no_authentication,
         handlers_map=handlers,
         valid_req_methods=valid_methods,
-        html_template="register.html"
+        html_template="register.html",
     )

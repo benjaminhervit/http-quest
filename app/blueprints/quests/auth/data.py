@@ -3,8 +3,10 @@ from app.blueprints.quests.auth import bp
 
 _title = "Registration"
 
+
 def get_quest_title():
     return _title
+
 
 def get_quest():
     return QuestData(

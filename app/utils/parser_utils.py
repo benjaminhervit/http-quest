@@ -29,7 +29,7 @@ def get_headers(req: Request) -> dict | None:
     try:
         headers = {k.lower(): v for k, v in req.headers.items()}
     except TypeError as exc:
-        raise TypeError('Could not parse headers. Format corrupted.') from exc
+        raise TypeError("Could not parse headers. Format corrupted.") from exc
     return headers
 
 
@@ -50,8 +50,9 @@ def get_query(req: Request) -> dict | None:
     return req.args.to_dict() if req.args else None
 
 
-def get_field_from_request_data(req: Request, field_name: str,
-                                parsing_method: Callable) -> str:
+def get_field_from_request_data(
+    req: Request, field_name: str, parsing_method: Callable
+) -> str:
 
     validate_utils.validate_type(req, Request)
     if not isinstance(parsing_method, colabc.Callable):
@@ -67,8 +68,9 @@ def get_field_from_request_data(req: Request, field_name: str,
         )
 
     if not isinstance(data, dict):
-        raise TypeError(f'req data format is not valid: {data}',
-                        StatusCode.BAD_REQUEST.value)
+        raise TypeError(
+            f"req data format is not valid: {data}", StatusCode.BAD_REQUEST.value
+        )
 
     field: str | None = data.get(field_name.lower())
     if not field:

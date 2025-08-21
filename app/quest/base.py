@@ -1,6 +1,7 @@
 from dataclasses import dataclass, asdict
 import json
 
+
 @dataclass
 class Serializable:
     def to_dict(self):

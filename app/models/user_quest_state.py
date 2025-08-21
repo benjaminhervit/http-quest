@@ -10,10 +10,10 @@ from app.models import User, Quest
 
 class UserQuestState(db.Model, Base):
     __tablename__ = "user_quest_state"
-    
+
     id = db.Column("id", Integer, autoincrement=True)
-    username = db.Column("username",
-        String, db.ForeignKey("users.username"), primary_key=True
+    username = db.Column(
+        "username", String, db.ForeignKey("users.username"), primary_key=True
     )
     quest = db.Column("quest", String, db.ForeignKey("quest.title"), primary_key=True)
     state = db.Column("state", String, nullable=False)
@@ -53,31 +53,34 @@ class UserQuestState(db.Model, Base):
         uqs = UserQuestState.__table__
         users = User.__table__
         quests = Quest.__table__
-        
+
         res = db.session.execute(
             update(uqs)
             .where(uqs.c.username == username, uqs.c.quest == quest_title)
             .where((uqs.c.xp_awarded.is_(False)) | (uqs.c.xp_awarded.is_(None)))
             .values(state=QuestState.COMPLETED.value, xp_awarded=True)
         )
-        
+
         # print(f"res: {res}")
         print(f"res.rowcount: {res.rowcount}")
-        
+
         if res.rowcount != 1:
             db.session.commit()
-            return False #No XP
-        
-        quest_xp = db.session.execute(
-            select(quests.c.xp).where(quests.c.title==quest_title)
-            ).scalar_one_or_none() or 0
-        
+            return False  # No XP
+
+        quest_xp = (
+            db.session.execute(
+                select(quests.c.xp).where(quests.c.title == quest_title)
+            ).scalar_one_or_none()
+            or 0
+        )
+
         if quest_xp:
             db.session.execute(
                 update(users)
                 .where(users.c.username == username)
                 .values(xp=func.coalesce(users.c.xp, 0) + quest_xp)
             )
-        
+
         db.session.commit()
         return True

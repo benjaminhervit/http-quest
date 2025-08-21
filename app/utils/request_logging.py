@@ -4,7 +4,7 @@ from werkzeug.datastructures import FileStorage
 import base64
 import datetime as dt
 
-MAX_BODY_BYTES = 8 * 1024 # 8kb
+MAX_BODY_BYTES = 8 * 1024  # 8kb
 
 # headers to avoid saving
 SENSITIVE_HEADERS = {"authorization", "cookie", "set-cookie", "x-api-key"}
@@ -25,12 +25,13 @@ def _now_iso() -> str:
 def _headers_to_safe_dict(headers) -> Dict[str, Any]:
     return {k: v for k, v in headers.items() if k.lower() not in SENSITIVE_HEADERS}
 
+
 def snapshot_request(req: Request, username: str, include_body=True) -> Dict[str, Any]:
-    
+
     body_str: str | None = None
     ct = (req.mimetype or "").lower()
     is_textual = any(ct.startswith(pfx) for pfx in ("text/",)) or ct in TEXTUAL_CT
-    
+
     if include_body:
         raw = req.get_data(cache=True) or b""
         raw = raw[:MAX_BODY_BYTES]
@@ -46,9 +47,9 @@ def snapshot_request(req: Request, username: str, include_body=True) -> Dict[str
             json_payload = req.get_json(silent=True)
         except Exception:
             json_payload = None
-    
+
     form_data = req.form.to_dict(flat=False) if req.form else None
-    
+
     return {
         "ts": _now_iso(),
         "user": username,
@@ -67,10 +68,10 @@ def snapshot_request(req: Request, username: str, include_body=True) -> Dict[str
         "content_length": req.content_length,
         "json": json_payload,
         "form": form_data,
-        "body_text": body_str
+        "body_text": body_str,
     }
 
-    
+
 def snapshot_response(resp: Response, include_body=True) -> Dict[str, Any]:
     body_text = None
 

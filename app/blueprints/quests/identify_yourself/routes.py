@@ -17,4 +17,5 @@ def register():
         quest=quest,
         authenticator=no_authentication,
         handlers_map=handlers,
-        valid_req_methods=valid_methods)
+        valid_req_methods=valid_methods,
+    )

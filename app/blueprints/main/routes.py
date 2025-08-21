@@ -3,7 +3,7 @@ from sqlalchemy.exc import OperationalError
 
 from app.blueprints.main import bp
 from app.models.user import User
-from app. extensions import db
+from app.extensions import db
 
 
 @bp.route("/")

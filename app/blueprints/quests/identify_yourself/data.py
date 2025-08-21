@@ -37,8 +37,10 @@ def get_quest():
                 GET to /game/hire_jason
                 """
         ),
-        hints=["https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
-              "https://www.postman.com/"],
+        hints=[
+            "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
+            "https://www.postman.com/",
+        ],
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
     )

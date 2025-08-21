@@ -4,6 +4,7 @@ from app.enums import QuestState
 
 print("event listeners registered")
 
+
 @event.listens_for(Quest, "after_insert")
 def backfill_states_for_new_quest(mapper, connection, target: Quest):
     user_tbl = User.__table__

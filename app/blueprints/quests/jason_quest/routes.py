@@ -18,5 +18,6 @@ def jason_route():
         quest=quest,
         authenticator=authenticate_with_username,
         handlers_map=handlers,
-        valid_req_methods=valid_methods)
+        valid_req_methods=valid_methods,
+    )
     return response

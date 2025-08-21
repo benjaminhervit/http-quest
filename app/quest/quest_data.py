@@ -3,6 +3,7 @@ from slugify import slugify
 
 from .base import Serializable
 
+
 @dataclass
 class QuestData(Serializable):
     title: str
