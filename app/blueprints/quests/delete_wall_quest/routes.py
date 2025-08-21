@@ -8,7 +8,7 @@ from app.request_manager import QuestRequestHandler
 from app.authentication_manager import authenticate_with_username
 
 
-@bp.route("/", methods=["GET"])
+@bp.route("/delete-wall", methods=["GET"])
 def delete_wall_route():
     handlers = get_handlers()
     quest = get_quest()
