@@ -1,4 +1,6 @@
 # ReQUEST
+! OBS ! Please go to the KISS branch for the most stable version
+
 ReQUEST is a HTTP Client based adventure game to teach the basics of HTTP and CRUD to students that are new to programming.
 To play the game, the player will send and read HTTP requests, using the browser, a client (e.g. Postman), or writing their own scripts.
 The player will have to use basic methos (GET, POST, PUT, DELETE) together with the right data format (Query, JSON, Form, path, headers) to complete quests.
