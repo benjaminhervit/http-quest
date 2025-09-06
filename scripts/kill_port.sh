@@ -1,5 +1,8 @@
 #!/bin/bash
+
+# Kills all activities on port 5000 - in case an old instance is blocking flask run
 # filepath: /Users/benjaminhervit/Documents/Projects/fritids_projekter/http-quest/scripts/kill_port.sh
+# call from terminal: ./scripts/kill_port.sh 
 
 PORT=${1:-5000}  # Default to port 5000, but allow passing different port
 

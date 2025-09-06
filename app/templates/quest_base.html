@@ -10,9 +10,10 @@
         
         <details open>
             {% if content.status =='completed'%}
+            <button class="btn btn--primary">Quest: Completed</button>
             <summary>Quest: Completed!</p></summary>
             {%else%}
-            <summary>Quest: Active</summary>
+            <button class="btn btn--accent">Quest: Active</button>
             {%endif%}
             <p>{{content['quest']}}</p>
         </details>

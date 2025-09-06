@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neon 80s • Cyberpunk Starter</title>
+  <meta name="description" content="80s purple neon cyberpunk starter with CRT static, terminal vibes, and reusable additive CSS classes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="crt">
+  <canvas class="noise-layer" id="noiseCanvas" aria-hidden="true"></canvas>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="logo">NEON//GRID</div>
+      <nav class="u-flex u-wrap">
+        <a class="btn btn--ghost" href="#">Home</a>
+        <a class="btn btn--ghost" href="#features">Features</a>
+        <a class="btn btn--ghost" href="#demo">Demo</a>
+        <a class="btn btn--primary" href="#get">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container u-stack u-mt-xl">
+    <section class="u-stack u-center u-pad-lg">
+      <h1 class="title">Purple Neon Cyberpunk Starter</h1>
+      <p class="subtitle">Tube TV static, terminal vibes, reusable CSS classes.</p>
+      <div class="u-flex u-wrap u-mt-xl">
+        <a class="btn btn--primary" href="#demo">See Components</a>
+        <a class="btn btn--outline" href="#code">View Markup</a>
+      </div>
+    </section>
+
+    <section id="features" class="u-grid u-grid-3">
+      <!-- <article class="panel u-pad-md"> -->
+        <article class="panel u-pad-md u-cut-tr u-stroke" style="--notch:3rem; --stroke:2px;">
+        <span class="chip">Effect</span>
+        <h2 class="title title-lg u-text-neon u-glow-soft">CRT + Static</h2>
+        <p>Global scanlines, vignette, and animated noise overlay. Respects <code>prefers-reduced-motion</code>.</p>
+      </article>
+      <article class="panel panel--sunset u-pad-md">
+        <span class="chip">Typography</span>
+        <h2 class="title title-lg u-text-neon u-glow-soft">Terminal Look</h2>
+        <p>VT323 headings + Plex Mono body for that retro-mainframe feel.</p>
+      </article>
+      <article class="panel panel--grid u-pad-md">
+        <span class="chip">Utilities</span>
+        <h2 class="title title-lg u-text-neon u-glow-soft">Additive Classes</h2>
+        <p>Compose with <code>.u-*</code> utilities and semantic components like <code>.btn</code>, <code>.panel</code>, <code>.terminal</code>.</p>
+      </article>
+    </section>
+
+    <section id="demo" class="u-grid u-grid-2 u-mt-xl">
+      <div class="u-stack">
+        <div class="terminal">
+          <div class="terminal__bar">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="u-text-neon" style="margin-left:.5rem; font-family: var(--font-term); letter-spacing:.06em;">/usr/bin/retro.sh</span>
+          </div>
+          <div class="terminal__body">
+            <div><span class="prompt">guest@neon-grid</span>:<span class="u-text-pink">~</span>$ boot_sequence --year 1988</div>
+            <div>Loading <span class="u-text-cyan">synthwave</span>…<span class="caret" aria-hidden="true"></span></div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="title title-lg u-text-neon u-glow-soft">Buttons</h3>
+          <div class="u-flex u-wrap">
+            <button class="btn btn--primary">Primary</button>
+            <button class="btn btn--outline">Outline</button>
+            <button class="btn btn--ghost">Ghost</button>
+            <button class="btn btn--accent">Accent</button>
+          </div>
+        </div>
+
+        <article class="panel u-pad-md u-cut-tr u-border-follow" style="--notch:3rem; --stroke:2px;">
+            <p>...</p>
+        </article>
+
+        <div>
+          <h3 class="title title-lg u-text-neon u-glow-soft">Form</h3>
+          <div class="u-grid">
+            <label class="field">
+              <span class="label">Handle</span>
+              <input class="input" placeholder="@cybernaut" />
+            </label>
+            <label class="field">
+              <span class="label">Message</span>
+              <textarea class="textarea" placeholder="Jack in…"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="u-stack">
+        <div class="imgbox">
+          <img src="https://images.unsplash.com/photo-1520974742038-7c0a3aaa0a14?q=80&w=1400&auto=format&fit=crop" alt="Neon cyberpunk city" />
+        </div>
+        <div class="panel u-pad-md">
+          <h3 class="title title-lg u-text-neon u-glow-soft">Card / Panel</h3>
+          <p>Use <code>.panel</code> (or <code>.panel--sunset</code>, <code>.panel--grid</code>) for content boxes. Pair with utilities like <code>.u-pad-md</code> and <code>.u-stack</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="code" class="u-mt-xl">
+      <div class="panel u-pad-md">
+        <h2 class="title title-lg u-text-neon u-glow-soft">How to compose styles</h2>
+        <pre><code>&lt;button class="btn btn--primary u-glow-soft"&gt;Click Me&lt;/button&gt;
+&lt;section class="panel panel--grid u-pad-md u-stack"&gt;...&lt;/section&gt;
+&lt;h1 class="title title-xl u-text-neon u-glow"&gt;Heading&lt;/h1&gt;
+&lt;div class="terminal"&gt;...&lt;/div&gt;</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container u-mt-xl u-mb-lg">
+    <p>Built with ❤️ in the 80s (not really). Add your content and remix the utilities.</p>
+  </footer>
+
+  <script>
+    if (CSS.paintWorklet) {              CSS.paintWorklet.addModule('/t_afif/pen/dyRMQXP.js');
+    }  else {
+    alert("Your browser cannot run this demo. Consider Chrome or Edge instead")
+    }
+</script>
+</body>
+</html>

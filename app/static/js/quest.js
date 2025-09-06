@@ -68,6 +68,7 @@ function renderLeaderboard(data){
         //team name
         const userEl = document.createElement("td");
         userEl.textContent = user.username;
+        userEl.classList.add("subtitle")
         row.appendChild(userEl);
 
         // //level

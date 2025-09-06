@@ -1,13 +1,22 @@
 {%extends 'base.html'%}
 {%block title%}reQuest{%endblock%}
 {%block body%}
-  <article>
-      <header>
-        Welcome to a CRUDe Game
-      </header>
-      <body id="game_context">
-        <p>To begin the game go to /game/start or... you know... just click <a href="{{url_for('game.start')}}"> here </a></p>
-      </body>
-    </article>
-    {%include 'leaderboard.html'%}
+  <section class="u-stack u-center u-pad-lg">
+    <h1 class="title title-xl u-text-neon u-glow">Welcome to HTTP rQUEST</h1>
+  </section>
+  <div class="u-stack">
+      <div class="terminal">
+      <div class="terminal__bar">
+        <span class="dot dot--red"></span>
+        <span class="dot dot--yellow"></span>
+        <span class="dot dot--green"></span>
+        <span class="u-text-neon" style="margin-left:.5rem; font-family: var(--font-term); letter-spacing:.06em;">/home</span>
+      </div>
+      <div class="terminal__body">
+        <div><span class="prompt">@instructor</span>:<span class="u-text-pink">~</span><code>$ GET to <span class="u-text-neon">/game/start</span></code> </div>
+        <div><span class="subtitle">Or... you know... just <a class="btn btn--accent" href="{{url_for('game.start')}}">Click here</a></p></div>
+      </div>
+    </div>
+    </div>
+  {%include 'leaderboard.html'%}
 {%endblock%}

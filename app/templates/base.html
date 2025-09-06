@@ -3,20 +3,33 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
     <script src="{{ url_for('static', filename='js/quest.js') }}" defer></script>
     <title>{%block title%}{% endblock %}</title>
     {%block head%}{% endblock %}
   </head>
-  <body>
-    <main class="container">
-        <header>
-          {%block header%}{% endblock %}
-        </header>
-        <body>
-            {%block body%}{% endblock %}
-        </body>
+  <body class="crt">
+    <canvas class="noise-layer" id="noiseCanvas" aria-hidden="true"></canvas>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <main class="container u-stack u-mt-xl">
+      <header class="topbar">
+        <div class="container topbar__inner">
+          <div class="logo">HTTP (re)QUEST</div>
+          <nav class="u-flex u-wrap">
+            <a class="btn btn--ghost" href="{{url_for('main.index')}}">Home</a>
+            <a class="btn btn--ghost" href="#features">LastRequest</a>
+            <a class="btn btn--ghost" href="#demo">Leaderboard</a>
+          </nav>
+        </div>
+        {%block header%}{% endblock %}
+      </header>
+      <body>
+        {%block body%}{% endblock %}
+      </body>
     </main>
   </body>
 </html>
