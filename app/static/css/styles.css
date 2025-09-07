@@ -59,6 +59,27 @@
       overflow-x: hidden;
     }
 
+        /* ============================
+       PNG ICONS COLORING: 
+       concert Hex to filter colors:  https://codepen.io/sosuke/pen/Pjoqqp
+       ============================ */
+
+    .img-color-neon{
+      filter: invert(12%) sepia(82%) saturate(7481%) hue-rotate(277deg) brightness(112%) contrast(124%);
+    }
+
+    .img-color-cyan{
+      filter: invert(74%) sepia(51%) saturate(3706%) hue-rotate(140deg) brightness(105%) contrast(105%);
+    }
+
+    .img-color-pink{
+      filter: invert(47%) sepia(65%) saturate(2697%) hue-rotate(288deg) brightness(104%) contrast(101%);
+    }
+
+    .img-color-lime{
+      filter: invert(86%) sepia(45%) saturate(2393%) hue-rotate(28deg) brightness(112%) contrast(100%);
+    }
+
     /* ============================
        BACKGROUND GRID + GLOW AURA
        ============================ */
@@ -161,6 +182,7 @@
     .u-glow { text-shadow: var(--cp-glow-strong); }
     .u-glow-soft { text-shadow: var(--cp-glow-soft); }
     .u-text-neon { color: var(--cp-neon); }
+    .u-text-neon-2 { color: var(--cp-neon-2); }
     .u-text-cyan { color: var(--cp-cyan); }
     .u-text-pink { color: var(--cp-pink); }
     .u-text-lime { color: var(--cp-lime); }

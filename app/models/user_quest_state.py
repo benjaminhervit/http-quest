@@ -42,9 +42,13 @@ class UserQuestState(db.Model, Base):
     @classmethod
     def get_state(cls, username: str, quest_title: str) -> Optional["UserQuestState"]:
         return cls.query.filter_by(username=username, quest=quest_title).first()
+    
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
     def __repr__(self):
-        return f'<Quest state={self.state}, slug="{self.quest}>'
+        return f'<User={self.username}, quest="{self.quest}, Quest state={self.state}>'
 
     @classmethod
     def complete_and_award_xp(cls, username: str, quest_title: str) -> bool:

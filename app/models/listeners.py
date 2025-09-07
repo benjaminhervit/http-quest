@@ -15,7 +15,7 @@ def backfill_states_for_new_quest(mapper, connection, target: Quest):
         select(
             user_tbl.c.username,
             literal(target.title),
-            literal(QuestState.UNLOCKED.value),  # or UNLOCKED if you prefer
+            literal(QuestState.LOCKED.value),  # or UNLOCKED if you prefer
         ),
     )
     connection.execute(insert_statement)
@@ -30,7 +30,7 @@ def create_user_quest_states(mapper, connection, target: User):
 
     state_expr = case(
         (quest_tbl.c.title.in_(completed_titles), literal(QuestState.COMPLETED.value)),
-        else_=literal(QuestState.UNLOCKED.value),
+        else_=literal(QuestState.LOCKED.value),
     )
 
     stmt = insert(uqs_tbl).from_select(

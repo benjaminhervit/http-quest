@@ -1,0 +1,44 @@
+<!-- LEADER BOARD -->
+<article class="topbar">
+  <span class="title title-xl u-text-neon u-glow">Leaderboard</span>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th class="subtitle" scope="col">Player</th>
+          <th class="subtitle" scope="col">Level</th>
+          <th scope="col"><img class="icons" width="30px" height="auto" alt="git icon" src="https://www.pngfind.com/pngs/m/88-889543_980-x-980-3-start-icon-png-free.png" style="filter: invert(100%);"></th>
+          <th scope="col"><img class="icons" width="30px" height="auto" alt="git icon" src="https://static.thenounproject.com/png/70749-200.png" style="filter: invert(100%);"></th>
+          <th scope="col"><img class="icons" width="30px" height="auto" alt="git icon" src="https://www.nicepng.com/png/detail/858-8587398_confidential-png-icon-authorization-icon.png" style="filter: invert(100%);"></th>
+          <th scope="col"><img class="icons" width="30px" height="auto" alt="git icon" src="https://images.vexels.com/content/202527/preview/black-cat-avatar-line-icon-796782.png" style="filter: invert(100%);"></th>
+          <th scope="col"><img class="icons" width="30px" height="auto" alt="gate icon" src="https://img.pikbest.com/origin/09/24/45/853pIkbEsTR4J.png!sw800" style="filter: invert(100%); size: 50%;"></th>
+          <th scope="col"><img class="icons" width="30px" height="auto" alt="crown icon" src="https://static.thenounproject.com/png/1348333-200.png" style="filter: invert(100%);"></th>
+        </tr>
+      </thead>
+      <tbody id="">
+        {%if data%}
+            {% for user in data %}
+            <tr>
+              <td class="subtitle">{{user.username}}</td>
+              <td class="subtitle">99</td>
+              {%for s in user.states%}
+              {%if s == 'completed'%}
+                <td class="u-glow">1</td>
+              {% elif s == 'unlocked' %}
+                <td class="u-text-cyan u-glow title-lg">0</td>
+              {% elif s == 'locked' %}
+                <td class="u-text-neon">0</td>
+              {%endif%}
+             {%endfor%}
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="5">No players yet!</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </body>
+  <footer></footer>
+</article>
