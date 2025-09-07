@@ -3,6 +3,7 @@
 {%block body%}
   <section class="u-stack u-center u-pad-lg">
     <h1 class="title title-xl u-text-neon u-glow">Welcome to HTTP (RE)QUEST</h1>
+    <a class="btn btn--accent title-xl" href="{{url_for('game.start')}}">Play now</a>
   </section>
   <div class="u-stack">
       <div class="terminal">
@@ -19,5 +20,5 @@
       </div>
     </div>
     </div>
-  {%include 'leaderboard.html'%}
+  {%include 'leaderboard_base.html'%}
 {%endblock%}

@@ -22,7 +22,7 @@ def get_quest():
         locked="",
         completed=(
             """
-                            Thank you {HERO}! Now, you are ready!",
+                            Thank you {HERO}! Now, you are ready!,
                             Finally, someone with a heroic name as {HERO}
                             cannot fail! .... {HERO}... {HERO}...{HERO}{HERO} ....
                             {HERO}{HERO}{HERO}{HERO}{HERO}{HERO}. It has a certain ring to it the more I say it.  Try it?

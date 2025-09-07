@@ -8,10 +8,10 @@ def get_start_quest():
         start_message=(
             """
                     Welcome dear {HERO} to... reQuest! An epic adventure to claim the CRUDe crown! 
-                    But before we begin, you must tell me who you are adventurer?
+                    But before we begin, you must tell me: Who you are {HERO}?
                     """
         ),
-        quest="Extend the path with /your_name",
+        quest="To tell me your name, extend the PATH with /your_name",
         locked="",
         completed=(
             """

@@ -21,8 +21,7 @@ def get_quest():
         ),
         quest=(
             """
-            POST to this path and while you hold your username
-            in your HEAD(ers) with AUTHORIZATION.
+            With your name as AUTHORIZATION in your HEAD(ers), POST nothing to this PATH. WARNING! Things are about to get ugly.
             """
         ),
         locked="",

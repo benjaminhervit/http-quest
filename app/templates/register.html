@@ -12,12 +12,18 @@ Registration
         {%else%}
             {%include 'quest_base.html'%}
             {% if content['status'] != 'COMPLETED' %}
-                <form method="POST" action="{{url_for('auth.register')}}" role="group" class="register-form" required>
-                    <input type="text" id="username-input" name="username" placeholder="Your name" required>
-                    <button type="submit">Begin</button>
-                </form>
+            <h3 class="title title-lg u-text-neon u-glow-soft">Sign up</h3>
+            <form method="POST" action="{{url_for('auth.register')}}" role="group" class="register-form" required>
+                <section id="demo" class="u-grid u-grid-3 u-mt-xl">
+                <div class="u-stack">
+                    <input class="input" type="text" id="username-input" name="username" placeholder="Your name" required>
+                </div>
+                <div class="u-stack">
+                    <button class="btn btn--primary u-glow-soft" type="submit">Register</button>
+                </div>
+                </section>
+            </form>
             {%endif%}
         {%endif%}
     {%endif%}
-    {%include 'leaderboard.html'%}
 {%endblock%}

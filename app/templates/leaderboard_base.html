@@ -1,0 +1,35 @@
+<!-- LEADER BOARD -->
+<article class="topbar">
+  <span class="title title-xl u-text-neon u-glow">Leaderboard</span>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th class="subtitle" scope="col">Player</th>
+          <th class="subtitle" scope="col">Level</th>
+          <th scope="col"><img class="icons" width="50px" height="auto" alt="git icon" src="https://images.vexels.com/content/202527/preview/black-cat-avatar-line-icon-796782.png" style="filter: invert(100%);"></th>
+          <th scope="col"><img class="icons" width="100px" height="auto" alt="gate icon" src="https://img.pikbest.com/origin/09/24/45/853pIkbEsTR4J.png!sw800" style="filter: invert(100%); size: 50%;"></th>
+          <th><img class="icons" width="50px" height="auto" alt="crown icon" src="https://static.thenounproject.com/png/1348333-200.png" style="filter: invert(100%);"></th>
+        </tr>
+      </thead>
+      <tbody id="table_body">
+        {%if users%}
+            {% for user in users%}
+            <tr>
+              <td class="subtitle">{{user.username}}</td>
+              <td class="subtitle">{{user.xp}}</td>
+              <td><!-- Level progress indicators --></td>
+              <td><!-- Level progress indicators --></td>
+              <td><!-- Level progress indicators --></td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="5">No players yet!</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </body>
+  <footer></footer>
+</article>
