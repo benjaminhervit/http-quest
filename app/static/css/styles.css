@@ -163,6 +163,7 @@
     .u-text-neon { color: var(--cp-neon); }
     .u-text-cyan { color: var(--cp-cyan); }
     .u-text-pink { color: var(--cp-pink); }
+    .u-text-lime { color: var(--cp-lime); }
 
     /* ============================
        LAYOUT UTILITIES
@@ -210,6 +211,7 @@
       border: 1px solid var(--cp-border);
       box-shadow: var(--cp-glow-soft);
       background: #0c0716;
+      min-height: 20rem;
     }
     .terminal__bar {
       background: linear-gradient(180deg, #220a3a, #140726);

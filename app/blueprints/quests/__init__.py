@@ -7,5 +7,6 @@ from .start import routes
 from .identify_yourself import routes
 from .jason_quest import routes
 from .delete_wall_quest import routes
+from app.blueprints.manual import routes
 
 from .get_all_quests import get_all_quests

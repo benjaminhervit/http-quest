@@ -1,3 +1,40 @@
+<div class="u-stack">
+      <div class="terminal">
+      <div class="terminal__bar">
+        <span class="dot dot--red"></span>
+        <span class="dot dot--yellow"></span>
+        <span class="dot dot--green"></span>
+        <span class="u-text-neon" style="margin-left:.5rem; font-family: var(--font-term); letter-spacing:.06em;">
+            game/{{content['title']}}: 
+            {%if content.status == 'completed'%} 
+                <span class="u-text-cyan"> 
+            {% elif content.status == 'locked'%} 
+                <span class="u-text-pink">
+            {%else%}
+                <span class="u-text-neon">
+            {%endif%}
+            {{content.status}}</span>
+        </span>
+      </div>
+      <div class="terminal__body">
+        <div><span class="prompt">@story</span>:<span class="u-text-pink">~</span><code>{{content.story}}</code> </div>
+        <div><span class="prompt">@quest</span>:<span class="u-text-pink">~</span><code>{{content.quest}}</code> </div>
+        {% if content.hints%}
+            {% for h in content.hints %}
+                <div><span class="prompt">@hints</span>:<span class="u-text-pink">~</span><code>{{h}}</code> </div>
+            {% endfor %}
+        {% endif %}
+        {% if content.status == 'completed'%}
+            <div><span class="prompt">@next</span>:<span class="u-text-pink">~</span><code>{{content.next_path}}</code> </div>
+        {% else %}
+            <div><span class="prompt">@next</span>:<span class="u-text-pink">~</span><code>First complete this quest</code> </div>
+        {% endif%}
+        
+      </div>
+    </div>
+</div>
+
+<!--
 <article>
     <header>
         <h1>{{content['title']}}</h1>
@@ -37,3 +74,4 @@
         <p>Status: {{content['status']}}</p>
     </footer>
 </article>
+-->

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
     <script src="{{ url_for('static', filename='js/quest.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/terminalWriteFx.js') }}" defer></script>
     <title>{%block title%}{% endblock %}</title>
     {%block head%}{% endblock %}
   </head>
@@ -23,6 +24,7 @@
             <a class="btn btn--ghost" href="{{url_for('main.index')}}">Home</a>
             <a class="btn btn--ghost" href="#features">LastRequest</a>
             <a class="btn btn--ghost" href="#demo">Leaderboard</a>
+            <a class="btn btn--ghost" href="{{url_for('game.manual')}}">Manual</a>
           </nav>
         </div>
         {%block header%}{% endblock %}

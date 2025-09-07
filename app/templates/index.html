@@ -2,7 +2,7 @@
 {%block title%}reQuest{%endblock%}
 {%block body%}
   <section class="u-stack u-center u-pad-lg">
-    <h1 class="title title-xl u-text-neon u-glow">Welcome to HTTP rQUEST</h1>
+    <h1 class="title title-xl u-text-neon u-glow">Welcome to HTTP (RE)QUEST</h1>
   </section>
   <div class="u-stack">
       <div class="terminal">
@@ -13,8 +13,9 @@
         <span class="u-text-neon" style="margin-left:.5rem; font-family: var(--font-term); letter-spacing:.06em;">/home</span>
       </div>
       <div class="terminal__body">
-        <div><span class="prompt">@instructor</span>:<span class="u-text-pink">~</span><code>$ GET to <span class="u-text-neon">/game/start</span></code> </div>
-        <div><span class="subtitle">Or... you know... just <a class="btn btn--accent" href="{{url_for('game.start')}}">Click here</a></p></div>
+        <div><span class="prompt">@instructor</span>:<span class="u-text-pink">~</span><code>$ Wellcome to HTTP reQUEST. A REST API based game where you will get hands-on experience with making HTTP requests from the browser, HTTP Clients and/or with code (if you are up for the challenge). </code> </div>
+        <div><span class="prompt">@instructor</span>:<span class="u-text-pink">~</span><code>$ The lectures should have given you all the basics to get started but we have made a small <a class="u-text-neon btn--accent" href="{{url_for('game.manual')}}">/game/manual</a> to help you out. Keep in mind that the game is under development and there more you ask, challenge and complain, the better we can make it. </code> </div>
+        <div><span class="prompt">@instructor</span>:<span class="u-text-pink">~</span><code>$ To begin GET to <a class="u-text-neon btn--accent" href="{{url_for('game.start')}}">/game/start</a></code> </div>
       </div>
     </div>
     </div>
