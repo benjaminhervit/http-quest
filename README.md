@@ -42,20 +42,23 @@ The current version
 - Game manual
 
 ### Architecture
+(Pre-KISS architecture)
 ![ReQUEST framework](https://github.com/user-attachments/assets/3fdd755c-1005-4369-98d6-9ed9625a1160)
 
 ## System overview diagram
 The diagram below models the complete lifecycle of a player request in reQUEST.
 It the players entry and interaction loop together with the technical flow the HTTP request through parsing, validtiong, authorizing, and executing game logic, including expected error messages that is returned to the player. 
 
+(Pre-KISS system)
 ![reQUEST_system_overview](https://github.com/user-attachments/assets/146c1a3a-abc4-4b25-bd14-d4d5707ee810)
 
 Key system features include:
-- Modular route and request handling via Flask blueprints
-- Stateless vs stateful quest support
-- Player:Quest state management (locked, completed, failed)
+- Each quest has its own blueprint >> easy to extend and change quests without touching other game logic.
+- Modular RequestHandler 
 - Error handling via standard HTTP codes (400, 401, 404, 500)
 - JSON-based output
+- Player can get output from last request in browser.
+- Players get xp for each completed quest.
 
 ## Roadmap
 ### MVP aka. v1.0: All Quests
