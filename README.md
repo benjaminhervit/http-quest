@@ -30,10 +30,8 @@ The framework is build using Python Flask, SQL Alchemy, and vanilla HTML, CSS an
 The techstack was originally chosen based on the students coriculum but SQLite was replaced with SQL Alchemy for the framework because the models layout appealed to me. 
 
 ## Installation (local testing and try out)
-The current version
 - Install and activate .venv with requirements.txt
-- Run pytest in terminal to validate that everything (tested) works.
-- Run flask run --debug in terminal and the leaderboard should open
+- From root run "flask run --debug"
 
 ### Features
 #### Public website 

@@ -27,7 +27,7 @@ Flask-Bcrypt==1.0.1
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.2
--e git+ssh://git@github.com/benjaminhervit/http-quest.git@6ca211dc15cdbc98bb3ad916b126d6b6d25fcd08#egg=httpquest
+-e git+ssh://git@github.com/benjaminhervit/http-quest.git@88e25fc0755ab3bc968b86295b62425ed3bf7466#egg=httpquest
 idna==3.10
 iniconfig==2.1.0
 ipython==8.12.3
