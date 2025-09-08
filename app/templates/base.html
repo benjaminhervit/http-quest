@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
     <script src="{{ url_for('static', filename='js/quest.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/terminalWriteFx.js') }}" defer></script>
+    <script type="module" src="{{ url_for('static', filename='js/terminalWriteFx.js') }}" defer></script>
     <title>{%block title%}{% endblock %}</title>
     {%block head%}{% endblock %}
   </head>

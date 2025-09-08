@@ -11,7 +11,7 @@ def get_start_quest():
                     But before we begin, you must tell me: Who you are {HERO}?
                     """
         ),
-        quest="To tell me your name, extend the PATH with /your_name",
+        quest="To tell me your name, journey onward by adding /your_name to the end of the PATH you see above.",
         locked="",
         completed=(
             """
@@ -26,6 +26,7 @@ def get_start_quest():
                         """
         ),
         next_path="GET to auth/register",
+        hints = ["The PATH is the part after the main website name. For example, in domain.com/quest/start the PATH is /quest/start."],
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
     )
