@@ -29,9 +29,24 @@ This project was an experiment to see how they responded to such exercises and i
 The framework is build using Python Flask, SQL Alchemy, and vanilla HTML, CSS and JavaScript.
 The techstack was originally chosen based on the students coriculum but SQLite was replaced with SQL Alchemy for the framework because the models layout appealed to me. 
 
-## Installation (local testing and try out)
-- Install and activate .venv with requirements.txt
+## Installations
+
+### Run with Docker
+This is intended as a quick way to run the project locally, using Docker.
+
+- If you do not have Docker, download and install it from here: https://www.docker.com/get-started/
+- Clone the project
+- From root of project run `docker build -t http-quest .`
+- If successful, then run `docker run --rm -p 8000:8000 http-quest`
+- A local version should now run on http://127.0.0.1:8000 
 - From root run "flask run --debug"
+
+### Setup with venv and req (the no-issues path)
+- Make sure you have python v.3.12.x (developed using v3.12.2) - I recommend using Homebrew on MacOS.
+- From root of project create a virtual environment: `python -m venv` https://docs.python.org/3/library/venv.html
+- Acticate venv: `source .venv/bin/activate` (MacOS)
+- Install requirements inside the venv: `pip install requirements.txt`
+- Run `flask run --debug` to run the project in dev mode.
 
 ### Features
 #### Public website 
