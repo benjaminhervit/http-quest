@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache
+*.coverage
+.coverage*
+.pytest_cache/
+.mypy_cache/
+
+# Envs & tooling
+.venv/
+.env
+.env.*
+*.ipynb
+.ipynb_checkpoints/
+
+# VCS
+.git
+.gitignore
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/
+
+# Tests & docs if you don’t need them in the image
+tests/
+docs/
