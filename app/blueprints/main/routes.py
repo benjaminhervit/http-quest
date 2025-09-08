@@ -16,4 +16,5 @@ def index():
         data.append({'username':u.username})
         data[i]['states'] = [s.state for s in states if s.username == u.username]
         i += 1
+    print(data)
     return render_template("index.html", data=data)

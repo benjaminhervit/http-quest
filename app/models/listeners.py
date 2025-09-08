@@ -27,9 +27,11 @@ def create_user_quest_states(mapper, connection, target: User):
     uqs_tbl = UserQuestState.__table__
 
     completed_titles = ("Welcome", "Registration")
+    unlocked_titles = ("Identify yourself!",)
 
     state_expr = case(
         (quest_tbl.c.title.in_(completed_titles), literal(QuestState.COMPLETED.value)),
+        (quest_tbl.c.title.in_(unlocked_titles), literal(QuestState.UNLOCKED.value)),
         else_=literal(QuestState.LOCKED.value),
     )
 
