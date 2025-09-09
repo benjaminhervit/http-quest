@@ -1,14 +1,14 @@
 window.addEventListener('DOMContentLoaded', () => {
   const terminalBodies = Array.from(document.querySelectorAll('.terminal__body'));
-  runSequentially(terminalBodies, 0, 15); // 30ms per char; tweak speed
+  runSequentially(terminalBodies, 0); // 30ms per char; tweak speed
 });
 
-export function runSequentially(nodes, index = 0, speed = 30) {
+export function runSequentially(nodes, index = 0) {
   if (index >= nodes.length) return;
-  typeHtml(nodes[index], speed, () => runSequentially(nodes, index + 1, speed));
+  typeHtml(nodes[index], 15, () => runSequentially(nodes, index + 1));
 }
 
-export function typeHtml(el, speed = 30, done) {
+export function typeHtml(el, speed = 15, done) {
   if (!el) return done && done();
 
   // 1) Clone to keep the original text contents per text node

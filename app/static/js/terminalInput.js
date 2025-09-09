@@ -2,7 +2,7 @@ import {runSequentially, typeHtml} from './terminalWriteFx.js';
 
 const cmdMap = {
     "/help":printHelp,
-    "/i-need-help":showHints
+    "/give-hint":showHints
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,7 +33,7 @@ function showHints(){
         }
         hint.classList.remove("hidden");
     });
-    runSequentially(hints, 0, 15);
+    runSequentially(hints, 0);
 }
 
 function printHelp(){
@@ -49,6 +49,7 @@ function printHelp(){
     code.textContent = "Known commands: " + commands;
     div.appendChild(code);
     terminalBody.appendChild(div);
+    runSequentially([div],0);
 }
 
 function createFromTag(tag){
