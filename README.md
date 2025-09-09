@@ -37,6 +37,7 @@ This is intended as a quick way to run the project locally, using Docker.
 - If you do not have Docker, download and install it from here: https://www.docker.com/get-started/
 - Clone the project
 - From root of project run `docker build -t http-quest .`
+- - !! If you get 
 - If successful, then run `docker run --rm -p 8000:8000 http-quest`
 - A local version should now run on http://127.0.0.1:8000 
 - From root run "flask run --debug"
