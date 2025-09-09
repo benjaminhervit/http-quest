@@ -10,6 +10,7 @@ def get_quest():
         locked="",
         next_path="",
         hints=[],
+        learning="",
         xp=1,
         url_prefix="/game",
     )

@@ -1,11 +1,21 @@
+
+let tail = Promise.resolve();
+
 window.addEventListener('DOMContentLoaded', () => {
   const terminalBodies = Array.from(document.querySelectorAll('.terminal__body'));
   runSequentially(terminalBodies, 0); // 30ms per char; tweak speed
+  // terminalBodies.forEach(item => {
+  //   enqueueWriteTerminal(item);
+  // })
 });
 
 export function runSequentially(nodes, index = 0) {
   if (index >= nodes.length) return;
   typeHtml(nodes[index], 15, () => runSequentially(nodes, index + 1));
+}
+
+export function enqueueWriteTerminal(node, speed=15){
+  tail = tail.then(()=> new Promise(res => typeHtml(node, speed, res)));
 }
 
 export function typeHtml(el, speed = 15, done) {

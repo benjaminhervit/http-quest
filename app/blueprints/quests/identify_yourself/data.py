@@ -36,6 +36,7 @@ def get_quest():
                 GET to /game/hire_jason
                 """
         ),
+        learning="",
         hints=[
             "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
             "https://www.postman.com/",

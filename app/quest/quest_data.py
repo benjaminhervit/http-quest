@@ -14,6 +14,7 @@ class QuestData(Serializable):
     next_path: str
     url_prefix: str
     xp: int
+    learning: str
     hints: list[str] = field(default_factory=list)
     failed: str = field(default="Ah that is wrong! Try again {HERO}")
     path: str = field(init=False)

@@ -25,8 +25,13 @@ def get_start_quest():
                         trying to explain it...
                         """
         ),
-        next_path="GET to auth/register",
-        hints = ["The PATH is the part after the main website name. For example, in domain.com/quest/start the PATH is /quest/start."],
+        next_path="GET to [url]/auth/register",
+        hints=["The PATH is the part after the main website name. For example, in domain.com/quest/start the PATH is /quest/start.",
+               "Where in your browser would you usually GET to say... a world wide search engine or chat buddy that thinks all your questions are great?"],
+        learning="""Great job. The PATH is the part of the that comes after the root URL, e.g. reQuest.com is the root URL. '/game/start' is a PATH.
+                    When you added your name name, {HERO}, the PATH became /game/start/{HERO}.
+                    The PATH can direct you to certain pages but also include parameters like how you just added your name: {HERO}.
+                """,
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
     )

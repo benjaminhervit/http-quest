@@ -28,13 +28,15 @@
         <!-- QUEST -->
         <div><span class="prompt">@quest</span>:<span class="u-text-pink">~</span>
             {%if content.status =='completed'%}
-            <code>You have already completed, so you should GET to the next quest - but here it is:<br> </code> 
-            {%endif%}
+            <code>You have already completed this quset. </code> 
+            {%else%}
             <code>{{content.quest}}</code> 
+            {%endif%}
         </div>
 
         <!-- NEXT STEPS -->
         {% if content.status == 'completed'%}
+            <div><span class="prompt">@learning</span>:<span class="u-text-pink">~</span><code>{{content.learning}}</code> </div>
             <div><span class="prompt">@next</span>:<span class="u-text-pink">~</span><code>{{content.next_path}}</code> </div>
         {% else %}
             <div><span class="prompt">@next</span>:<span class="u-text-pink">~</span><code>Complete this quest to see what is next.</code> </div>

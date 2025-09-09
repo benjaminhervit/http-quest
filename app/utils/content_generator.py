@@ -127,6 +127,7 @@ def create_completed_content(quest: QuestData) -> dict:
     content.update({ContentKeys.STATUS.value: QuestState.COMPLETED.value})
     content.update({ContentKeys.STORY.value: quest.completed})
     content.update({ContentKeys.NEXT_PATH.value: quest.next_path})
+    content.update({ContentKeys.LEARNING.value: quest.learning})
     return content
 
 
