@@ -4,7 +4,6 @@ class GameError(Exception):
         self.code = code
         super().__init__(message)
 
-
 class ValidationError(GameError):
     pass
 

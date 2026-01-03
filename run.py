@@ -9,3 +9,7 @@ with app.app_context():
         print("App is running in development mode.")
         reset_db()
     print("✔️ Database initialized with sample quests.")
+
+if __name__ == "__main__":
+    # You can adjust host/port/debug as needed
+    app.run(debug=app.config.get("ENV") == "development")

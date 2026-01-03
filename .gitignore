@@ -4,3 +4,7 @@
 *__pycache__
 .gitlab/
 .gitlab-ci.yml
+.cookies.txt
+.coverage
+.env
+.vscode

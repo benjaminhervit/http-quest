@@ -11,7 +11,7 @@ def get_start_quest():
                     But before we begin, you must tell me: Who you are {HERO}?
                     """
         ),
-        quest="To tell me your name, journey onward by adding /your_name to the end of the PATH you see above.",
+        quest="To tell me your name, URL have to extend the PATH with /your_name.",
         locked="",
         completed=(
             """
@@ -25,12 +25,13 @@ def get_start_quest():
                         trying to explain it...
                         """
         ),
-        next_path="GET to [url]/auth/register",
+        next_path="GET to the next quest by replacing the PATH with /auth/register.",
         hints=["The PATH is the part after the main website name. For example, in domain.com/quest/start the PATH is /quest/start.",
-               "Where in your browser would you usually GET to say... a world wide search engine or chat buddy that thinks all your questions are great?"],
+               "Where in your browser would you usually GET to say... a world wide search engine or chat buddy that thinks all your questions are great?",
+               "Think outside the neon-box. The PATH should hang around in a bar above all this neon."],
         learning="""Great job. The PATH is the part of the that comes after the root URL, e.g. reQuest.com is the root URL. '/game/start' is a PATH.
-                    When you added your name name, {HERO}, the PATH became /game/start/{HERO}.
-                    The PATH can direct you to certain pages but also include parameters like how you just added your name: {HERO}.
+                    The PATH can direct you to certain pages but it can also include parameters like how you just added your name: {HERO}.
+                    /game/start/{HERO} means the backend will read the last part as a value. It is the same thing you are (or have to do) with your Flask routes.
                 """,
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",

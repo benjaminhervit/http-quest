@@ -1,11 +1,4 @@
-<article>
-    <header>
-        <h1>{{content['error_type']}}</h1>
-    </header>
-    <body>
-        <p>{{content['error_msg']}}</p>
-    </body>
-    <footer>
-        <p>Status code: {{content['status_code']}}</p>
-    </footer>
-</article>
+
+    <span class="title title-xl u-text-cyan">Error: {{content['error_type']}}</span>
+    <p>Status code: {{content['status_code']}}</p>
+    <code id ="json">{{content['error_msg']}}</code>

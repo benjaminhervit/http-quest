@@ -10,25 +10,25 @@
     </p>
     <p><b>RULES</b><br></p>
     <ul>
-        <li>All quests (with few exceptions) are from domain.com/game/quest-slug-gores-here</li>
+        <li>All quests (with few exceptions) are from domain.com/game/quest-slug-goes-here</li>
         <li>Each quest only accept specific methods: GET, POST, PUT, and/or DELETE. All the information you need should be in the quest description.</li>
-        <li>A quest only accepts one data format: domain/game/quest-slug/&lt;parameters&gt;, &#123; JSON data &#125;, and Form data</li>
+        <li>A quest only accepts one data format: domain/game/quest-slug/&lt;parameters&gt;, &#123; JSON data &#125;, or Form data</li>
         <li>When registered, always include your registered <b><i>username</i></b> in the authorization headers.</li>
     </ul>
     <p><b>HOW TO COMPLETE A reQUEST</b><br>Your request must be the correct combination of:</p>
     <ul>
-        <li>route </li>
-        <li>method </li> 
-        <li>data format</li>
-        <li>quest answer </li>
-        <li>authorization</li>
+        <li>url/path/paramter(s): url = domain.com path=/game/some-quest-slug/ parameter=maybe-a-parameter-here </li>
+        <li>method: GET, POST, PUT or DELETE </li> 
+        <li>data format: parameters, JSON or Form</li>
+        <li>quest answer: often some bad pun or word from the quest. </li>
+        <li>authorization: include your username in the authorization header when you </li>
     </ul>
     <p><b>HOW TO WIN</b><br></p>
         <li>To win the game, you must complete all quests. You can follow your progress on the leaderboard.</li>
     <p><b>HINTS</b><br></p>
     <ul>
-        <li>Most of the game can easily be played using a <b><i>HTTP CLIENT</i></b> - but it is also a good chance to practice some python and JavaScript.</li>
-        <li>You should always receive a JSON response from the game - unless something broke or you are outside the playingfield.</li>
+        <li>Most of the game can easily be played using a <b><i>HTTP CLIENT</i></b> - but it is also a good chance to practice some python and JavaScript ir you want to make it harder for yourself.</li>
+        <li>You should always receive a JSON response from the game - unless something broke or you are outside the "playingfield" (that means we could not recognize your url).</li>
         <li>If your request fails, read the error message carefully. It should give you hints on where the error is - or if you should tell us that we have made an error in the game.</li>
         <li>Read the <b><i>quest description</i></b> carefully. They are usually a bad pun on some basic request paramters.</li>
     </ul>

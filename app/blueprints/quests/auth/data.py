@@ -27,11 +27,12 @@ def get_quest():
                             cannot fail! .... {HERO}... {HERO}...{HERO}{HERO} ....
                             {HERO}{HERO}{HERO}{HERO}{HERO}{HERO}. It has a certain ring to it the more I say it.  Try it?
                             {HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}{HERO}....
-                            What were we talking about?
+                            What were we talking about? Oh well! But try heading to the /leaderboard. I think you can see yourself there now?
+                            REMEMBER TO CHECK THE NEXT_PATH BEFORE YOU LEAVE!
                             """
         ),
         next_path=("GET to /game/identify-yourself"),
-        learning="",
+        learning="In this quest you used FORM and POST to send your username to the backend. If you did it from the browser, you can inspec the website and find the form in the HTML. When we ask the data to create something new, we use POST.",
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
     )

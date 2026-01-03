@@ -40,6 +40,7 @@ def get_quest():
         hints=[
             "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
             "https://www.postman.com/",
+            "If you have your client and authorization working - maybe it is because you are not taking nothing seriously enough..."
         ],
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",
