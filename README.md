@@ -13,6 +13,13 @@ A shared leaderboard website shows how far each player is from completing the ga
 For self-educational purposes, I am currently rewriting the project as an extendable and scalabe framework, using TDD methodologies.
 Therefore, only the two first quests are currently working: Welcome, and Accept Quest.
 
+## Quik-start
+- Download the repo
+- Create a python .venv and activate it
+- Install the requirements.txt
+- From project root in the terminal: `python run.app`
+This should give you a clean local version to play around with.
+
 ### Player prerequisites
 The game requires some basic knowledge of HTTP terminology and a horrible sense of humor and likability of bad puns.
 After completing the game, the player should have some basic experience with reading and writing HTTP requests and some of the standards.
