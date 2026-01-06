@@ -12,10 +12,10 @@ class User(db.Model, Base):
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column("username", db.String(31), nullable=False, unique=True)
     xp = db.Column("xp", db.Integer, nullable=False, default=0) 
-    start_quest = db.Column("start_quest", String(255), nullable=False, unique=True, default="locked")  # handlers are ignoring this for this quest
-    register_quest = db.Column("register_quest", String(255), nullable=False, unique=True, default="locked")  # handlers are ignoring this for this quest
-    identify_quest = db.Column("identify_quest", String(255), nullable=False, unique=True, default="locked")
-    identify_quest = db.Column("jason_quest", String(255), nullable=False, unique=True, default="locked")
+    start_quest = db.Column("start_quest", String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
+    register_quest = db.Column("register_quest", String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
+    identify_quest = db.Column("identify_quest", String(255), nullable=False, default="locked")
+    identify_quest = db.Column("jason_quest", String(255), nullable=False, default="locked")
 
     # @validates("state")
     # def validate_state(self, key, value):
