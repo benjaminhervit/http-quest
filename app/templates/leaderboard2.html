@@ -45,7 +45,7 @@
             <tr>
               <td class="subtitle">{{user.username}}</td>
               <td class="subtitle">99</td>
-              {%for s in user.states%}
+              {%for s in user.quest_states%}
               {%if s == 'completed'%}
                 <td class="u-glow"><a>1</a></td>
               {% elif s == 'unlocked' %}

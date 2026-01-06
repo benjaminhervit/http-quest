@@ -1,10 +1,8 @@
-from sqlalchemy import Integer, String
+from sqlalchemy import String
 
-from app.enums import QuestState
+from app.enums import QuestTitle
 from app.extensions import db
 from app.models.base import Base
-
-
 
 class User(db.Model, Base):
     __tablename__ = "users"
@@ -12,25 +10,10 @@ class User(db.Model, Base):
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column("username", db.String(31), nullable=False, unique=True)
     xp = db.Column("xp", db.Integer, nullable=False, default=0) 
-    start_quest = db.Column("start_quest", String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
-    register_quest = db.Column("register_quest", String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
-    identify_quest = db.Column("identify_quest", String(255), nullable=False, default="locked")
-    identify_quest = db.Column("jason_quest", String(255), nullable=False, default="locked")
-
-    # @validates("state")
-    # def validate_state(self, key, value):
-    #     # check against the saveable quest states
-    #     valid_values = [
-    #         QuestState.LOCKED.value,
-    #         QuestState.UNLOCKED.value,
-    #         QuestState.CLOSED.value,
-    #         QuestState.COMPLETED.value,
-    #     ]
-    #     if value not in valid_values:
-    #         raise ValueError(
-    #             f"Invalided state value ({value}). allowed: {valid_values}"
-    #         )
-    #     return value
+    start_quest = db.Column(QuestTitle.START_QUEST.value, String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
+    register_quest = db.Column(QuestTitle.REGISTER_QUEST.value, String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
+    identify_quest = db.Column(QuestTitle.IDENTIFY_QUEST.value, String(255), nullable=False, default="locked")
+    jason_quest = db.Column(QuestTitle.JASON_QUEST.value, String(255), nullable=False, default="locked")
 
     @classmethod
     def get_all(cls):

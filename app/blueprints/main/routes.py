@@ -4,9 +4,9 @@ from sqlalchemy.exc import OperationalError
 from app.blueprints.main import bp
 from app.models import User
 from app.extensions import db
+import app.services as app_services
 
 
 @bp.route("/")
 def index():
-    users = User.get_all()
-    return render_template("index.html", data=users)
+    return render_template("index.html", data=app_services.get_leaderboard())

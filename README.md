@@ -2,10 +2,9 @@
 <img width="888" height="737" alt="Screenshot 2025-09-07 at 21 52 43" src="https://github.com/user-attachments/assets/447b3c72-6fcc-42a4-9574-4f69bf50a873" />
 
 # ReQUEST
-! OBS ! Please go to the KISS branch for the most stable version
+! OBS ! Please go to the super-kiss branch for the most stable version
 
-ReQUEST is a HTTP Client based adventure game to teach the basics of HTTP and CRUD to students that are new to programming.
-To play the game, the player will send and read HTTP requests, using the browser, a client (e.g. Postman), or writing their own scripts.
+ReQUEST is a HTTP Client based educational adventure game to teach the basics of HTTP and CRUD to students in the course Web of Things on Aarhus University. It is a hobby project that I build as a Teaching Assistant and only a supplement of fun to the actual coriculum. To play the game, the player will send and read HTTP requests, using the browser, a client (e.g. Postman), or writing their own scripts.
 The player will have to use basic methos (GET, POST, PUT, DELETE) together with the right data format (Query, JSON, Form, path, headers) to complete quests.
 A shared leaderboard website shows how far each player is from completing the game.
 
@@ -13,11 +12,15 @@ A shared leaderboard website shows how far each player is from completing the ga
 For self-educational purposes, I am currently rewriting the project as an extendable and scalabe framework, using TDD methodologies.
 Therefore, only the two first quests are currently working: Welcome, and Accept Quest.
 
+## Credits
+Thank you to Abdelhadi Dyouri and Caitlin Postal for this tutorial: https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy#step-5-adding-flask-sqlalchemy-models-to-your-flask-application
+
+
 ## Quik-start
 - Download the repo
 - Create a python .venv and activate it
 - Install the requirements.txt
-- From project root in the terminal: `python run.app`
+- From project root in the terminal: `python run.app` or `flask run`
 This should give you a clean local version to play around with.
 
 ### Player prerequisites
@@ -31,55 +34,15 @@ As an instructor, my job was to go through exercises and help them with their ha
 This project was an experiment to see how they responded to such exercises and if it should be developed further in the future.
 
 ## Framework
-
 ### Techstack
 The framework is build using Python Flask, SQL Alchemy, and vanilla HTML, CSS and JavaScript.
-The techstack was originally chosen based on the students coriculum but SQLite was replaced with SQL Alchemy for the framework because the models layout appealed to me. 
-
-## Installations
-
-### Run with Docker
-This is intended as a quick way to run the project locally, using Docker.
-
-- If you do not have Docker, download and install it from here: https://www.docker.com/get-started/
-- Clone the project
-- From root of project run `docker build -t http-quest .`
-- - !! If you get 
-- If successful, then run `docker run --rm -p 8000:8000 http-quest`
-- A local version should now run on http://127.0.0.1:8000 
-- From root run "flask run --debug"
-
-### Setup with venv and req (the no-issues path)
-- Make sure you have python v.3.12.x (developed using v3.12.2) - I recommend using Homebrew on MacOS.
-- From root of project create a virtual environment: `python -m venv` https://docs.python.org/3/library/venv.html
-- Acticate venv: `source .venv/bin/activate` (MacOS)
-- Install requirements inside the venv: `pip install requirements.txt`
-- Run `flask run --debug` to run the project in dev mode.
+The techstack was originally chosen based on the students coriculum but SQLite was replaced with SQL Alchemy for better scaling later on.
 
 ### Features
 #### Public website 
 - Create player (no password or credientials atm).
 - Shared public leaderboard
 - Game manual
-
-### Architecture
-(Pre-KISS architecture)
-![ReQUEST framework](https://github.com/user-attachments/assets/3fdd755c-1005-4369-98d6-9ed9625a1160)
-
-## System overview diagram
-The diagram below models the complete lifecycle of a player request in reQUEST.
-It the players entry and interaction loop together with the technical flow the HTTP request through parsing, validtiong, authorizing, and executing game logic, including expected error messages that is returned to the player. 
-
-(Pre-KISS system)
-![reQUEST_system_overview](https://github.com/user-attachments/assets/146c1a3a-abc4-4b25-bd14-d4d5707ee810)
-
-Key system features include:
-- Each quest has its own blueprint >> easy to extend and change quests without touching other game logic.
-- Modular RequestHandler 
-- Error handling via standard HTTP codes (400, 401, 404, 500)
-- JSON-based output
-- Player can get output from last request in browser.
-- Players get xp for each completed quest.
 
 ## Roadmap
 ### MVP aka. v1.0: All Quests
@@ -103,5 +66,10 @@ Key system features include:
 ### v1.2: Create custom quests
 - [ ] Players can create their own quests with HTTP requests.
 
-## Credits
-Thank you to Abdelhadi Dyouri and Caitlin Postal for this tutorial: https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy#step-5-adding-flask-sqlalchemy-models-to-your-flask-application
+## Known issues
+- [ ] Leaderboard is currently broken due to refactor of the data schema. 
+- [ ] Identification quest needs to be updated to the new quest handling format
+- [ ] Jaon quest needs to be updated to the new quest handling format
+- [ ] The wall quest needs to be updated to the new quest handling format
+- [ ] The monster quest needs to be updated to the new quest handling format
+- [ ] The crown quest needs to be updated to the new quest handling format
