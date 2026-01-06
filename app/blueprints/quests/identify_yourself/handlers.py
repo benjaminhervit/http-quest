@@ -1,10 +1,10 @@
 from flask import Request
 
-from app.quest import QuestData, QuestSession
+from app.quest import QuestData
 from app.utils import content_generator, parser_utils
 from app.authentication_manager import authenticator
-from app.enums import QuestState
-from app.models import UserQuestState
+from app.enums import QuestState, QuestTitle
+from app.models import User
 
 
 def get_handlers():
@@ -20,13 +20,20 @@ def post_handler(quest: QuestData, req: Request):
     #  setup session
     username = parser_utils.get_auth_username(req)
     formatting = {"HERO": username or "Unknown Mysterious Savior"}
-    session = QuestSession(quest.title, username)
+    state = User.get_user_quest_State(username, QuestTitle.IDENTIFY_QUEST.value)
 
-    if session.state == QuestState.UNLOCKED.value:
-        session.state = QuestState.FAILED.value
+    # check is quest is available
+    if state == QuestState.UNLOCKED.value:
+        state = QuestState.FAILED.value
+        
+        # check if authentication is correct
         if authenticator.authenticate_with_username(req):
-            session.state = QuestState.COMPLETED.value
-            UserQuestState.complete_and_award_xp(session.username, session.quest_title)
-    content = content_generator.create_content(quest, session.state, formatting)
-    print(content)
+            state = QuestState.COMPLETED.value
+            User.update_xp(username, 1)
+            
+        # update quest state
+        User.update_quest_state(username, QuestTitle.IDENTIFY_QUEST.value, state)
+        
+    # generate user response
+    content = content_generator.create_content(quest, state, formatting)
     return content

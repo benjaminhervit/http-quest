@@ -13,12 +13,12 @@ from .data import get_start_quest
 def start(username=None):
     handlers = get_handlers()
     quest = get_start_quest()
-    valid_methods = ["GET"]
+    # valid_methods = ["GET"]
     response = QuestRequestHandler.execute(
         req=request,
         quest=quest,
         authenticator=no_authentication,
         handlers_map=handlers,
-        valid_req_methods=valid_methods,
+        # valid_req_methods=valid_methods,
     )
     return response

@@ -11,9 +11,9 @@ class User(db.Model, Base):
 
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column("username", db.String(31), nullable=False, unique=True)
-    xp = db.Column("xp", db.Integer, nullable=False, default=0)
-    start_quest = db.Column("start_quest", String(255), nullable=False, unique=True, default="locked")
-    register_quest = db.Column("register_quest", String(255), nullable=False, unique=True, default="locked")
+    xp = db.Column("xp", db.Integer, nullable=False, default=0) 
+    start_quest = db.Column("start_quest", String(255), nullable=False, unique=True, default="locked")  # handlers are ignoring this for this quest
+    register_quest = db.Column("register_quest", String(255), nullable=False, unique=True, default="locked")  # handlers are ignoring this for this quest
     identify_quest = db.Column("identify_quest", String(255), nullable=False, unique=True, default="locked")
     identify_quest = db.Column("jason_quest", String(255), nullable=False, unique=True, default="locked")
 
@@ -44,6 +44,34 @@ class User(db.Model, Base):
     @classmethod
     def get_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
+    
+    @classmethod
+    def get_user_quest_State(cls, username: str, quest: str) -> str:
+        user = cls.get_by_username(username)
+        if user:
+            return getattr(user, quest, None)
+        return None
+    
+    @classmethod
+    def update_quest_state(cls, username: str, quest: str, new_state: str) -> bool:
+        user = cls.get_by_username(username)
+        if user:
+            if hasattr(user, quest):
+                setattr(user, quest, new_state)
+                db.session.commit()
+                return True
+        return False
+    
+    @classmethod
+    def update_xp(cls, username: str, delta_xp: int) -> int:
+        user = cls.get_by_username(username)
+        if user:
+            if hasattr(user, "xp"):
+                current_xp = getattr(user, "xp", None)
+                setattr(user, "xp", current_xp + delta_xp)
+                db.session.commit()
+                return getattr(user, "xp", None)
+        return -1
 
     @classmethod
     def get_by_id(cls, user_id):

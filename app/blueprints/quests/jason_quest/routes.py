@@ -12,12 +12,10 @@ from app.authentication_manager import authenticate_with_username
 def jason_route():
     handlers = get_handlers()
     quest = get_quest()
-    valid_methods = ["GET", "POST"]
     response = QuestRequestHandler.execute(
         req=request,
         quest=quest,
         authenticator=authenticate_with_username,
         handlers_map=handlers,
-        valid_req_methods=valid_methods,
     )
     return response

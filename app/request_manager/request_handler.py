@@ -24,11 +24,12 @@ class QuestRequestHandler:
         quest: QuestData,
         authenticator: Callable,
         handlers_map: dict,
-        valid_req_methods: list,
+        # valid_req_methods: list,
         html_template: str = "quest_renderer.html",
     ):
-        # validate
-        cls.validate_handlers_map(handlers_map, valid_req_methods)
+        # SKIPPING INTERNAL METHOD-REQ CHECK.
+        # TODO: Move this check into a test file for each quest. 
+        # cls.validate_handlers_map(handlers_map, valid_req_methods)
         if not isinstance(authenticator, Callable):
             raise ValueError("Passed authenticator is not callable")
 
@@ -44,8 +45,8 @@ class QuestRequestHandler:
             handler = handlers_map.get(req.method)
             if not handler:
                 raise GameError(
-                    f"Could not find handler for method{req.method}",
-                    StatusCode.SERVER_ERROR.value,
+                    f"Method {req.method} is not allowed for this quest. Read the quest again.",
+                    StatusCode.BAD_REQUEST.value,
                 )
 
             content = handler(quest=quest, req=req)

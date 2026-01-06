@@ -80,13 +80,6 @@ def create_app() -> Flask:
 
         db.create_all()
 
-        # rows = [{"title": q.title, "xp": q.xp} for q in get_all_quests()]
-        # if rows:
-        #     statement = sqlite_insert(Quest).values(rows)
-        #     statement = statement.on_conflict_do_nothing(index_elements=["title"])
-        #     db.session.execute(statement)
-        #     db.session.commit()
-
         if app.config.get("AUTO_SEED") and not User.query.first():
             db.session.add(User(username="dev"))
             db.session.commit()
