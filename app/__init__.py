@@ -62,20 +62,30 @@ def create_app() -> Flask:
             db.session.rollback()
             current_app.logger.exception("Request logging failed")
         return resp
+    
+    @app.teardown_appcontext
+    def close_connection(_exception):
+        """Close the database, when Flask exits.
+
+        Args:
+            _exception (_type_): not used   
+        """
+        db_instance = getattr(g, '_database', None)
+        if db_instance is not None:
+            db_instance.close()
 
     # Create tables (and small seed) each time the serving process starts.
     with app.app_context():
-        from app.models import listeners
-        from app.models import User, Quest, UserQuestState, LastUserRequestLog
+        from app.models import User, LastUserRequestLog
 
         db.create_all()
 
-        rows = [{"title": q.title, "xp": q.xp} for q in get_all_quests()]
-        if rows:
-            statement = sqlite_insert(Quest).values(rows)
-            statement = statement.on_conflict_do_nothing(index_elements=["title"])
-            db.session.execute(statement)
-            db.session.commit()
+        # rows = [{"title": q.title, "xp": q.xp} for q in get_all_quests()]
+        # if rows:
+        #     statement = sqlite_insert(Quest).values(rows)
+        #     statement = statement.on_conflict_do_nothing(index_elements=["title"])
+        #     db.session.execute(statement)
+        #     db.session.commit()
 
         if app.config.get("AUTO_SEED") and not User.query.first():
             db.session.add(User(username="dev"))
