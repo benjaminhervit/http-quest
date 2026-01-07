@@ -11,17 +11,17 @@ def get_quest_title():
 def get_quest():
     return QuestData(
         title=_title,
-        start_message=(
-            """
-                    Okay. You should have signed up for the quest by now
-                    - but wee need a way to know who you are. Therefore, 
-                    on every new PATH you take from hereon now, you must always
-                    identify yourself with AUTHORITY. Otherwise, we will not let you pass.
-                    It also means... time to get out of the browser and into a client."""
-        ),
+        # start_message=(
+        #     """
+        #             Okay, you are now officially signed up for reQuest.
+        #             From now on, everytime you try to access or solve a quest, you must always declare who you are with AUTHORITY.
+        #             Otherwise, we simply will not let you pass.
+        #             It also means... time to get out of the browser and into a client.
+        #     """
+        # ),
         quest=(
             """
-            With your name as AUTHORIZATION in your HEAD(ers), POST nothing to this PATH. WARNING! Things are about to get ugly.
+            GET back to me when you know have learned how to AUTHORIZE yourself with your name. Just use your HEAD(ers).
             """
         ),
         locked="",
@@ -29,12 +29,19 @@ def get_quest():
             """
                 Did I not know better, I would think you had telekinetic powers {HERO}.
                 Now you know our secret ways of telling friend from enemy! Onwards!
-                """
+            """
+        ),
+        start_message=(
+            """
+                Oh, I am sorry but I cannot let you pass without seeing some AUTHORIZATION.
+                If you are here, I guess that you have already signed up but from here on you must always keep your name in your HEAD(ers) so that we can AUTHORIZE you.
+                It's a little telekinetic trick we are using because we don't want to write down their name on the BODY(ies?) all the time.
+            """
         ),
         next_path=(
             """
                 GET to /game/hire_jason
-                """
+            """
         ),
         learning="",
         hints=[

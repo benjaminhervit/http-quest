@@ -7,8 +7,8 @@ from .handlers import get_handlers
 from .data import get_quest
 
 
-@bp.route("/identify-yourself", methods=["GET", "POST"])
-def register():
+@bp.route("/identify-yourself", methods=["GET"])
+def identify_yourself(username=None):
     quest = get_quest()
     handlers = get_handlers()
     return QuestRequestHandler.execute(

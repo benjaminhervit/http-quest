@@ -1,10 +1,10 @@
 from typing import Any
 import re
 import textwrap
+import random
 
 from app.enums import QuestState, ContentKeys, StatusCode
 from app.quest import QuestData
-import random
 
 
 def create_content(
@@ -20,8 +20,8 @@ def create_content(
         QuestState.FAILED.value: create_failed_content(quest),
     }
 
-    content: dict | None = content_map.get(quest_state)
-    if not isinstance(content, dict):
+    content: dict | None = content_map.get(quest_state, None)
+    if not content:
         raise ValueError(
             (
                 f"Could not create content for quest {quest.title}"
@@ -31,10 +31,8 @@ def create_content(
         )
 
     content = format_content(content, formatting)
-    # print(content)
-    # print(formatting)
     return content
-
+    
 
 def create_error_msg(msg: str, error_type: str, status_code: int) -> dict:
     return {

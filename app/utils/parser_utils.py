@@ -18,7 +18,7 @@ def try_json_loads(s, default=None):
         return default
 
 
-def get_auth_username(req: Request):
+def get_auth_username(req: Request) -> str:
     validate_utils.validate_type(req, Request)
     return get_field_from_request_data(req, "authorization", get_headers)
 
@@ -50,9 +50,8 @@ def get_query(req: Request) -> dict | None:
     return req.args.to_dict() if req.args else None
 
 
-def get_field_from_request_data(
-    req: Request, field_name: str, parsing_method: Callable
-) -> str:
+def get_field_from_request_data(req: Request, field_name: str,
+                                parsing_method: Callable) -> str:
 
     validate_utils.validate_type(req, Request)
     if not isinstance(parsing_method, colabc.Callable):
