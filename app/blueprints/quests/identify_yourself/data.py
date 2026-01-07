@@ -11,14 +11,6 @@ def get_quest_title():
 def get_quest():
     return QuestData(
         title=_title,
-        # start_message=(
-        #     """
-        #             Okay, you are now officially signed up for reQuest.
-        #             From now on, everytime you try to access or solve a quest, you must always declare who you are with AUTHORITY.
-        #             Otherwise, we simply will not let you pass.
-        #             It also means... time to get out of the browser and into a client.
-        #     """
-        # ),
         quest=(
             """
             GET back to me when you know have learned how to AUTHORIZE yourself with your name. Just use your HEAD(ers).
