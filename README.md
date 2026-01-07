@@ -2,8 +2,6 @@
 <img width="888" height="737" alt="Screenshot 2025-09-07 at 21 52 43" src="https://github.com/user-attachments/assets/447b3c72-6fcc-42a4-9574-4f69bf50a873" />
 
 # ReQUEST
-! OBS ! Please go to the super-kiss branch for the most stable version
-
 ReQUEST is a HTTP Client based educational adventure game to teach the basics of HTTP and CRUD to students in the course Web of Things on Aarhus University. It is a hobby project that I build as a Teaching Assistant and only a supplement of fun to the actual coriculum. To play the game, the player will send and read HTTP requests, using the browser, a client (e.g. Postman), or writing their own scripts.
 The player will have to use basic methos (GET, POST, PUT, DELETE) together with the right data format (Query, JSON, Form, path, headers) to complete quests.
 A shared leaderboard website shows how far each player is from completing the game.

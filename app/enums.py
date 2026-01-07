@@ -86,11 +86,13 @@ class AuthType(str, Enum):
     SECRET_KEY = "X-Secret-Key"
     NONE = "NONE"
 
+
 class QuestTitle(Enum):
     START_QUEST = "start_quest"
     REGISTER_QUEST = "register_quest"
     IDENTIFY_QUEST = "identify_quest"
     JASON_QUEST = "jason_quest"
+
 
 class QuestState(Enum):
     LOCKED = "locked"
