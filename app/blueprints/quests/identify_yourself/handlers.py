@@ -25,6 +25,8 @@ def get_handler(quest: QuestData, req: Request):
             
         # update quest state
         User.update_quest_state(username, QuestTitle.IDENTIFY_QUEST.value, state)
+        # unlock next quest
+        User.update_quest_state(username, QuestTitle.JASON_QUEST.value, QuestState.UNLOCKED.value)
             
         # generate user response
         formatting = {"HERO": username or "Unknown Mysterious Savior"}

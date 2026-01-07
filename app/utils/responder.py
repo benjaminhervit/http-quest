@@ -8,8 +8,9 @@ def send_response(
 ):
     if browser_detector.is_browser_request(req):
         headers, table = services.get_progress_matrix()
+        data = services.get_leaderboard()
         return (
-            render_template(html, content=content, headers=headers, table=table),
+            render_template(html, content=content, headers=headers, table=table, data=data),
             status_code,
         )
     return jsonify({"content": content}), status_code
