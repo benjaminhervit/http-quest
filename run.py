@@ -5,7 +5,8 @@ from app.models import reset_db
 app = create_app()
 
 with app.app_context():
-    if app.config.get("ENV") == "development":
+    print(f"DEBUG: {app.config.get("DEBUG")}, TEST: {app.config.get("TESTING")}")
+    if app.config.get("DEBUG") is True:
         print("App is running in development mode.")
         reset_db()
     print("✔️ Database initialized with sample quests.")

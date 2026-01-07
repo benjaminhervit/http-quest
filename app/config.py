@@ -11,7 +11,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    TESTING = False
+    TESTING = True
     # In-memory DB; resets on every process start/reload
     SQLALCHEMY_DATABASE_URI = f"sqlite:///{BASE_DIR / 'project.db'}"
     # Auto-create the schema on startup

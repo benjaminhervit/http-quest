@@ -13,7 +13,6 @@ from .utils import snapshot_response, snapshot_request
 
 from .models import LastUserRequestLog
 
-
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(DevelopmentConfig)
