@@ -30,7 +30,7 @@ def post_handler(quest: QuestData, req: Request):
     db.session.commit()
     
     # update user xp for succesfully registering
-    User.update_xp(username, 1)
+    User.update_xp(username, 2)
     #  complete start and register quest now that the user is registered
     User.update_quest_state(username, QuestTitle.START_QUEST.value,
                             QuestState.COMPLETED.value)

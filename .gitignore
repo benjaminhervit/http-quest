@@ -8,3 +8,5 @@
 .coverage
 .env
 .vscode
+.pytest_cache
+.ruff_cache

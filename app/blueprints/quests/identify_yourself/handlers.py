@@ -18,7 +18,7 @@ def get_handler(quest: QuestData, req: Request):
         username = parser_utils.get_auth_username(req)
         state = User.get_user_quest_State(username, QuestTitle.IDENTIFY_QUEST.value)
         
-         # check if authentication is correct
+        # check if authentication is correct
         if authenticator.authenticate_with_username(req):
             state = QuestState.COMPLETED.value
             User.update_xp(username, 1)

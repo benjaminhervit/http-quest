@@ -44,7 +44,7 @@
             {% for user in data %}
             <tr>
               <td class="subtitle">{{user.username}}</td>
-              <td class="subtitle">99</td>
+              <td class="subtitle">{{user.xp}}</td>
               {%for s in user.quest_states%}
               {%if s == 'completed'%}
                 <td class="u-glow"><a>1</a></td>
