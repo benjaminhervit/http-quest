@@ -9,6 +9,17 @@ from app.enums import StatusCode
 from app.utils import validate_utils
 
 
+def get_accepted_formats(req: Request) -> str:
+    accept = req.headers.get("accept")
+    return accept if accept else ""
+
+
+def request_accepts_html(req: Request) -> bool:
+    accept = get_accepted_formats(req)
+    if accept:
+        return "html" in accept
+    return False
+
 def try_json_loads(s, default=None):
     if not s:
         return default

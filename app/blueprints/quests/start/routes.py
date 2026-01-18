@@ -11,6 +11,8 @@ from .data import get_start_quest
 @bp.route("/start", methods=["GET"])
 @bp.route("/start" + "/<username>", methods=["GET"])
 def start(username=None):
+    print("headers")
+    print(request.headers)
     handlers = get_handlers()
     quest = get_start_quest()
     response = QuestRequestHandler.execute(
