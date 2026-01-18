@@ -3,7 +3,6 @@ from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 
 from app.models.base import Base
 from app.extensions import db
-from app.utils import validate_utils
 
 
 class LastUserRequestLog(db.Model, Base):
@@ -35,6 +34,10 @@ class LastUserRequestLog(db.Model, Base):
         onupdate=db.func.now(),
         nullable=False,
     )
+    
+    @classmethod
+    def get_users_last_request(cls, username: str):
+        return cls.query.filter_by(username=username).first()
 
     @classmethod
     def upsert_for_username(

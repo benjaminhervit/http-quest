@@ -15,23 +15,23 @@ class User(db.Model, Base):
     id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column("username", db.String(31), nullable=False, unique=True)
     xp = db.Column("xp", db.Integer, nullable=False, default=0) 
-    
+
     start_quest = db.Column(QuestTitle.START_QUEST.value, String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
-    
+
     register_quest = db.Column(QuestTitle.REGISTER_QUEST.value, String(255), nullable=False, default="locked")  # handlers are ignoring this for this quest
-    
+
     identify_quest = db.Column(QuestTitle.IDENTIFY_QUEST.value, String(255), nullable=False, default="locked")
-    
+
     jason_quest = db.Column(QuestTitle.JASON_QUEST.value, String(255), nullable=False, default="locked")
-    
+
     wall_quest = db.Column(QuestTitle.WALL_QUEST.value, String(255), nullable=False, default="locked")
-    
+
     git_monster_quest = db.Column(QuestTitle.GIT_MONSTER_QUEST.value, String(255), nullable=False, default="locked")
-    
+
     beg_quest = db.Column(QuestTitle.BEG_QUEST.value, String(255), nullable=False, default="unlocked")
     beg_quest_counter = db.Column(QuestTitle.BEG_QUEST.value+"_counter", db.Integer, nullable=False, default=0)
     beg_quest_last_req_at = db.Column(DateTime, server_default=func.now())
-    
+
     the_crown_quest = db.Column(QuestTitle.THE_CROWN_QUEST.value, String(255), nullable=False, default="locked")
 
     @classmethod

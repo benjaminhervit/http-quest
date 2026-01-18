@@ -19,12 +19,11 @@
     <main class="container u-stack u-mt-xl">
       <header class="topbar">
         <div class="container topbar__inner">
-          <div class="logo">HTTP (re)QUEST</div>
+          <div class="logo"><a class="logo" href="{{url_for('main.index')}}">HTTP (re)QUEST</a></div>
           <nav class="u-flex u-wrap">
-            <a class="btn btn--ghost" href="{{url_for('main.index')}}">Home</a>
             <a class="btn btn--ghost" href="{{url_for('leaderboard.leaderboard')}}">Leaderboard</a>
             <a class="btn btn--ghost" href="{{url_for('game.manual')}}">Manual</a>
-            <a class="btn btn--ghost u-text-pink" href="#features">(TODO: LastRequest)</a>
+            <a class="btn btn--ghost u-text-pink" href="{{url_for('log.last_request')}}">Logs</a>
           </nav>
         </div>
         {%block header%}{% endblock %}

@@ -31,6 +31,7 @@
         <li>You should always receive a JSON response from the game - unless something broke or you are outside the "playingfield" (that means we could not recognize your url).</li>
         <li>If your request fails, read the error message carefully. It should give you hints on where the error is - or if you should tell us that we have made an error in the game.</li>
         <li>Read the <b><i>quest description</i></b> carefully. They are usually a bad pun on some basic request paramters.</li>
+        <li><a class="btn btn--ghost u-text-pink" href="{{url_for('log.last_request')}}">/log/last_request/username</a> can be a helpful debugging tool when you start making requests with authorization.</li>
     </ul>
     
     <p><br>BEST OF LUCK!</p>

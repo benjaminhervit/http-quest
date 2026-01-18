@@ -1,28 +1,31 @@
 {%extends 'base.html'%}
 {%block body%}
-{%if content%}
-<h1>{{content.request_json.user}}s Last request</h2>
+<h1>Last request log</h2>
+<section class="u-stack u-center u-pad-lg">
+    <p>Here you can see the log from your last request. Be aware that we are only storing your LATEST not ALL logs. So copy-paste or stop clicking send until you have read the log propperly.</p>
+</section>
+{%if log%}
 <details open>
-    <p>id: {{content.id}}</p>
-    <p>user: {{content.request_json.user}}</p>
-    <p>Created at: {{content.created_at}}</p>
+    <p>id: {{log.id}}</p>
+    <p>user: {{log.username}}</p>
+    <p>Created at: {{log.created_at}}</p>
 
     <details closed>
         <summary>Request</summary>
         <pre style="white-space:pre-wrap; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">
-        {{ content.request_json | tojson(indent=2) }}
+        {{ log.request_json | tojson(indent=2) }}
         </pre>
     </details>
 
     <details closed>
         <summary>Response</summary>
         <pre style="white-space:pre-wrap; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">
-        {{ content.response_json | tojson(indent=2) }}
+        {{ log.response_json | tojson(indent=2) }}
         </pre>
     </details>
     
 </details>
 {%else%}
-No last request identified
+No last request found. Be sure to add your registered username to the URL path.
 {%endif%}
 {%endblock%}
