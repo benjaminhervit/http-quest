@@ -92,6 +92,7 @@ class QuestTitle(Enum):
     REGISTER_QUEST = "register_quest"
     IDENTIFY_QUEST = "identify_quest"
     JASON_QUEST = "jason_quest"
+    BEG_QUEST = "beg_quest"
 
 
 class QuestState(Enum):

@@ -12,7 +12,6 @@ def get_all_users_dicts() -> list[dict[str, Any]]:
 
 def get_user_quest_states(username: str) -> list[str]:
     user = User.get_by_username(username)
-    print(type(user))
     if not user:
         return []
     quest_states = [user.start_quest, user.register_quest, user.identify_quest, user.jason_quest]
