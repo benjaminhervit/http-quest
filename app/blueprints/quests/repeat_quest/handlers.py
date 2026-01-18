@@ -52,6 +52,7 @@ def post_handler(quest: QuestData, req: Request):
     # COMPLETED!
     state = QuestState.COMPLETED.value
     User.update_quest_state(username, QuestTitle.BEG_QUEST.value, state)
+    User.update_xp(username, 100)
     #User.update_quest_state(username, NEXT QUEST TO UNLOCK GOES HERE!, QuestState.UNLOCKED.value)
     
     # generate user response

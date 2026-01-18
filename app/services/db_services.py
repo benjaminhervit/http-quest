@@ -14,7 +14,9 @@ def get_user_quest_states(username: str) -> list[str]:
     user = User.get_by_username(username)
     if not user:
         return []
-    quest_states = [user.start_quest, user.register_quest, user.identify_quest, user.jason_quest]
+    quest_states = [user.start_quest, user.register_quest, user.identify_quest,
+                    user.jason_quest, user.wall_quest, user.git_monster_quest,
+                    user.beg_quest, user.the_crown_quest]
     return quest_states
 
 

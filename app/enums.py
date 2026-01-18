@@ -92,7 +92,10 @@ class QuestTitle(Enum):
     REGISTER_QUEST = "register_quest"
     IDENTIFY_QUEST = "identify_quest"
     JASON_QUEST = "jason_quest"
+    WALL_QUEST = "wall_quest"
+    GIT_MONSTER_QUEST = "git_monster_quest"
     BEG_QUEST = "beg_quest"
+    THE_CROWN_QUEST = "the_crown_quest"
 
 
 class QuestState(Enum):
