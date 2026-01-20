@@ -2,12 +2,12 @@ import requests
 import time
 import random
 
-url = "http://127.0.0.1:5000/game/beg"
+url = "http://127.0.0.1:5000/game/the-wall-on-fire"
 headers = {
     "content-type": "application/json",
-    "authorization": "dev"
+    "authorization": "t1"
 }
-data = {"say": "please"}
+data = {"jason": "smash!"}
 
 # response = requests.get(url, headers=headers, json=data, timeout=10)
 # data = response.json()
@@ -30,6 +30,7 @@ while True:
     except (requests.RequestException, ValueError) as e:
         print(f"Error: {e}")
         print("-" * 50)
+        break
 
     sleep_time = 4 if random.random() < 0.45 else (5 if random.random() < 0.90 else random.uniform(2, 6))
     time.sleep(sleep_time)

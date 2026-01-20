@@ -2,8 +2,7 @@
 from .start.data import get_start_quest as start_quest
 from .identify_yourself.data import get_quest as identify_quest
 from .jason_quest.data import get_quest as jason_quest
-from .delete_wall_quest.data import get_quest as wall_quest
-from .repeat_quest.data import get_quest as beg_quest
+from .the_wall_on_fire.data import get_quest as wall_quest
 
 
 def get_all_quests():
@@ -13,5 +12,4 @@ def get_all_quests():
         identify_quest(),
         jason_quest(),
         wall_quest(),
-        beg_quest()
         ]

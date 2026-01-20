@@ -19,10 +19,11 @@ def get_user_quest_states(username: str) -> list[str]:
                     user.register_quest,
                     user.identify_quest,
                     user.jason_quest,
-                    user.git_monster_quest,
+                    #user.git_monster_quest,
                     user.wall_quest,
-                    user.beg_quest,
+                    #user.beg_quest,
                     #user.the_crown_quest
+                    "locked" #crown is always locked - untill there is an ending to this
                     ]
     return quest_states
 
@@ -35,13 +36,13 @@ def get_user_quest_values(username: str) -> list[str]:
                     qs_to_lb(user.register_quest),
                     qs_to_lb(user.identify_quest),
                     jason_qs_to_lb_val(user.jason_quest),
-                    qs_to_lb(user.git_monster_quest),
-                    qs_to_lb(user.wall_quest),
-                    convert_beg_quest_to_leaderboard(username, user.beg_quest),
+                    #qs_to_lb(user.git_monster_quest),
+                    #qs_to_lb(user.wall_quest),
+                    wall_qs_to_lb_val(username, user.wall_quest),
+                    "x"
                     #qs_to_lb(user.the_crown_quest)
                     ]
     return quest_states
-
 
 def qs_to_lb(quest_state: str) -> str:
     if quest_state == "locked":
@@ -52,10 +53,10 @@ def qs_to_lb(quest_state: str) -> str:
         return "1"
 
 
-def convert_beg_quest_to_leaderboard(username, quest_state: str) -> str:
+def wall_qs_to_lb_val(username, quest_state: str) -> str:
     if quest_state == "locked":
         return "x"
-    return str(User.get_beg_counter(username))
+    return str(User.get_wall_counter(username))
 
 
 def jason_qs_to_lb_val(quest_state: str) -> str:

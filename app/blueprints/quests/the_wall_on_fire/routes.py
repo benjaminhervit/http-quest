@@ -8,8 +8,8 @@ from app.request_manager import QuestRequestHandler
 from app.authentication_manager import authenticate_with_username
 
 
-@bp.route("/beg", methods=["GET", "POST"])
-def beg_route():
+@bp.route("/the-wall-on-fire", methods=["GET", "DELETE", "POST"])
+def firewall_quest():
     handlers = get_handlers()
     quest = get_quest()
     response = QuestRequestHandler.execute(

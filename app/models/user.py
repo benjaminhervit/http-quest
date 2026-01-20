@@ -25,15 +25,14 @@ class User(db.Model, Base):
     jason_quest = db.Column(QuestTitle.JASON_QUEST.value, String(255), nullable=False, default="locked")
 
     wall_quest = db.Column(QuestTitle.WALL_QUEST.value, String(255), nullable=False, default="locked")
+    wall_counter = db.Column(QuestTitle.WALL_QUEST.value+"_counter", db.Integer, nullable=False, default=0)
+    wall_last_req_at = db.Column(DateTime, server_default=func.now())
 
     git_monster_quest = db.Column(QuestTitle.GIT_MONSTER_QUEST.value, String(255), nullable=False, default="locked")
 
-    beg_quest = db.Column(QuestTitle.BEG_QUEST.value, String(255), nullable=False, default="unlocked")
-    beg_quest_counter = db.Column(QuestTitle.BEG_QUEST.value+"_counter", db.Integer, nullable=False, default=0)
-    beg_quest_last_req_at = db.Column(DateTime, server_default=func.now())
-
     the_crown_quest = db.Column(QuestTitle.THE_CROWN_QUEST.value, String(255), nullable=False, default="locked")
 
+    # GET ALL
     @classmethod
     def get_all(cls):
         return User.query.all()
@@ -41,6 +40,11 @@ class User(db.Model, Base):
     @classmethod
     def get_all_ordered_by_xp(cls):
         return User.query.order_by(User.xp.desc()).all()
+
+    # GET USER
+    @classmethod
+    def get_by_id(cls, user_id):
+        return cls.query.get(user_id)
 
     @classmethod
     def user_exists(cls, username) -> bool:
@@ -51,6 +55,8 @@ class User(db.Model, Base):
     def get_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
     
+    
+    # QUEST STATES
     @classmethod
     def get_user_quest_State(cls, username: str, quest: str) -> str:
         user = cls.get_by_username(username)
@@ -69,41 +75,52 @@ class User(db.Model, Base):
                 return True
         return False
     
+    # WALL QUEST API
     @classmethod
-    def update_beg_counter(cls, username: str, delta_val: int) -> int:
+    def update_wall_counter(cls, username: str, delta_val: int) -> int:
         user = cls.get_by_username(username)
         if not user:
             raise ValidationError(f"Could not find user {username} in db.")
-        user.beg_quest_counter += delta_val
+        user.wall_counter += delta_val
         db.session.commit()
-        return user.beg_quest_counter
-        
+        return user.wall_counter
     
     @classmethod
-    def get_last_beg_req_at(cls, username: str):
+    def reset_wall_counter(cls, username: str) -> int:
         user = cls.get_by_username(username)
         if not user:
             raise ValidationError(f"Could not find user {username} in db.")
-        return user.beg_quest_last_req_at
+        user.wall_counter += 0
+        db.session.commit()
+        return user.wall_counter
     
     @classmethod
-    def update_last_beg_req_at(cls, username: str) -> DateTime:
+    def get_wall_last_req_at(cls, username: str):
+        user = cls.get_by_username(username)
+        if not user:
+            raise ValidationError(f"Could not find user {username} in db.")
+        return user.wall_last_req_at
+    
+    @classmethod
+    def update_wall_last_req_at(cls, username: str) -> DateTime:
         user = cls.get_by_username(username)
         if not user:
             raise ValidationError(f"Could not find user {username} in db.")
         now = datetime.now(timezone.utc).replace(tzinfo=None)
-        user.beg_quest_last_req_at = now
+        user.wall_last_req_at = now
         db.session.commit()
         return now
         
     
     @classmethod
-    def get_beg_counter(cls, username: str) -> int:
+    def get_wall_counter(cls, username: str) -> int:
         user = cls.get_by_username(username)
-        if user:
-            return getattr(user, QuestTitle.BEG_QUEST.value+"_counter", None)
-        return None
+        if not user:
+            raise ValidationError(f"Could not find user {username} in db.")
+        return user.wall_counter
+        #return getattr(user, QuestTitle.BEG_QUEST.value+"_counter", None)
     
+    # XP
     @classmethod
     def update_xp(cls, username: str, delta_xp: int) -> int:
         user = cls.get_by_username(username)
@@ -114,10 +131,6 @@ class User(db.Model, Base):
                 db.session.commit()
                 return getattr(user, "xp", None)
         return -1
-
-    @classmethod
-    def get_by_id(cls, user_id):
-        return cls.query.get(user_id)
 
     def __repr__(self):
         return f"<User {self.id}, {self.username}>"

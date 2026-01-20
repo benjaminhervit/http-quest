@@ -61,7 +61,7 @@ def post_handler(quest: QuestData, req: Request):
     state = QuestState.COMPLETED.value
     User.update_xp(username, quest.xp)  # this one deserves a few extra points
     User.update_quest_state(username, QuestTitle.JASON_QUEST.value, state)  # complete this quest
-    User.update_quest_state(username, QuestTitle.GIT_MONSTER_QUEST.value, QuestState.UNLOCKED.value)  # complete this quest
+    User.update_quest_state(username, QuestTitle.WALL_QUEST.value, QuestState.UNLOCKED.value)  # complete this quest
     
     formatting = content_generator.get_base_formatting()
     content = content_generator.create_content(quest, state, formatting)
