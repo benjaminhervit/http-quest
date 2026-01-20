@@ -32,14 +32,14 @@ def get_quest():
         ),
         next_path=(
             """
-                GET to /game/hire_jason
+                GET to /game/hire_jason where a great ally awaits.
             """
         ),
-        learning="",
+        learning="Most websites and services requires you to use the Authorization header so that they can verify who you are and decide if they want to give you access. For simplicity, we are just asking you to write your username BUT that is NOT SAFE and it is NOT A STANDARD! Usually it is some long gibberish key or token that is build with cryptography and other kinds of mathgic which is not important to us in this course. Just... REMEMBER NEVER TO DO IT HOW WE DID IT HERE IF YOU ARE MAKING A PUSHING SOMETHING TO REAL PRODUCTION ONE DAY!",
         hints=[
             "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization",
             "https://www.postman.com/",
-            "Your web browser cannot do custom authorization. You should look into HTTP Clients - e.g. POSTMAN and alike."
+            "Your web browser cannot do custom authorization. You should look into HTTP Clients or POSTMAN  - or start making requests in Python or JavaScript? Though that might be overkill right now."
         ],
         xp=1,
         url_prefix=bp.url_prefix if bp.url_prefix else "",

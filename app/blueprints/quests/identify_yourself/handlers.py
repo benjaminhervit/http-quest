@@ -14,9 +14,14 @@ def get_handlers():
 
 def get_handler(quest: QuestData, req: Request):
     try:
-        # run this if the quest is accessed with authorization 
+        # run this if the quest is accessed with authorization
         username = parser_utils.get_auth_username(req)
+        formatting = {"HERO": username or "Unknown Mysterious Savior"}
         state = User.get_user_quest_State(username, QuestTitle.IDENTIFY_QUEST.value)
+        if state == QuestState.LOCKED.value:
+            return content_generator.create_locked_content(quest)
+        if state == QuestState.COMPLETED.value:
+            return content_generator.create_completed_content(quest)
         
         # check if authentication is correct
         if authenticator.authenticate_with_username(req):

@@ -39,6 +39,10 @@ class User(db.Model, Base):
         return User.query.all()
 
     @classmethod
+    def get_all_ordered_by_xp(cls):
+        return User.query.order_by(User.xp.desc()).all()
+
+    @classmethod
     def user_exists(cls, username) -> bool:
         user = cls.get_by_username(username)
         return True if user else False

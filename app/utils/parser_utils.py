@@ -46,7 +46,7 @@ def get_headers(req: Request) -> dict | None:
 
 
 def get_json(req: Request) -> dict:
-    validate_utils.validate_type(req, Request)
+    #validate_utils.validate_type(req, Request)
     validate_utils.validate_content_is_json(req)
     validate_utils.validate_req_has_data(req)
     try:
@@ -56,13 +56,13 @@ def get_json(req: Request) -> dict:
 
 
 def get_form(req: Request) -> dict | None:
-    validate_utils.validate_type(req, Request)
+    #validate_utils.validate_type(req, Request)
     validate_utils.validate_mimetype(req.mimetype, "application/x-www-form-urlencoded")
     return req.form.to_dict() if req.form else None
 
 
 def get_query(req: Request) -> dict | None:
-    validate_utils.validate_type(req, Request)
+    #validate_utils.validate_type(req, Request)
     return req.args.to_dict() if req.args else None
 
 
