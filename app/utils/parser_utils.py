@@ -20,6 +20,7 @@ def request_accepts_html(req: Request) -> bool:
         return "html" in accept
     return False
 
+
 def try_json_loads(s, default=None):
     if not s:
         return default
@@ -44,10 +45,14 @@ def get_headers(req: Request) -> dict | None:
     return headers
 
 
-def get_json(req: Request) -> dict | None:
+def get_json(req: Request) -> dict:
     validate_utils.validate_type(req, Request)
-    validate_utils.validate_mimetype(req.mimetype, "application/json")
-    return req.get_json() if req.json else None
+    validate_utils.validate_content_is_json(req)
+    validate_utils.validate_req_has_data(req)
+    try:
+        return req.get_json()
+    except Exception as exc:
+        raise ParsingError("Could not get json from request. Make sure you are using the correct json syntax: https://www.w3schools.com/js/js_json_syntax.asp.") from exc
 
 
 def get_form(req: Request) -> dict | None:
@@ -63,7 +68,6 @@ def get_query(req: Request) -> dict | None:
 
 def get_field_from_request_data(req: Request, field_name: str,
                                 parsing_method: Callable) -> str:
-
     validate_utils.validate_type(req, Request)
     if not isinstance(parsing_method, colabc.Callable):
         raise TypeError("parsing_method is not Callable.")
@@ -71,7 +75,7 @@ def get_field_from_request_data(req: Request, field_name: str,
     if not isinstance(field_name, str):
         raise TypeError("field_name is not string.")
 
-    data: dict | None = parsing_method(req=req)
+    data: dict = parsing_method(req=req)
     if not data:
         raise ParsingError(
             "Found no data in request in expected format", StatusCode.BAD_REQUEST.value
@@ -88,5 +92,4 @@ def get_field_from_request_data(req: Request, field_name: str,
             f"Did not find field {field_name} in data: {data}",
             StatusCode.BAD_REQUEST.value,
         )
-
     return field

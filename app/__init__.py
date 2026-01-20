@@ -11,7 +11,7 @@ from .blueprints.quests import get_all_quests
 from .authentication_manager import try_authenticate
 from .utils import snapshot_response, snapshot_request
 
-from .models import LastUserRequestLog
+from .models import LastUserRequestLog, User
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -76,11 +76,12 @@ def create_app() -> Flask:
     # Create tables (and small seed) each time the serving process starts.
     with app.app_context():
         from app.models import User, LastUserRequestLog
-
+        from app.enums import QuestTitle
         db.create_all()
 
         if app.config.get("AUTO_SEED") and not User.query.first():
             db.session.add(User(username="dev"))
             db.session.commit()
+            print(User.get_user_quest_State("dev", QuestTitle.BEG_QUEST.value))
 
     return app

@@ -6,7 +6,6 @@ import random
 from app.enums import QuestState, ContentKeys, StatusCode
 from app.quest import QuestData
 
-
 def create_content(
     quest: QuestData, quest_state: str, formatting: dict | None = None
 ) -> dict:
@@ -25,7 +24,7 @@ def create_content(
         raise ValueError(
             (
                 f"Could not create content for quest {quest.title}"
-                "with state {quest_state}"
+                f"with state {quest_state}"
             ),
             StatusCode.SERVER_ERROR.value,
         )
@@ -69,8 +68,8 @@ def format_string(string: str, formatting: dict):
         formatted = string.format(**formatting).replace("\n", "")
         formatted = clean_text(formatted)
         return formatted
-    except KeyError:
-        raise KeyError(f"Missing key in formatter {formatting}")
+    except KeyError as e:
+        raise KeyError(f"Missing key in formatter {formatting}, {e}")
 
 
 def format_content(content: dict[str, Any], formatting: dict[str, str]):

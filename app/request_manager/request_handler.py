@@ -30,8 +30,8 @@ class QuestRequestHandler:
         # SKIPPING INTERNAL METHOD-REQ CHECK.
         # TODO: Move this check into a test file for each quest. 
         # cls.validate_handlers_map(handlers_map, valid_req_methods)
-        if not isinstance(authenticator, Callable):
-            raise ValueError("Passed authenticator is not callable")
+        # if not isinstance(authenticator, Callable):
+        #     raise ValueError("Passed authenticator is not callable")
 
         try:
             #  Authenticate user

@@ -60,11 +60,11 @@
               <td class="subtitle">{{user.xp}}</td>
               {%for s in user.quest_states%}
               {%if s == 'completed'%}
-                <td class="u-glow"><a>1</a></td>
+                <td class="u-glow"><a>{{user.quest_values[loop.index0]}}</a></td>
               {% elif s == 'unlocked' %}
-                <td class="u-text-cyan u-glow">0</td>
-              {% elif s == 'locked' %}
-                <td class="">x</td>
+                <td class="u-text-cyan u-glow">{{user.quest_values[loop.index0]}}</td>
+              {% else %}
+                <td class="">{{user.quest_values[loop.index0]}}</td>
               {%endif%}
              {%endfor%}
             </tr>

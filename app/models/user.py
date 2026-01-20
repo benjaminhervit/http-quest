@@ -54,6 +54,7 @@ class User(db.Model, Base):
             return getattr(user, quest, None)
         return None
     
+    
     @classmethod
     def update_quest_state(cls, username: str, quest: str, new_state: str) -> bool:
         user = cls.get_by_username(username)
@@ -65,22 +66,32 @@ class User(db.Model, Base):
         return False
     
     @classmethod
-    def increment_beg_counter(cls, username: str) -> int:
-        # TODO: Move quest logic into the beg_qest post handler?
-        timeout = 3
+    def update_beg_counter(cls, username: str, delta_val: int) -> int:
         user = cls.get_by_username(username)
         if not user:
             raise ValidationError(f"Could not find user {username} in db.")
-        
-        now = datetime.now(timezone.utc).replace(tzinfo=None)
-        if user.beg_quest_last_req_at:
-            time_since_last_req = (now - user.beg_quest_last_req_at).total_seconds()
-            if time_since_last_req < timeout:
-                raise QuestError(f"You must wait {timeout - time_since_last_req} second(s) before your next please.")
-        user.beg_quest_counter += 1
-        user.beg_quest_last_req_at = now
+        user.beg_quest_counter += delta_val
         db.session.commit()
         return user.beg_quest_counter
+        
+    
+    @classmethod
+    def get_last_beg_req_at(cls, username: str):
+        user = cls.get_by_username(username)
+        if not user:
+            raise ValidationError(f"Could not find user {username} in db.")
+        return user.beg_quest_last_req_at
+    
+    @classmethod
+    def update_last_beg_req_at(cls, username: str) -> DateTime:
+        user = cls.get_by_username(username)
+        if not user:
+            raise ValidationError(f"Could not find user {username} in db.")
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        user.beg_quest_last_req_at = now
+        db.session.commit()
+        return now
+        
     
     @classmethod
     def get_beg_counter(cls, username: str) -> int:
