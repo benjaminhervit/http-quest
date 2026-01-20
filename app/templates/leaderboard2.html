@@ -1,81 +1,82 @@
 <!-- LEADER BOARD -->
 <article class="topbar">
-  <span class="title title-xl u-text-neon u-glow">Leaderboard</span>
-  <body>
-    <table>
-      <thead>
-        <tr>
-          <th class="subtitle" scope="col">Player</th>
-          <th class="subtitle" scope="col">Level</th>
-          <th scope="col"> 
-            <a href="{{url_for('game.start')}}">
-              <img class="icons" width="30px" height="auto" alt="git icon" src="https://www.pngfind.com/pngs/m/88-889543_980-x-980-3-start-icon-png-free.png" style="filter: invert(100%);">
-            </a>
-          </th>
-          
-          <th scope="col">
-            <a href="{{url_for('auth.register')}}">
-              <img class="icons" width="30px" height="auto" alt="git icon" src="https://static.thenounproject.com/png/70749-200.png" style="filter: invert(100%);">
-            </a>
-          </th>
+	<span class="title title-xl u-text-neon u-glow">Leaderboard</span>
+	<body>
+		<table>
+			<thead>
+				<tr>
+					<th class="subtitle" scope="col">Player</th>
+					<th class="subtitle" scope="col">Level</th>
+					<th scope="col">
+						<a href="{{url_for('game.start')}}">
+							<img class="icons" width="30px" height="auto" alt="git icon" src="https://www.pngfind.com/pngs/m/88-889543_980-x-980-3-start-icon-png-free.png" style="filter: invert(100%);">
+						</a>
+					</th>
 
-          <th scope="col">
-            <a href="{{url_for('game.identify_yourself')}}">
-              <img class="icons" width="30px" height="auto" alt="git icon" src="https://www.nicepng.com/png/detail/858-8587398_confidential-png-icon-authorization-icon.png" style="filter: invert(100%);">
-            </a>
-          </th>
+					<th scope="col">
+						<a href="{{url_for('auth.register')}}">
+							<img class="icons" width="30px" height="auto" alt="git icon" src="https://static.thenounproject.com/png/70749-200.png" style="filter: invert(100%);">
+						</a>
+					</th>
 
-           <th scope="col">
-            <a href="{{url_for('game.jason_route')}}">
-              <img class="icons" width="30px" height="auto" alt="git icon" src="https://www.svgrepo.com/show/322608/jason-mask.svg" style="filter: invert(100%);">
-            </a>
-          </th>
+					<th scope="col">
+						<a href="{{url_for('game.identify_yourself')}}">
+							<img class="icons" width="30px" height="auto" alt="git icon" src="https://www.nicepng.com/png/detail/858-8587398_confidential-png-icon-authorization-icon.png" style="filter: invert(100%);">
+						</a>
+					</th>
 
-          <th scope="col">
-            <a href="{{url_for('game.delete_wall_route')}}">
-              <img class="icons" width="30px" height="auto" alt="git icon" src="https://images.vexels.com/content/202527/preview/black-cat-avatar-line-icon-796782.png" style="filter: invert(100%);">
-            </a>
-          </th>
+					<th scope="col">
+						<a href="{{url_for('game.jason_route')}}">
+							<img class="icons" width="30px" height="auto" alt="git icon" src="https://www.svgrepo.com/show/322608/jason-mask.svg" style="filter: invert(100%);">
+						</a>
+					</th>
 
-          <th scope="col">
-            <a href="{{url_for('game.delete_wall_route')}}">
-            <img class="icons" width="30px" height="auto" alt="gate icon" src="https://img.pikbest.com/origin/09/24/45/853pIkbEsTR4J.png!sw800" style="filter: invert(100%); size: 50%;">
-            </a>
-          </th>
+					<th scope="col">
+						<a href="{{url_for('game.delete_wall_route')}}">
+							<img class="icons" width="30px" height="auto" alt="git icon" src="https://images.vexels.com/content/202527/preview/black-cat-avatar-line-icon-796782.png" style="filter: invert(100%);">
+						</a>
+					</th>
 
-          <th scope="col">
-            <a href="{{url_for('game.beg_route')}}">
-            <img class="icons" width="30px" height="auto" alt="gate icon" src="https://cdn-icons-png.flaticon.com/512/565/565249.png" style="filter: invert(100%); size: 50%;">
-            </a>
-          </th>
-          <th scope="col"><img class="icons" width="30px" height="auto" alt="crown icon" src="https://static.thenounproject.com/png/1348333-200.png" style="filter: invert(100%);"></th>
-          
-        </tr>
-      </thead>
-      <tbody id="">
-        {%if data%}
-            {% for user in data %}
-            <tr>
-              <td class="subtitle">{{user.username}}</td>
-              <td class="subtitle">{{user.xp}}</td>
-              {%for s in user.quest_states%}
-              {%if s == 'completed'%}
-                <td class="u-glow"><a>{{user.quest_values[loop.index0]}}</a></td>
-              {% elif s == 'unlocked' %}
-                <td class="u-text-cyan u-glow">{{user.quest_values[loop.index0]}}</td>
-              {% else %}
-                <td class="">{{user.quest_values[loop.index0]}}</td>
-              {%endif%}
-             {%endfor%}
-            </tr>
-          {% endfor %}
-        {% else %}
-          <tr>
-            <td colspan="5">No players yet!</td>
-          </tr>
-        {% endif %}
-      </tbody>
-    </table>
-  </body>
-  <footer></footer>
+					<th scope="col">
+						<a href="{{url_for('game.delete_wall_route')}}">
+							<img class="icons" width="30px" height="auto" alt="gate icon" src="https://img.pikbest.com/origin/09/24/45/853pIkbEsTR4J.png!sw800" style="filter: invert(100%); size: 50%;">
+						</a>
+					</th>
+
+					<th scope="col">
+						<a href="{{url_for('game.beg_route')}}">
+							<!-- <img class="icons" width="30px" height="auto" alt="gate icon" src="https://cdn-icons-png.flaticon.com/512/565/565249.png" style="filter: invert(100%); size: 50%;"> -->
+							<img class="icons" width="30px" height="auto" alt="gate icon" src="https://static.thenounproject.com/png/1348333-200.png" style="filter: invert(100%); size: 50%;">
+						</a>
+					</th>
+
+					<!-- <th scope="col"><img class="icons" width="30px" height="auto" alt="crown icon" src="https://static.thenounproject.com/png/1348333-200.png" style="filter: invert(100%);"></th> -->
+				</tr>
+			</thead>
+			<tbody id="">
+				{%if data%}
+				{% for user in data %}
+				<tr>
+					<td class="subtitle">{{user.username}}</td>
+					<td class="subtitle">{{user.xp}}</td>
+					{%for s in user.quest_states%}
+					{%if s == 'completed'%}
+					<td class="u-glow"><a>{{user.quest_values[loop.index0]}}</a></td>
+					{% elif s == 'unlocked' %}
+					<td class="u-text-cyan u-glow">{{user.quest_values[loop.index0]}}</td>
+					{% else %}
+					<td class="">{{user.quest_values[loop.index0]}}</td>
+					{%endif%}
+					{%endfor%}
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr>
+					<td colspan="5">No players yet!</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</body>
+	<footer></footer>
 </article>

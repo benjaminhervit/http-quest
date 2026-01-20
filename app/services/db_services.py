@@ -22,7 +22,7 @@ def get_user_quest_states(username: str) -> list[str]:
                     user.wall_quest, 
                     user.git_monster_quest,
                     user.beg_quest, 
-                    user.the_crown_quest
+                    #user.the_crown_quest
                     ]
     return quest_states
 
@@ -38,9 +38,10 @@ def get_user_quest_values(username: str) -> list[str]:
                     qs_to_lb(user.wall_quest), 
                     qs_to_lb(user.git_monster_quest),
                     convert_beg_quest_to_leaderboard(username, user.beg_quest), 
-                    qs_to_lb(user.the_crown_quest)
+                    #qs_to_lb(user.the_crown_quest)
                     ]
     return quest_states
+
 
 def qs_to_lb(quest_state: str) -> str:
     if quest_state == "locked":
