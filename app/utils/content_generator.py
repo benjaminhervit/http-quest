@@ -6,9 +6,9 @@ import random
 from app.enums import QuestState, ContentKeys, StatusCode
 from app.quest import QuestData
 
-def create_content(
-    quest: QuestData, quest_state: str, formatting: dict | None = None
-) -> dict:
+
+def create_content(quest: QuestData, quest_state: str,
+                   formatting: dict | None = None) -> dict:
 
     formatting = formatting or get_base_formatting()
 

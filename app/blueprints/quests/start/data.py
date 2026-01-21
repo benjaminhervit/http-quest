@@ -7,7 +7,10 @@ def get_start_quest():
         title="Welcome",
         start_message=(
             """
-                    Welcome dear {HERO} to... reQuest! An epic adventure to claim the CRUDe crown! 
+                    Welcome dear {HERO} to... reQuest! An epic adventure to claim the CRUDe crown!
+                    Why I am not doing it myself? Yes, ehm... plot... we need a plot...
+                    AHA! There is a horric creature that has summoned a wall of fire around the CRUDe crown!
+                    No one has been able to beat that filthy little beast but with the right training, I am sure you (or some of the other backup heroes) can do it!
                     But before we begin, you must tell me: Who you are {HERO}?
                     """
         ),

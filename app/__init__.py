@@ -76,12 +76,16 @@ def create_app() -> Flask:
     # Create tables (and small seed) each time the serving process starts.
     with app.app_context():
         from app.models import User, LastUserRequestLog
-        from app.enums import QuestTitle
+        from app.enums import QuestTitle, QuestState
         db.create_all()
 
         if app.config.get("AUTO_SEED") and not User.query.first():
             db.session.add(User(username="dev"))
             db.session.commit()
-            print(User.get_user_quest_State("dev", QuestTitle.BEG_QUEST.value))
+            User.update_quest_state("dev", QuestTitle.START_QUEST.value, QuestState.UNLOCKED.value)
+            User.update_quest_state("dev", QuestTitle.REGISTER_QUEST.value, QuestState.UNLOCKED.value)
+            User.update_quest_state("dev", QuestTitle.IDENTIFY_QUEST.value, QuestState.UNLOCKED.value)
+            User.update_quest_state("dev", QuestTitle.JASON_QUEST.value, QuestState.UNLOCKED.value)
+            User.update_quest_state("dev", QuestTitle.WALL_QUEST.value, QuestState.UNLOCKED.value)
 
     return app

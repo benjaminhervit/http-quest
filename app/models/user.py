@@ -26,6 +26,7 @@ class User(db.Model, Base):
 
     wall_quest = db.Column(QuestTitle.WALL_QUEST.value, String(255), nullable=False, default="locked")
     wall_counter = db.Column(QuestTitle.WALL_QUEST.value+"_counter", db.Integer, nullable=False, default=0)
+    wall_destroyed = db.Column(db.Boolean, nullable=False, default=False)
     wall_last_req_at = db.Column(DateTime, server_default=func.now())
 
     git_monster_quest = db.Column(QuestTitle.GIT_MONSTER_QUEST.value, String(255), nullable=False, default="locked")
@@ -64,7 +65,6 @@ class User(db.Model, Base):
             return getattr(user, quest, None)
         return None
     
-    
     @classmethod
     def update_quest_state(cls, username: str, quest: str, new_state: str) -> bool:
         user = cls.get_by_username(username)
@@ -86,11 +86,11 @@ class User(db.Model, Base):
         return user.wall_counter
     
     @classmethod
-    def reset_wall_counter(cls, username: str) -> int:
+    def set_wall_counter(cls, username: str, val: int) -> int:
         user = cls.get_by_username(username)
         if not user:
             raise ValidationError(f"Could not find user {username} in db.")
-        user.wall_counter += 0
+        user.wall_counter = val
         db.session.commit()
         return user.wall_counter
     
@@ -110,8 +110,8 @@ class User(db.Model, Base):
         user.wall_last_req_at = now
         db.session.commit()
         return now
-        
     
+     
     @classmethod
     def get_wall_counter(cls, username: str) -> int:
         user = cls.get_by_username(username)
@@ -119,6 +119,23 @@ class User(db.Model, Base):
             raise ValidationError(f"Could not find user {username} in db.")
         return user.wall_counter
         #return getattr(user, QuestTitle.BEG_QUEST.value+"_counter", None)
+    
+    
+    @classmethod
+    def get_wall_destroyed(cls, username: str) -> bool:
+        user = cls.get_by_username(username)
+        if not user:
+            raise ValidationError(f"Could not find user {username} in db.")
+        return user.wall_destroyed
+    
+    @classmethod
+    def set_wall_destroyed(cls, username: str, b: bool) -> bool:
+        user = cls.get_by_username(username)
+        if not user:
+            raise ValidationError(f"Could not find user {username} in db.")
+        user.wall_destroyed = b
+        db.session.commit()
+        return user.wall_destroyed
     
     # XP
     @classmethod

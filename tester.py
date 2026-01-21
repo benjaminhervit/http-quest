@@ -5,7 +5,7 @@ import random
 url = "http://127.0.0.1:5000/game/the-wall-on-fire"
 headers = {
     "content-type": "application/json",
-    "authorization": "t1"
+    "authorization": "dev"
 }
 data = {"jason": "smash!"}
 
@@ -17,7 +17,7 @@ data = {"jason": "smash!"}
 
 while True:
     try:
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.delete(url, headers=headers, json=data)
         resp_data = response.json()
         
         try:

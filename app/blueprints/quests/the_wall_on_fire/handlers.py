@@ -10,12 +10,12 @@ from app.authentication_manager import authenticator
 from app.errors import QuestError, GameError
 
 
+def get_quest_vars():
+    return (3, 3, 10, "jason", "smash!", "twinkle twinkle little star, now you are going to a farm")  # total, min, max, json_key, json_val, final song
+
+
 def get_handlers():
-    return {"GET": get_handler, "POST": delete_handler}
-
-
-def get_quest_vars() -> (int, int, int):
-    return (20, 3, 10, "jason", "smash!")  # total, min, max, json_key, json_val
+    return {"GET": get_handler, "PUT": put_handler, "DELETE": delete_handler}
 
 
 def get_handler(quest: QuestData, req: Request):
@@ -41,15 +41,78 @@ def get_handler(quest: QuestData, req: Request):
     return content
 
 
+def put_handler(quest: QuestData, req: Request):
+    print("1")
+    # setup
+    username = authenticator.authenticate_with_username(req)
+    state = User.get_user_quest_State(username,
+                                      QuestTitle.WALL_QUEST.value)
+    
+    # quest vars
+    target_reqs, min_wait, max_wait, json_key, json_val, lyrics = get_quest_vars()
+    formatting = {"HERO": username,
+                  "TOTAL_REQS": target_reqs,
+                  "MIN_WAIT": min_wait,
+                  "MAX_WAIT": max_wait,
+                  "JSON_KEY": json_key,
+                  "JSON_VAL": json_val
+                  #"LYRICS": lyrics,
+                  }
+    # quest is locked
+    if state == QuestState.LOCKED.value:
+        return content_generator.create_locked_content(quest)
+    
+    print("2")
+    # quest is completed
+    wall_is_destroyed = User.get_wall_destroyed(username)
+    if wall_is_destroyed and state == QuestState.COMPLETED.value:
+        content = content_generator.create_content(quest, state, formatting)
+        content.update({"story": "Stop itZzz.. It's already brokenZZzzZZzz... You.... are litZzzz...terally... justZZZzZZzzbeating... a pile of broken... brickZZZZZZZZzzzz... What... is. wrong.... with.... ZzzzzzzzZZZzzzz. It seems like the wall and the horific little create are connected even when it is asleep"})
+        content.update({"quest": get_sleep_quest(lyrics)})
+        content.update({"learning": get_final_learning()})
+        return content
+    # player has not destroyed the wall yet
+    if wall_is_destroyed is False:
+        content = content_generator.create_locked_content(quest)
+        content.update({"story": "First, focus on DELETE-ing the wall, then you will learn what to do here."})
+        return content
+    # player has to put the creature to sleep
+    json = parser_utils.get_json(req)
+    lullaby: str = json.get("sing", "")
+    if not lullaby:
+        raise QuestError(f"He may not be Papparoti or Taylor Switft but Jason really need to sing:'{lyrics}' to PUT this creator to sleep.")
+    if lullaby.lower() != lyrics:
+        raise QuestError(f"Great! Jason is singing BUT whatever this song is: '{lullaby}' - it isn't '{lyrics}'")
+    
+    # player should have succeeded
+    state = QuestState.COMPLETED.value
+    User.update_quest_state(username, QuestTitle.WALL_QUEST.value, state)
+    User.update_xp(username, quest.xp)
+    
+    content = content_generator.create_content(quest, state, formatting)
+    content.update({"story": ("You immediately regret asking Jaons to sing." 
+                              "twInKle TWiNKLE little STAR... Jasons voice sounds like a thousand cats being forced bathed by an elderly well-meaning-but-less-perceptive elderly lady."
+                              "But apparently the creature has no idea what singing is supposed to sound like. Its eyes turns big in awe and within 10, horrible, painful singing seconds, it falls into a deep sleep, cuddling with the nearest brick from the wall."
+                              "Finally, you can ask Jason to stop torturing his surroundings (unfortunately, he seems to have taken a liking this 'singing'). "
+                              "There are no more challenges ahead and you can now claim the CRUDe Crown!"
+        )})
+    content.update({"learning": get_final_learning()})
+    return content
+
+
+def get_final_learning() -> str:
+    return "Well done! This was the big 'test' in the game. You have used both GET, DELETE and PUT and managed to maked timed, valid JSON requests with authorization."
+
+
 def delete_handler(quest: QuestData, req: Request):
     # setup
     username = authenticator.authenticate_with_username(req)
     state = User.get_user_quest_State(username,
-                                      QuestTitle.BEG_QUEST.value)
+                                      QuestTitle.WALL_QUEST.value)
     
     # quest vars
     hit_streak = User.get_wall_counter(username)
-    target_reqs, min_wait, max_wait, json_key, json_val = get_quest_vars()
+    target_reqs, min_wait, max_wait, json_key, json_val, lyrics = get_quest_vars()
     formatting = {"HERO": username,
                   "TOTAL_REQS": target_reqs,
                   "MIN_WAIT": min_wait,
@@ -60,8 +123,18 @@ def delete_handler(quest: QuestData, req: Request):
     
     if state == QuestState.LOCKED.value:
         return content_generator.create_locked_content(quest)
-    if state == QuestState.COMPLETED.value:
-        return content_generator.create_completed_content(quest)
+    
+    wall_is_destroyed = User.get_wall_destroyed(username)
+    if wall_is_destroyed and state == QuestState.COMPLETED.value:
+        content = content_generator.create_completed_content(quest)
+        content.update({"story": "Stop itZzz.. It's already brokenZZzzZZzz... You.... are litZzzz...terally... justZZZzZZzzbeating... a pile of broken... brickZZZZZZZZzzzz... What... is. wrong.... with.... ZzzzzzzzZZZzzzz. It seems like the wall and the horific little create are connected even when it is asleep"})
+        return content
+    
+    if wall_is_destroyed:
+        content = content_generator.create_completed_content(quest)
+        content.update({"story": get_wall_destroyed_reaction()})
+        content.update({"quest": get_sleep_quest(lyrics)})
+        return content
     
     # validate that the json input
     if jason_is_smashing(req) is False:
@@ -73,42 +146,36 @@ def delete_handler(quest: QuestData, req: Request):
         raise GameError("Something went wrong with the request delta time and it is not on you. Talk with a TA.")
     
     if delta_req_time < min_wait or delta_req_time > max_wait:  # check if requesting too fast
-        # User.update_xp(username, -hit_streak)
-        hit_streak = User.reset_wall_counter(username)
+        hit_streak = User.set_wall_counter(username, 0)
         User.update_wall_last_req_at(username)
         resp = get_failure_response()
         raise QuestError(f"{resp}. You decided to wait {delta_req_time} seconds. Firewall life: {target_reqs - hit_streak}")
     else:  # request accepted
         hit_streak = User.update_wall_counter(username, 1)  # system will raise error before if not accepted
-        # User.update_xp(username, 1)
+        if hit_streak > target_reqs:
+            User.set_wall_counter(username, target_reqs)
     
     # check if quest is completed and update content accordingly
-    # assuming fail / not completed
-    state = QuestState.FAILED.value
+    # assume fail and then check for success
     User.update_wall_last_req_at(username)  # updating timeout
     content = content_generator.create_content(quest, state, formatting)
     content.update({"status": "trying"})
     content.update({"story": get_success_response(hit_streak, target_reqs) + f" Firewall life: {target_reqs - hit_streak}"})
-    if quest_completed(hit_streak, target_reqs):
-        state = QuestState.COMPLETED.value
-        User.update_quest_state(username, QuestTitle.BEG_QUEST.value, state)
+    if final_hit(hit_streak, target_reqs):
         User.update_xp(username, target_reqs)
+        User.set_wall_destroyed(username, True)
+        content = content_generator.create_content(quest, state, formatting)
+        content.update({"story": get_wall_destroyed_reaction() + f" Firewall life: {target_reqs - hit_streak}"})
+        content.update({"quest": get_sleep_quest(lyrics)})
     return content
 
 
 def jason_is_smashing(req: Request) -> bool:
-    print("t1")
     json = parser_utils.get_json(req)
-    print("t2")
-    t, min, max, json_key, json_val = get_quest_vars()
-    print("t3")
-    print(json)
-    print("t4")
+    _, _, _, json_key, json_val, _ = get_quest_vars()
     json_says = json.get(json_key, "")
-    print("t5")
     if not isinstance(json_says, str):
         raise ValueError('Jasons smashing has to be a bit more... "STRINGent?"')
-    print("t6")
     return json_says.lower() == json_val
 
 
@@ -119,8 +186,21 @@ def get_delta_since_last_req(username: str) -> int:
     return delta_time
 
 
-def quest_completed(counter: int, target: int) -> bool:
+def final_hit(counter: int, target: int) -> bool:
     return counter >= target
+
+
+def get_wall_destroyed_reaction() -> str:
+    response = (
+        "NO—NO NO NO NO—\n"
+        "You were not supposed to do that! " 
+        "Look at my wall! My mighty wall! We still had so much to experience together! "
+        "So many HerOES to annoy! .... hehehehehe..... Luckily I can just build a new one\n"
+        "THAT WASN’T THE REAL WALL!\n"
+        "THAT WAS THE OUTER FIRE!\n\n"
+        "I AM GOING TO ADD MORE FIRE!\n"
+        "BIGGER FIRE! BETTER FIRE! MWHAHEHEHEHIHIHAHAHA\n\n")
+    return response
 
 
 def get_success_response(counter, target):
@@ -172,42 +252,21 @@ def get_success_response(counter, target):
         "The wall is just shy. It needs encouragement!",
         "PLEASE WAIT TOO LONG—JUST ONCE."
     ]
-
-    # Final defeat reaction
-    FINAL_DEFEAT_REACTION = (
-        "NO—NO NO NO NO—\n"
-        "THAT WASN’T THE REAL WALL!\n"
-        "THAT WAS THE OUTER FIRE!\n\n"
-        "...\n\n"
-        "I WAS GOING TO FIX IT.\n"
-        "I WAS GOING TO ADD MORE FIRE.\n"
-        "BIGGER FIRE. BETTER FIRE.\n\n"
-        "*sniff*\n\n"
-        "You only won because Jason didn’t melt fast enough.\n"
-        "This isn’t skill. This is attrition.\n\n"
-        "TAKE THE CRUDe CROWN.\n"
-        "IT’S TOO HEAVY ANYWAY.\n\n"
-        "...\n\n"
-        "I DIDN’T EVEN LIKE WALLS."
-    )
     
-    if counter >= target:
-        print("here!")
-        return FINAL_DEFEAT_REACTION
-    if random.random() < 0.7:
-        print("standard")
+    if random.random() < 0.6:
         return random.choice(SUCCESS_SMASH_REACTIONS)
     if target/counter < 0.33:
-        print("30%")
         return random.choice(PHASE_30_PERCENT)
     elif target/counter < 0.66:
-        print("60%")
         return random.choice(PHASE_60_PERCENT)
     elif target/counter < 0.90:
-        print("90%")
         return random.choice(PHASE_LAST_10_PERCENT)
     return random.choice(SUCCESS_SMASH_REACTIONS)
 
+
+def get_sleep_quest(lyrics) -> str:
+    return f"You cannot let this foul creature continue its reign of annoyance. URL have to PUT it to sleep once and for all. You know, just like the wet did with your dog when you were a kid. PUT Jason to sing:'{lyrics}'"
+ 
     
 def get_failure_response():
     # Failure responses when timing breaks and the player must restart
@@ -224,7 +283,6 @@ def get_failure_response():
         "Reset complete. Don’t look so surprised."
     ]
 
-    
     JASON_RESPAWN_STORIES = [
     "Oh look! Another Jason just wandered in. Same face. Same name. No memory. Incredible.",
     
@@ -249,5 +307,3 @@ def get_failure_response():
     
     resp = random.choice(FAILURE_RESET_REACTIONS) + " " + random.choice(JASON_RESPAWN_STORIES)
     return resp
-    
-    
