@@ -32,7 +32,7 @@ def get_quest():
         ),
         next_path=(
             """
-                GET to /game/hire_jason where a great ally awaits.
+                GET to /game/hire-jason where a great ally awaits.
             """
         ),
         learning="Most websites and services requires you to use the Authorization header so that they can verify who you are and decide if they want to give you access. For simplicity, we are just asking you to write your username BUT that is NOT SAFE and it is NOT A STANDARD! Usually it is some long gibberish key or token that is build with cryptography and other kinds of mathgic which is not important to us in this course. Just... REMEMBER NEVER TO DO IT HOW WE DID IT HERE IF YOU ARE MAKING A PUSHING SOMETHING TO REAL PRODUCTION ONE DAY!",
