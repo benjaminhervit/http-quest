@@ -1,3 +1,5 @@
+# naive test of wall-on-fire quest
+
 import requests
 import time
 import random
@@ -8,12 +10,6 @@ headers = {
     "authorization": "dev"
 }
 data = {"jason": "smash!"}
-
-# response = requests.get(url, headers=headers, json=data, timeout=10)
-# data = response.json()
-# for key, value in data.items():
-#     print(f"{key}: {value}")
-# print("-" * 50)
 
 while True:
     try:
