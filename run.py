@@ -13,4 +13,5 @@ with app.app_context():
 
 if __name__ == "__main__":
     # You can adjust host/port/debug as needed
+    print("STARTING UP!")
     app.run(debug=app.config.get("ENV") == "development")
