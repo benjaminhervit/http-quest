@@ -48,7 +48,6 @@ class QuestRequestHandler:
                     f"Method {req.method} is not allowed for this quest. Read the quest again.",
                     StatusCode.BAD_REQUEST.value,
                 )
-
             content = handler(quest=quest, req=req)
 
             return send_response(req, content, StatusCode.OK.value, html_template)

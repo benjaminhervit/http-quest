@@ -17,8 +17,8 @@ def get_quest():
         ... And you are good to go!
         """,
         quest="In JASON, URL have to make ONE POST to this PATH with 'jason_you_are:hired' and 'now:march ahead!'.",
-        completed="ALRIGHTY OH! Jasons screams and charges ahead. He does not really seem to consider the consequences of the orders your give him...",
-        next_path="TBD",
+        completed="ALRIGHTY OH! Jasons screams and charges ahead. He does not really seem to consider the consequences of the orders your give him. But now that you have Jason by your side, you are ready to face: the annoying creature.",
+        next_path="GET on the PATH to the /game/the-wall-on-fire to face the final challenge.",
         learning="""Great job! This quest was all about getting familiar with sending JSON in a request. 
         Odds are, you are reading this as a JSON response as well.
         For most use cases this is an easy and human-friendly (yes it is) way to structure and share data that are more flexible than FORMs.

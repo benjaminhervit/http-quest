@@ -28,8 +28,7 @@ def get_handler(quest: QuestData, req: Request):
         return content_generator.create_completed_content(quest)
     
     User.update_wall_last_req_at(username)
-    
-    target_reqs, min_wait, max_wait, json_key, json_val = get_quest_vars()
+    target_reqs, min_wait, max_wait, json_key, json_val, _ = get_quest_vars()
     formatting = {"HERO": username,
                   "TOTAL_REQS": target_reqs,
                   "MIN_WAIT": min_wait,
@@ -38,6 +37,7 @@ def get_handler(quest: QuestData, req: Request):
                   "JSON_VAL": json_val
                   }
     content = content_generator.create_content(quest, state, formatting)
+    
     return content
 
 
@@ -91,9 +91,9 @@ def put_handler(quest: QuestData, req: Request):
     
     content = content_generator.create_content(quest, state, formatting)
     content.update({"story": ("You immediately regret asking Jaons to sing." 
-                              "twInKle TWiNKLE little STAR... Jasons voice sounds like a thousand cats being forced bathed by an elderly well-meaning-but-less-perceptive elderly lady."
-                              "But apparently the creature has no idea what singing is supposed to sound like. Its eyes turns big in awe and within 10, horrible, painful singing seconds, it falls into a deep sleep, cuddling with the nearest brick from the wall."
-                              "Finally, you can ask Jason to stop torturing his surroundings (unfortunately, he seems to have taken a liking this 'singing'). "
+                              " twInKle TWiNKLE liTtLe STaR... Jasons voice sounds like a thousand cats being forced bathed by an well-meaning-but-out-of-touch elderly lady."
+                              "However, apparently the creature has no idea what singing is supposed to sound like. Its eyes turns big in awe and within 10, horrible, painful singing seconds, it falls into a deep sleep, cuddling with the nearest brick from the wall."
+                              "Finally, you can ask Jason to stop torturing his surroundings (unfortunately, he seems to have taken a liking of this 'singing'). "
                               "There are no more challenges ahead and you can now claim the CRUDe Crown!"
         )})
     content.update({"learning": get_final_learning()})
